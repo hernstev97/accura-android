@@ -78,6 +78,35 @@ export function splitBps(parts: readonly number[], whole: number): (number | nul
   return shares;
 }
 
+/**
+ * Ganze Prozent je Anteil, die sich auf genau 100 summieren (Verfahren des größten Rests): alle
+ * Anteile abrunden, die fehlenden Prozentpunkte gehen an die Anteile mit dem größten Rest, bei
+ * Gleichstand an den früheren. So wird 71,66 % zu 72 % und nicht zu 71 %, wie es „Rest an den
+ * größten Anteil“ täte. Mit einem negativen Anteil, oder wenn die Anteile nicht genau die
+ * Bezugsgröße ergeben, gilt die Regel von [splitBps]: einzeln runden, Rest an den größten Anteil.
+ * Ohne positive Bezugsgröße gibt es keine Anteile.
+ */
+export function splitWholePercent(parts: readonly number[], whole: number): (number | null)[] {
+  if (whole <= 0) return parts.map(() => null);
+  if (parts.length === 0) return [];
+  const exact = parts.every((part) => part >= 0) && sumCents(parts) === whole;
+  if (!exact) {
+    const shares = parts.map((part) => mulDivRound(part, 100, whole));
+    let largest = 0;
+    parts.forEach((part, index) => {
+      if (part > parts[largest]!) largest = index;
+    });
+    shares[largest] = shares[largest]! + 100 - sumCents(shares);
+    return shares;
+  }
+  const shares = parts.map((part) => floorMulDiv(part, 100, whole));
+  const remainders = parts.map((part, index) => part * 100 - shares[index]! * whole);
+  const order = parts.map((_, index) => index).sort((a, b) => remainders[b]! - remainders[a]! || a - b);
+  const missing = 100 - sumCents(shares);
+  for (let k = 0; k < missing; k++) shares[order[k]!] = shares[order[k]!]! + 1;
+  return shares;
+}
+
 /** Monatszins in Cent: Restschuld × Jahreszins ÷ 12, gerundet auf ganze Cent. */
 export function monthlyInterestCents(balanceCents: number, nominalRateBps: number): number {
   return mulDivRound(balanceCents, nominalRateBps, 120_000);

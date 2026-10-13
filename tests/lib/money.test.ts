@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addCents, floorDiv, floorMulDiv, monthlyInterestCents, mulDivRound, ratioBps, splitBps, sumCents } from "../../convex/lib/money";
+import { addCents, floorDiv, floorMulDiv, monthlyInterestCents, mulDivRound, ratioBps, splitBps, splitWholePercent, sumCents } from "../../convex/lib/money";
 import { fromInt64, toInt64, toWire } from "../../convex/lib/wire";
 
 describe("Rundung auf ganze Cent", () => {
@@ -156,5 +156,52 @@ describe("Grenze zu Convex (int64)", () => {
     expect(fromInt64(123n)).toBe(123);
     expect(fromInt64(-5n)).toBe(-5);
     expect(() => fromInt64(2n ** 60n)).toThrow();
+  });
+});
+
+describe("Ganze Prozent, die sich auf 100 summieren (größter Rest)", () => {
+  it("Standarddaten: einzeln gerundet 72 + 14 + 10 + 5 = 101, mit größtem Rest 72 + 13 + 10 + 5 = 100", () => {
+    // Echte Anteile 71,67 % / 13,55 % / 10,00 % / 4,79 %.
+    const parts = [215_000, 40_645, 30_000, 14_355];
+    expect(parts.map((part) => mulDivRound(part, 100, 300_000))).toEqual([72, 14, 10, 5]);
+    expect(splitWholePercent(parts, 300_000)).toEqual([72, 13, 10, 5]);
+  });
+
+  it("gibt bei Dritteln den fehlenden Punkt dem ersten bei Gleichstand: 34 + 33 + 33", () => {
+    expect(splitWholePercent([10_000, 10_000, 10_000], 30_000)).toEqual([34, 33, 33]);
+  });
+
+  it("lässt exakte Anteile unverändert", () => {
+    expect(splitWholePercent([50_000, 25_000, 25_000, 0], 100_000)).toEqual([50, 25, 25, 0]);
+  });
+
+  it("rundet nie einen Anteil um mehr als einen Punkt von seinem echten Wert weg", () => {
+    let seed = 4_242;
+    const next = (max: number) => {
+      seed = (seed * 1_103_515_245 + 12_345) % 2_147_483_648;
+      return seed % max;
+    };
+    for (let run = 0; run < 2_000; run++) {
+      const parts = [next(200_000), next(100_000), next(50_000), next(80_000)];
+      const whole = parts.reduce((sum, part) => sum + part, 0);
+      if (whole === 0) continue;
+      const shares = splitWholePercent(parts, whole);
+      expect(shares.reduce((sum, share) => sum! + share!, 0)).toBe(100);
+      parts.forEach((part, index) => {
+        const exact = (part * 100) / whole;
+        expect(Math.abs(shares[index]! - exact)).toBeLessThan(1);
+      });
+    }
+  });
+
+  it("verträgt einen negativen Anteil wie splitBps, die Summe bleibt 100", () => {
+    const shares = splitWholePercent([200_000, 100_000, 100_000, -99_999], 300_001);
+    expect(shares.reduce((sum, share) => sum! + share!, 0)).toBe(100);
+    expect(shares[3]).toBeLessThan(0);
+  });
+
+  it("erfindet keinen Anteil ohne positive Bezugsgröße", () => {
+    expect(splitWholePercent([100, 200], 0)).toEqual([null, null]);
+    expect(splitWholePercent([], 100)).toEqual([]);
   });
 });
