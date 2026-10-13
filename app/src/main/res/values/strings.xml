@@ -45,6 +45,7 @@
     <string name="stale_text">Gerade keine Verbindung. Die Zahlen sind von %1$s.</string>
     <string name="value_unavailable">Nicht berechenbar</string>
     <string name="value_months">%1$s Monate</string>
+    <string name="salary_missing_value">Gehaltstag eintragen</string>
 
     <!-- Datenalter und Rechenweg -->
     <string name="chip_data_today">Stand von heute</string>
@@ -156,6 +157,7 @@
     <string name="debug_leer">Leer</string>
     <string name="debug_negativ">Negativ</string>
     <string name="debug_veraltet">Alte Stände</string>
+    <string name="debug_ohne_gehaltstag">Ohne Gehaltstag</string>
     <string name="debug_offline">Offline-Kopie</string>
     <string name="debug_laden">Lädt</string>
     <string name="debug_fehler">Fehler</string>

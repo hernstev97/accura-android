@@ -11,12 +11,13 @@
 
 ## Modelle
 
-`data/model/` spiegelt `convex/lib/views.ts` und `convex/lib/metric.ts` aus dem Backend (PR #2, Stand `c3909c3`): `OverviewModel`, `BudgetModel`, `DebtsModel`, `UpcomingModel` und die Kennzahl `Metric` mit Wert, Art, Status, Datenalter und Rechenweg (`Step`). `debtSchedule` (Tilgungsplan eines Kredits) ist noch nicht abgebildet. Alle Modelle sind `@Serializable` (kotlinx.serialization):
+`data/model/` spiegelt `convex/lib/views.ts` und `convex/lib/metric.ts` aus dem Backend (PR #2, Stand `0193d74`): `OverviewModel`, `BudgetModel`, `DebtsModel`, `UpcomingModel` und die Kennzahl `Metric` mit Wert, Art, Status, Datenalter und Rechenweg (`Step`). `debtSchedule` (Tilgungsplan eines Kredits) ist noch nicht abgebildet. Alle Modelle sind `@Serializable` (kotlinx.serialization):
 
 - Geld ist `Long` in Cent, Anteile `Int` in Basispunkten. Kein `Float`, kein `Double`.
 - Tage und Monate sind `LocalDate` und `YearMonth` (Format `JJJJ-MM-TT`, `JJJJ-MM`). Ein ungültiges Datum ist ein Lesefehler, kein Absturz.
 - Enums tragen die Namen des Backends per `@SerialName`. Ein unbekannter Wert lässt sich nicht lesen, es wird nie still ein Standard angenommen.
 - Im Betrieb ignoriert `FinanceJson.lenient` unbekannte Felder. Der Vertragstest liest streng.
+- `salaryStatus` (`SalaryStatus.SET`/`MISSING`) in `OverviewModel` und `UpcomingModel` ist ein Pflichtfeld ohne Standardwert: Fehlt es, ist die Antwort unlesbar, die App nimmt nie still „gesetzt“ an. Bei `MISSING` haben „Bis Gehalt verfügbar“, Tagesrahmen und „Fällig bis zum Gehalt“ keine Zahl; die Ansichten zeigen dort ruhig „Gehaltstag eintragen“. Der Kontostand bleibt sichtbar.
 
 ## Zustände
 
@@ -26,7 +27,7 @@
 
 ## Vertragstest
 
-`src/test/resources/vertrag/<ansicht>-<szenario>.json` sind **Ausgaben des echten Rechenkerns** (`toWire(buildOverview(...))` usw.) für die ausgedachten Testdaten des Backends, in vier Szenarien: `standard`, `leer`, `negativ`, `veraltet`. Erzeugt mit `scripts/vertragsbeispiele.ts` (Kopf der Datei erklärt den Aufruf; läuft, sobald `convex/lib/` im selben Repo liegt). Stand der Beispiele: Backend-Commit `c3909c3`.
+`src/test/resources/vertrag/<ansicht>-<szenario>.json` sind **Ausgaben des echten Rechenkerns** (`toWire(buildOverview(...))` usw.) für die ausgedachten Testdaten des Backends, in fünf Szenarien: `standard`, `leer`, `negativ`, `veraltet`, `ohne-gehaltstag` (Standarddaten ohne Gehaltstag). Erzeugt mit `scripts/vertragsbeispiele.ts`; der Kopf der Datei erklärt den Aufruf, im selben Repo oder mit einem Backend-Worktree als Quelle, ohne diesen zu ändern. Stand der Beispiele: Backend-Commit `0193d74` (PR #2).
 
 `VertragsTest` liest jede Datei **streng**, prüft Kernzahlen gegen die Erwartungen der Convex-Tests (zum Beispiel 904,30 € bis Gehalt, Tagesrahmen 53,19 €), dass negative Stände negativ bleiben, dass „leer“ nichts erfindet, und dass unbekannte Felder und Statuswerte erkannt werden. Ergänzt das Backend ein Feld, schlägt der Test fehl, bis das Modell es kennt.
 

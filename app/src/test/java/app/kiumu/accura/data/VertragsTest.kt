@@ -10,6 +10,8 @@ import app.kiumu.accura.data.model.MetricStatus
 import app.kiumu.accura.data.model.MetricUnit
 import app.kiumu.accura.data.model.OverviewModel
 import app.kiumu.accura.data.model.PaymentSource
+import app.kiumu.accura.data.model.SalaryStatus
+import app.kiumu.accura.data.model.StepOp
 import app.kiumu.accura.data.model.UpcomingModel
 import java.time.LocalDate
 import java.time.YearMonth
@@ -83,6 +85,7 @@ class VertragsTest {
     fun `Übersicht standard`() {
         val model = overview("standard")
         assertFalse(model.isEmpty)
+        assertEquals(SalaryStatus.SET, model.salaryStatus)
         assertEquals(135_075L, model.accountsTotal.value)
         assertEquals(MetricUnit.MONTHS_X100, model.bufferMonths.unit)
         assertEquals(56L, model.bufferMonths.value)
@@ -91,6 +94,9 @@ class VertragsTest {
         assertNull(model.debtFreeDay.value)
         assertEquals(listOf(IncomePartKey.EXPENSES, IncomePartKey.RATES, IncomePartKey.RESERVES, IncomePartKey.FREE), model.incomeSplit?.parts?.map { it.key })
         assertEquals(300_000L, model.incomeSplit?.incomeCents)
+        // Der Ring summiert exakt auf 100 %, der Rundungsrest geht an den größten Anteil (7.167 → 7.166).
+        assertEquals(listOf(7_166, 1_355, 1_000, 479), model.incomeSplit?.parts?.map { it.shareBps })
+        assertEquals(10_000, model.incomeSplit?.parts?.sumOf { it.shareBps ?: 0 })
         assertEquals(YearMonth.of(2026, 10), model.nextRelief?.freeFromMonth)
         assertEquals(12_000L, model.nextRelief?.monthlyReliefCents)
         assertEquals(0, model.dataAge.staleCount)
@@ -108,6 +114,7 @@ class VertragsTest {
     fun `Übersicht leer ist leer und erfindet nichts`() {
         val model = overview("leer")
         assertTrue(model.isEmpty)
+        assertEquals(SalaryStatus.MISSING, model.salaryStatus)
         assertEquals(MetricStatus.UNAVAILABLE, model.accountsTotal.status)
         assertNull(model.accountsTotal.value)
         assertNotNull(model.accountsTotal.reason)
@@ -172,10 +179,50 @@ class VertragsTest {
     @Test
     fun `Demnächst leer hat keinen Gehaltstag und zeigt keine Zahl`() {
         val model = upcoming("leer")
+        assertEquals(SalaryStatus.MISSING, model.salaryStatus)
         assertNull(model.nextSalaryDay)
         assertTrue(model.payments.isEmpty())
         assertEquals(MetricStatus.UNAVAILABLE, model.availableUntilSalary.status)
         assertNull(model.availableUntilSalary.value)
+    }
+
+    @Test
+    fun `Ohne Gehaltstag gibt es keine Zahl bis Gehalt, der Kontostand bleibt`() {
+        val overview = overview("ohne-gehaltstag")
+        val upcoming = upcoming("ohne-gehaltstag")
+        assertEquals(SalaryStatus.MISSING, overview.salaryStatus)
+        assertEquals(SalaryStatus.MISSING, upcoming.salaryStatus)
+        assertFalse(overview.isEmpty)
+        assertEquals(135_075L, overview.accountsTotal.value)
+        assertEquals(135_075L, upcoming.accountsTotal.value)
+        assertNull(upcoming.nextSalaryDay)
+        assertNull(upcoming.daysUntilSalary)
+        for (metric in listOf(overview.availableUntilSalary, overview.dailyAllowance, upcoming.availableUntilSalary, upcoming.dailyAllowance, upcoming.pendingPayments)) {
+            assertEquals(metric.key, MetricStatus.UNAVAILABLE, metric.status)
+            assertNull(metric.key, metric.value)
+            assertEquals(metric.key, "Der Gehaltstag fehlt.", metric.reason)
+            assertEquals(metric.key, listOf(StepOp.NOTE), metric.steps.map { it.op })
+        }
+        // Was nicht vom Gehaltstag abhängt, rechnet das Backend weiter.
+        assertEquals(14_355L, overview.freeMonthly.value)
+    }
+
+    @Test
+    fun `fehlender oder unbekannter Gehaltstag-Status lässt sich nicht lesen`() {
+        val without = Vertrag.read("upcoming-standard").replaceFirst("\"salaryStatus\": \"set\",", "")
+        val unknown = Vertrag.read("overview-standard").replaceFirst("\"salaryStatus\": \"set\"", "\"salaryStatus\": \"vielleicht\"")
+        try {
+            FinanceJson.lenient.decodeFromString(UpcomingModel.serializer(), without)
+            fail("Ohne salaryStatus darf die App nicht still „gesetzt“ annehmen")
+        } catch (_: SerializationException) {
+            // gewollt
+        }
+        try {
+            FinanceJson.lenient.decodeFromString(OverviewModel.serializer(), unknown)
+            fail("Ein unbekannter salaryStatus darf nicht still gelesen werden")
+        } catch (_: SerializationException) {
+            // gewollt
+        }
     }
 
     @Test

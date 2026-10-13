@@ -8,5 +8,5 @@ object Vertrag {
     }
 
     val views = listOf("overview", "budget", "debts", "upcoming")
-    val scenarios = listOf("standard", "leer", "negativ", "veraltet")
+    val scenarios = listOf("standard", "leer", "negativ", "veraltet", "ohne-gehaltstag")
 }

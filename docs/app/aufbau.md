@@ -28,7 +28,7 @@ Paket `app.kiumu.accura` im Modul `app`. Es gibt ein einziges Gradle-Modul. Them
 - Die Anmeldung ist ein **Zustand**, keine Route (`AccuraApp`). Abgemeldet erreicht niemand eine Ansicht, auch nicht über Zurück.
 - Jeder Sitzungszustand hat einen eigenen ViewModel-Speicher (`SessionScope`). Beim Abmelden verschwinden die ViewModels der Ansichten samt ihren Finanzdaten, beim Anmelden bleibt kein halber Anmeldeschritt hängen.
 - Angemeldet: `Scaffold` mit Titel, Konto-Menü (Abmelden, im Debug-Build „Entwicklung“) und `ShortNavigationBar` mit den vier Ansichten (Compose Navigation). Die Leiste skaliert die Schrift nur bis 130 %, weil vier Namen sonst mitten im Wort brechen; der Inhalt skaliert voll.
-- Das Debug-Menü „Entwicklung“ schaltet das Szenario der Fake-Daten (Standard, Leer, Negativ, Alte Stände, Offline-Kopie, Lädt, Fehler) und zeigt den Bausteinkatalog.
+- Das Debug-Menü „Entwicklung“ schaltet das Szenario der Fake-Daten (Standard, Leer, Negativ, Alte Stände, Ohne Gehaltstag, Offline-Kopie, Lädt, Fehler) und zeigt den Bausteinkatalog.
 - Fake-Anmeldung (nur Debug): jede gültige Adresse bekommt einen Code, der Code ist `123456`. `offline@example.test` meldet „keine Verbindung“, `000000` „Code abgelaufen“.
 
 ## Material 3 und Version
@@ -56,7 +56,7 @@ Farben: Dynamic Color als Grundstimmung (`dynamicLightColorScheme`/`dynamicDarkC
 | Screenshots ohne Emulator (Roborazzi) | `src/testDebug/.../screenshots`, Referenzen in `src/test/screenshots` | `./gradlew :app:verifyRoborazziDebug`, neu aufnehmen mit `:app:recordRoborazziDebug` |
 | Lint | | `./gradlew :app:lint` |
 
-Screenshot-Tests: jede Ansicht in Hell, Dunkel, großer Schrift (200 %), leer, negativ, alte Stände, Offline-Kopie, dazu die ganze App mit Leiste, die Anmeldung und der Katalog. Roborazzi vergleicht mit einer kleinen Toleranz (0,5 %).
+Screenshot-Tests: jede Ansicht in Hell, Dunkel, großer Schrift (200 %), leer, negativ, alte Stände, Offline-Kopie, Übersicht und Demnächst zusätzlich ohne Gehaltstag, dazu die ganze App mit Leiste, die Anmeldung und der Katalog. Roborazzi vergleicht mit einer kleinen Toleranz (0,5 %).
 
 Robolectric läuft mit Android 16 (API 36, `robolectric.properties`): Mit API 37 scheitert Espresso in Robolectric 4.17 (`InputManagerEventInjectionStrategy`). Die App selbst zielt auf API 37 und wurde im Emulator mit API 37 geprüft.
 
@@ -68,3 +68,4 @@ Robolectric läuft mit Android 16 (API 36, `robolectric.properties`): Mit API 37
 - Anmeldung: Schritt und E-Mail überleben Drehen und Prozess-Ende (`rememberSaveable` in `SignInRoute`, weil `SessionScope` einen eigenen ViewModel-Speicher ohne `SavedStateHandle` hat). Der Code selbst bleibt nicht erhalten, er ist nur kurz gültig. Der Test `Code-Schritt bleibt nach Drehen oder Prozess-Ende stehen` schlägt ohne diese Lösung fehl.
 - TalkBack-Durchgang von Hand. Namen und Rollen sind gesetzt, ein Durchgang mit dem Screenreader steht aus.
 - CI für die App (Lint, Tests, `verifyRoborazziDebug`).
+- Einkommens-Ring: Das Backend liefert Anteile, die exakt 10.000 Basispunkte ergeben. Die App zeigt sie als ganze Prozent, je Anteil gerundet; mit den Testdaten ergibt das 72 + 14 + 10 + 5 = 101 %. Ob ganze Prozent vom Backend kommen oder die App Nachkommastellen zeigt, ist offen.

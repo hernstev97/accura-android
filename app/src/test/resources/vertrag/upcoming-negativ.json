@@ -1,5 +1,6 @@
 {
   "today": "2026-08-08",
+  "salaryStatus": "set",
   "nextSalaryDay": "2026-08-25",
   "daysUntilSalary": 17,
   "payments": [

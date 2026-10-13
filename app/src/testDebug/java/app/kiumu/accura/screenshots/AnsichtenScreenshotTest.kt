@@ -42,7 +42,14 @@ enum class Ansicht(val ordner: String, val render: @Composable (DebugScenario) -
 }
 
 /** Zustände und Darstellungen, die jede Ansicht durchläuft (Plan: Hell, Dunkel, große Schrift, leer, negativ, veraltet). */
-enum class Variante(val datei: String, val szenario: DebugScenario, val dark: Boolean = false, val fontScale: Float = 1f) {
+enum class Variante(
+    val datei: String,
+    val szenario: DebugScenario,
+    val dark: Boolean = false,
+    val fontScale: Float = 1f,
+    /** Nur Ansichten, in denen das Szenario etwas anders zeigt als Standard. */
+    val ansichten: Set<Ansicht> = Ansicht.entries.toSet(),
+) {
     Hell("hell", DebugScenario.STANDARD),
     Dunkel("dunkel", DebugScenario.STANDARD, dark = true),
     GrosseSchrift("grosse-schrift", DebugScenario.STANDARD, fontScale = 2f),
@@ -50,6 +57,7 @@ enum class Variante(val datei: String, val szenario: DebugScenario, val dark: Bo
     Negativ("negativ", DebugScenario.NEGATIV),
     AlteStaende("alte-staende", DebugScenario.VERALTET),
     OfflineKopie("offline-kopie", DebugScenario.OFFLINE_KOPIE),
+    OhneGehaltstag("ohne-gehaltstag", DebugScenario.OHNE_GEHALTSTAG, ansichten = setOf(Ansicht.Uebersicht, Ansicht.Demnaechst)),
 }
 
 @RunWith(ParameterizedRobolectricTestRunner::class)
@@ -71,7 +79,7 @@ class AnsichtenScreenshotTest(private val ansicht: Ansicht, private val variante
     companion object {
         @JvmStatic
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1}")
-        fun parameter(): List<Array<Any>> = Ansicht.entries.flatMap { a -> Variante.entries.map { v -> arrayOf<Any>(a, v) } }
+        fun parameter(): List<Array<Any>> = Ansicht.entries.flatMap { a -> Variante.entries.filter { a in it.ansichten }.map { v -> arrayOf<Any>(a, v) } }
     }
 }
 

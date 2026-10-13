@@ -43,6 +43,7 @@ private fun DebugScenario.label(): Int = when (this) {
     DebugScenario.LEER -> R.string.debug_leer
     DebugScenario.NEGATIV -> R.string.debug_negativ
     DebugScenario.VERALTET -> R.string.debug_veraltet
+    DebugScenario.OHNE_GEHALTSTAG -> R.string.debug_ohne_gehaltstag
     DebugScenario.OFFLINE_KOPIE -> R.string.debug_offline
     DebugScenario.LADEN -> R.string.debug_laden
     DebugScenario.FEHLER -> R.string.debug_fehler

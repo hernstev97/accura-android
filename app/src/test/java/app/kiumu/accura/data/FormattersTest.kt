@@ -44,7 +44,9 @@ class FormattersTest {
         assertEquals("5,12${nbsp}%", formatBps(512))
         assertEquals("5,1${nbsp}%", formatBps(510))
         assertEquals("0${nbsp}%", formatBps(0))
-        assertEquals("72${nbsp}%", formatWholePercent(7167))
+        assertEquals("72${nbsp}%", formatWholePercent(7166))
+        assertEquals("72${nbsp}%", formatWholePercent(7150))
+        assertEquals("71${nbsp}%", formatWholePercent(7149))
         assertEquals("5${nbsp}%", formatWholePercent(479))
     }
 

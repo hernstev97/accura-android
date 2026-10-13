@@ -85,7 +85,15 @@ fun DatenalterChip(metric: Metric, today: LocalDate, modifier: Modifier = Modifi
 }
 
 /**
+ * Ruhiger Text statt einer Zahl, wenn eine Angabe fehlt (zum Beispiel „Gehaltstag eintragen“).
+ * Steht nur, wenn die Kennzahl keinen Wert hat: Eine Zahl des Backends verdeckt er nie.
+ */
+private fun missingHintFor(metric: Metric, missingHint: String?): String? =
+    missingHint?.takeIf { formatMetricNumber(metric) == null }
+
+/**
  * Hauptzahl-Karte: Frage, Antwort groß, ein Satz Herleitung, Datenalter, „So gerechnet“. Eine pro Ansicht.
+ * Fehlt eine Angabe, steht [missingHint] ruhig an der Stelle der Zahl.
  */
 @Composable
 fun HauptzahlKarte(
@@ -95,6 +103,7 @@ fun HauptzahlKarte(
     tone: Tone,
     modifier: Modifier = Modifier,
     supporting: String? = null,
+    missingHint: String? = null,
 ) {
     val colors = tone.colors()
     Card(
@@ -104,7 +113,12 @@ fun HauptzahlKarte(
     ) {
         Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(question, style = MaterialTheme.typography.titleMedium, modifier = Modifier.semantics { heading() })
-            BetragGross(text = metricDisplayValue(metric))
+            val hint = missingHintFor(metric, missingHint)
+            if (hint != null) {
+                Text(hint, style = MaterialTheme.typography.headlineSmall)
+            } else {
+                BetragGross(text = metricDisplayValue(metric))
+            }
             val note = supporting ?: metric.reason
             if (note != null) Text(note, style = MaterialTheme.typography.bodyMedium)
             DatenalterChip(metric, today)
@@ -113,7 +127,7 @@ fun HauptzahlKarte(
     }
 }
 
-/** Kennzahl: Name, Wert, Art; „So gerechnet“ zum Aufklappen. */
+/** Kennzahl: Name, Wert, Art; „So gerechnet“ zum Aufklappen. Fehlt eine Angabe, steht [missingHint] statt der Zahl. */
 @Composable
 fun Kennzahl(
     title: String,
@@ -122,6 +136,7 @@ fun Kennzahl(
     modifier: Modifier = Modifier,
     tone: Tone? = null,
     supporting: String? = null,
+    missingHint: String? = null,
 ) {
     val accent = tone?.colors()?.accent ?: MaterialTheme.colorScheme.outlineVariant
     OutlinedCard(modifier = modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
@@ -140,13 +155,24 @@ fun Kennzahl(
                     }
                 }
             }
+            val hint = missingHintFor(metric, missingHint)
             val valueText: @Composable (Modifier) -> Unit = { modifier ->
-                Text(
-                    metricDisplayValue(metric),
-                    style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
-                    modifier = modifier,
-                    textAlign = TextAlign.End,
-                )
+                if (hint != null) {
+                    Text(
+                        hint,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = modifier,
+                        textAlign = TextAlign.End,
+                    )
+                } else {
+                    Text(
+                        metricDisplayValue(metric),
+                        style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
+                        modifier = modifier,
+                        textAlign = TextAlign.End,
+                    )
+                }
             }
             // Bei großer Schrift steht der Wert unter dem Namen, damit nichts mitten im Wort bricht.
             if (stacked) {

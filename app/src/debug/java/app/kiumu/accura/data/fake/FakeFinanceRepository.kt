@@ -65,6 +65,7 @@ class FakeFinanceRepository(
         DebugScenario.LEER -> "leer"
         DebugScenario.NEGATIV -> "negativ"
         DebugScenario.VERALTET -> "veraltet"
+        DebugScenario.OHNE_GEHALTSTAG -> "ohne-gehaltstag"
         else -> "standard"
     }
 }

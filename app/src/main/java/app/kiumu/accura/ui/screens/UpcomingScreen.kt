@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import app.kiumu.accura.R
 import app.kiumu.accura.data.ViewState
 import app.kiumu.accura.data.model.PaymentSource
+import app.kiumu.accura.data.model.SalaryStatus
 import app.kiumu.accura.data.model.UpcomingModel
 import app.kiumu.accura.ui.format.formatDay
 import app.kiumu.accura.ui.katalog.Abschnitt
@@ -36,23 +37,26 @@ private fun UpcomingContent(model: UpcomingModel, banner: @Composable () -> Unit
     val today = model.today
     val salaryDay = model.nextSalaryDay
     val days = model.daysUntilSalary
+    val salaryHint = salaryMissingHint(model.salaryStatus)
     Ansicht(banner) {
         HauptzahlKarte(
             question = stringResource(R.string.upcoming_main_question),
             metric = model.availableUntilSalary,
             today = today,
-            tone = Tone.Free,
+            // Ohne Gehaltstag gibt es kein freies Geld bis Gehalt: keine Farbe „Frei“.
+            tone = if (model.salaryStatus == SalaryStatus.MISSING) Tone.Neutral else Tone.Free,
+            missingHint = salaryHint,
             supporting = if (salaryDay != null && days != null) {
                 stringResource(R.string.upcoming_salary, formatDay(salaryDay, today), pluralStringResource(R.plurals.days_in, days, days))
             } else {
                 null
             },
         )
-        Kennzahl(stringResource(R.string.metric_daily_allowance), model.dailyAllowance, today, tone = Tone.Free)
-        Kennzahl(stringResource(R.string.metric_pending), model.pendingPayments, today)
+        Kennzahl(stringResource(R.string.metric_daily_allowance), model.dailyAllowance, today, tone = Tone.Free, missingHint = salaryHint)
+        Kennzahl(stringResource(R.string.metric_pending), model.pendingPayments, today, missingHint = salaryHint)
 
         Abschnitt(stringResource(R.string.section_payments_until_salary))
-        if (salaryDay == null) {
+        if (model.salaryStatus == SalaryStatus.MISSING) {
             Leerzustand(stringResource(R.string.upcoming_no_salary_title), stringResource(R.string.upcoming_no_salary_text))
         } else if (model.payments.isEmpty()) {
             Text(stringResource(R.string.upcoming_no_payments), style = MaterialTheme.typography.bodyMedium)

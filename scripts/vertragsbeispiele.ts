@@ -5,6 +5,16 @@
  * Voraussetzung: der Backend-Stand mit `convex/lib/` (PR #2) und `npm ci`. Aufruf aus dem Repo-Wurzelordner:
  *   npx esbuild scripts/vertragsbeispiele.ts --bundle --platform=node --format=esm --outfile=/tmp/vertrag.mjs \
  *     && node /tmp/vertrag.mjs app/src/test/resources/vertrag
+ *
+ * Liegt der Backend-Stand in einem anderen Worktree (zum Beispiel PR #2 vor dem Merge), bleibt dieser
+ * unverändert: Skript in einen leeren Ordner kopieren, `convex/` daneben verlinken, mit dem esbuild des
+ * Backends bündeln. Aus dem Wurzelordner des App-Worktrees (sh):
+ *   B=/pfad/zum/backend-worktree   # mit convex/lib/ und node_modules
+ *   T=$(mktemp -d) && mkdir "$T/scripts" && cp scripts/vertragsbeispiele.ts "$T/scripts/" && ln -s "$B/convex" "$T/convex"
+ *   "$B/node_modules/.bin/esbuild" "$T/scripts/vertragsbeispiele.ts" --bundle --platform=node --format=esm \
+ *     --outfile="$T/vertrag.mjs" && node "$T/vertrag.mjs" app/src/test/resources/vertrag
+ * Stand der Beispiele: steht in docs/app/datenschicht.md (Backend-Commit).
+ *
  * Danach laufen die Vertragstests der App (`./gradlew :app:testDebugUnitTest`); ändern sich die Antworten,
  * müssen die Kotlin-Modelle in `app/.../data/model/` mitziehen.
  */
@@ -29,6 +39,12 @@ const scenarios: Record<string, () => FinanceInput> = {
     const input = standard();
     input.incomeCents = 150_000;
     input.accounts[0]!.stand = { day: TODAY, cents: -39_834, recordedDay: TODAY };
+    return input;
+  },
+  // Daten vorhanden, nur der Gehaltstag fehlt: kein Zeitraum bis zum Gehalt, der Kontostand bleibt sichtbar.
+  "ohne-gehaltstag": () => {
+    const input = standard();
+    input.salaryDay = null;
     return input;
   },
   veraltet: () => {

@@ -6,6 +6,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 
+/** Ob ein (gültiger) Gehaltstag gesetzt ist. Bei [MISSING] gibt es keinen Zeitraum „bis Gehalt“ und keine Zahl dafür. */
+@Serializable
+enum class SalaryStatus {
+    @SerialName("set") SET,
+    @SerialName("missing") MISSING,
+}
+
 @Serializable
 enum class PaymentSource {
     @SerialName("budget") BUDGET,
@@ -30,6 +37,8 @@ data class UpcomingPayment(
 @Serializable
 data class UpcomingModel(
     val today: CalendarDay,
+    /** Pflichtfeld ohne Standardwert: Fehlt es in der Antwort, ist das ein Lesefehler, kein stilles „gesetzt“. */
+    val salaryStatus: SalaryStatus,
     val nextSalaryDay: CalendarDay? = null,
     val daysUntilSalary: Int? = null,
     val payments: List<UpcomingPayment>,

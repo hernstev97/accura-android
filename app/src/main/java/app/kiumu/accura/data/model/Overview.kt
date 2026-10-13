@@ -79,6 +79,8 @@ data class DataAge(
 @Serializable
 data class OverviewModel(
     val today: CalendarDay,
+    /** Bei [SalaryStatus.MISSING] haben „Bis Gehalt verfügbar“ und Tagesrahmen keine Zahl. Pflichtfeld wie in [UpcomingModel]. */
+    val salaryStatus: SalaryStatus,
     /** Es ist noch gar nichts erfasst. */
     val isEmpty: Boolean,
     val accounts: List<AccountView>,

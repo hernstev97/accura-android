@@ -2,6 +2,7 @@ package app.kiumu.accura.data
 
 import app.kiumu.accura.DebugScenario
 import app.kiumu.accura.data.fake.FakeFinanceRepository
+import app.kiumu.accura.data.model.SalaryStatus
 import java.time.LocalDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
@@ -38,6 +39,15 @@ class FakeFinanceRepositoryTest {
         assertTrue(repository.budget(today).first() is ViewState.Data)
         scenario.value = DebugScenario.VERALTET
         assertTrue(repository.overview(today).first() is ViewState.Data)
+    }
+
+    @Test
+    fun `Ohne Gehaltstag sind es Daten mit fehlendem Gehaltstag`() = runTest {
+        scenario.value = DebugScenario.OHNE_GEHALTSTAG
+        val overview = repository.overview(today).first() as ViewState.Data
+        assertEquals(SalaryStatus.MISSING, overview.model.salaryStatus)
+        val upcoming = repository.upcoming(today).first() as ViewState.Data
+        assertEquals(SalaryStatus.MISSING, upcoming.model.salaryStatus)
     }
 
     @Test

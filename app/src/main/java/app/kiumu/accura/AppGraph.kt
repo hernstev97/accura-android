@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 val StevenZone: ZoneId = ZoneId.of("Europe/Berlin")
 
 /** Szenarien der Fake-Datenquelle für den Debug-Build. */
-enum class DebugScenario { STANDARD, LEER, NEGATIV, VERALTET, OFFLINE_KOPIE, LADEN, FEHLER }
+enum class DebugScenario { STANDARD, LEER, NEGATIV, VERALTET, OHNE_GEHALTSTAG, OFFLINE_KOPIE, LADEN, FEHLER }
 
 /** Schalter, die es nur im Debug-Build gibt. */
 interface DebugTools {

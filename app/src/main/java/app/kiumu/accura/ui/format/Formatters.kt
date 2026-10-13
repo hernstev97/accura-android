@@ -50,7 +50,7 @@ fun formatBps(bps: Int): String {
     return "$sign$number$NBSP%"
 }
 
-/** Ganze Prozent aus Basispunkten, für Anteile: 7167 → `72 %`. */
+/** Ganze Prozent aus Basispunkten, für Anteile: 7166 → `72 %`, 7150 → `72 %`. */
 fun formatWholePercent(bps: Int): String = "${(bps + 50) / 100}$NBSP%"
 
 /** Monate mal 100 → `5,6`, abgeschnitten (nicht gerundet) auf eine Nachkommastelle. Das Wort „Monate“ setzt die Oberfläche. */

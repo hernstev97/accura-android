@@ -1,5 +1,6 @@
 {
   "today": "2026-08-08",
+  "salaryStatus": "set",
   "isEmpty": false,
   "accounts": [
     {
@@ -688,7 +689,7 @@
       {
         "key": "expenses",
         "cents": 215000,
-        "shareBps": 7167
+        "shareBps": 7166
       },
       {
         "key": "rates",

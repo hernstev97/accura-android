@@ -16,6 +16,7 @@ import app.kiumu.accura.R
 import app.kiumu.accura.data.ViewState
 import app.kiumu.accura.data.model.IncomePartKey
 import app.kiumu.accura.data.model.OverviewModel
+import app.kiumu.accura.data.model.SalaryStatus
 import app.kiumu.accura.ui.format.formatCents
 import app.kiumu.accura.ui.format.formatMonth
 import app.kiumu.accura.ui.format.formatWholePercent
@@ -61,8 +62,15 @@ private fun OverviewContent(model: OverviewModel, banner: @Composable () -> Unit
         }
 
         Abschnitt(stringResource(R.string.section_room))
-        Kennzahl(stringResource(R.string.metric_available_until_salary), model.availableUntilSalary, today, tone = Tone.Free)
-        Kennzahl(stringResource(R.string.metric_daily_allowance), model.dailyAllowance, today, tone = Tone.Free)
+        val salaryHint = salaryMissingHint(model.salaryStatus)
+        Kennzahl(
+            stringResource(R.string.metric_available_until_salary),
+            model.availableUntilSalary,
+            today,
+            tone = Tone.Free,
+            missingHint = salaryHint,
+        )
+        Kennzahl(stringResource(R.string.metric_daily_allowance), model.dailyAllowance, today, tone = Tone.Free, missingHint = salaryHint)
         Kennzahl(stringResource(R.string.metric_free_monthly), model.freeMonthly, today, tone = Tone.Free)
         Kennzahl(stringResource(R.string.metric_buffer), model.bufferMonths, today, tone = Tone.Reserve)
 
@@ -127,6 +135,13 @@ private fun OverviewContent(model: OverviewModel, banner: @Composable () -> Unit
             }
         }
     }
+}
+
+/** „Gehaltstag eintragen“ statt einer Zahl, solange der Gehaltstag fehlt. */
+@Composable
+fun salaryMissingHint(status: SalaryStatus): String? = when (status) {
+    SalaryStatus.SET -> null
+    SalaryStatus.MISSING -> stringResource(R.string.salary_missing_value)
 }
 
 private fun IncomePartKey.labelRes(): Int = when (this) {

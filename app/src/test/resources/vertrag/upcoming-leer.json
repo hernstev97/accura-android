@@ -1,5 +1,6 @@
 {
   "today": "2026-08-08",
+  "salaryStatus": "missing",
   "nextSalaryDay": null,
   "daysUntilSalary": null,
   "payments": [],
@@ -13,7 +14,16 @@
     "reason": "Der Gehaltstag fehlt.",
     "dataAgeDays": null,
     "oldestDataDay": null,
-    "steps": []
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
   },
   "accountsTotal": {
     "key": "accountsTotal",
@@ -37,7 +47,16 @@
     "reason": "Der Gehaltstag fehlt.",
     "dataAgeDays": null,
     "oldestDataDay": null,
-    "steps": []
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
   },
   "dailyAllowance": {
     "key": "dailyAllowance",
@@ -49,6 +68,15 @@
     "reason": "Der Gehaltstag fehlt.",
     "dataAgeDays": null,
     "oldestDataDay": null,
-    "steps": []
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
   }
 }
