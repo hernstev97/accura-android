@@ -1,4 +1,4 @@
-# Accura (Android)
+# accura (Android)
 
 Private Finanz-App nur für Steven. Kotlin mit Jetpack Compose, Convex als Backend (EU-Region), Clerk für die Anmeldung. Kein Play Store: Die App wird lokal gebaut und per ADB auf das Pixel installiert.
 

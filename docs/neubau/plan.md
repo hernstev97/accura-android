@@ -12,7 +12,7 @@ Erster Vorschlag am 10. Oktober 2026. Am 11. und 13. Oktober 2026 hat Steven die
 
 - **Für wen:** nur für Steven. Weitere Nutzer sind nicht vorgesehen. Das hält Datenschutz und Aufwand klein.
 - **Technik:** Kotlin mit Jetpack Compose, Convex als Backend, Clerk für die Anmeldung. Nur in Compose gibt es Material 3 Expressive als fertige, offizielle Bausteine.
-- **Rechnen auf dem Server:** Die Finanzlogik läuft als TypeScript in Convex, die App zeigt nur an. Accura soll so viel wie möglich vorrechnen, damit am Ende wenige, wichtige Zahlen bleiben. Jede Zahl lässt sich aufklappen und zeigt ihren Rechenweg.
+- **Rechnen auf dem Server:** Die Finanzlogik läuft als TypeScript in Convex, die App zeigt nur an. accura soll so viel wie möglich vorrechnen, damit am Ende wenige, wichtige Zahlen bleiben. Jede Zahl lässt sich aufklappen und zeigt ihren Rechenweg.
 - **Umfang v1:** die vier Ansichten, neu gestaltet, dazu berechnete Kennzahlen zu Spielraum, Puffer und Schulden. Daten werden in der App erfasst und gepflegt, das Datenalter steht überall dabei. Google-Tabelle, Web-Version, Bildfarben und die eigene PIN fallen weg.
 - **Kein Datenumzug, keine Tabelle mehr:** Der Neubau startet leer. Die Google-Tabelle ist veraltet und wird weder importiert noch als Quelle genutzt. Alles passiert in der App, und Erfassen und Pflegen muss extrem einfach sein.
 - **Einspar-Hinweise:** Die App schlägt konkret vor, wo sich sparen lässt, etwa bei Abos oder bei Lebensmitteln im Vergleich zu einem Richtwert für den Haushalt.
@@ -31,8 +31,8 @@ Erster Vorschlag am 10. Oktober 2026. Am 11. und 13. Oktober 2026 hat Steven die
 | --- | --- | --- |
 | Technik | Kotlin mit Compose, Convex, Clerk | Expo ist vom Tisch. Der Vergleich bleibt unten als Begründung stehen. |
 | Web-Version | Nicht in v1 | Frühestens in einer späteren Version, dann neu gebaut. |
-| Repository | Neues, privates Repo. Das alte Accura wird abgestellt. | Lizenzfrage (ACC-68) entfällt vorerst. |
-| Name und Vertrieb | Name bleibt „Accura“. Kein Play Store, nur lokal auf Stevens Handy. | Kein Play-Konto, keine Store-Pflichten. Installation per ADB. |
+| Repository | Neues, privates Repo. Das alte accura wird abgestellt. | Lizenzfrage (ACC-68) entfällt vorerst. |
+| Name und Vertrieb | Name bleibt „accura“. Kein Play Store, nur lokal auf Stevens Handy. | Kein Play-Konto, keine Store-Pflichten. Installation per ADB. |
 | Play-Konto | Nicht nötig | Entfällt. |
 | Kosten | Nur kostenlose und vorhandene Mittel | Kostenlose Pläne von Convex und Clerk, eigenes Backup-Skript statt Pro-Plan. |
 | Entlastungen | Berechnen statt pflegen. Generell so viel wie möglich vorrechnen. | Neuer Abschnitt [Rechnen und Erkenntnisse](#rechnen-und-erkenntnisse). |
@@ -56,7 +56,7 @@ Erster Vorschlag am 10. Oktober 2026. Am 11. und 13. Oktober 2026 hat Steven die
 
 Diese Regeln gelten weiter. Sie stammen aus Doku und `agents.md` und haben sich bewährt.
 
-- Accura bleibt ein ruhiges Finanz-Cockpit. Kein All-in-one, keine Investments, keine Gamification, kein Verkauf von Krediten.
+- accura bleibt ein ruhiges Finanz-Cockpit. Kein All-in-one, keine Investments, keine Gamification, kein Verkauf von Krediten.
 - Jede Zahl muss stimmen, erklärbar sein und ihr Alter zeigen. Lieber eine sichtbare Unsicherheit als eine falsche Genauigkeit.
 - Die App rechnet vor und macht Vorschläge, der Mensch entscheidet. Vorschläge sind ruhig, begründet, abwählbar und nie beschämend. Keine Empfehlungen für Finanzprodukte oder Anbieter.
 - Was sich berechnen lässt, wird nicht abgefragt. Jede Eingabe hat einen sinnvollen Vorschlag.
@@ -85,7 +85,7 @@ v1 ist fertig, wenn Steven seine Finanzen nur noch mit der neuen App führt und 
 
 | Was | Warum | Issue |
 | --- | --- | --- |
-| Anmeldung mit Clerk, eigene Oberfläche | Nur Steven kommt hinein. Clerk prüft im Hintergrund, die Anmeldeseiten sind Accura-Bildschirme. | ACC-64 (nur Anmeldung) |
+| Anmeldung mit Clerk, eigene Oberfläche | Nur Steven kommt hinein. Clerk prüft im Hintergrund, die Anmeldeseiten sind accura-Bildschirme. | ACC-64 (nur Anmeldung) |
 | Ersterfassung in der App | Der Neubau startet leer. Ein geführter Ablauf: Einkommen, Gehaltstag, Konten, Pockets, Budgetposten, Schulden. | ACC-67 |
 | Bearbeiten in der App | Anlegen, ändern, deaktivieren. Ohne das veralten die Daten. | ACC-65, ACC-72 |
 | „Stände aktualisieren“ | Ein geführter Ablauf: alle Kontostände und Restschulden nacheinander, mit dem alten Wert als Vorschlag. | ACC-16 |
@@ -104,13 +104,13 @@ v1 ist fertig, wenn Steven seine Finanzen nur noch mit der neuen App führt und 
 | --- | --- |
 | Google-Tabelle als Format, Import und Quelle | Veraltet und pflegeaufwendig. Die neue App ist die einzige Quelle. |
 | Web-App und PWA | Nicht in v1. Eine spätere Web-Version wird neu gebaut. |
-| Farbanalyse aus eigenem Bild, neun Farbvorlagen | Android liefert Dynamic Color selbst. Bleibt nur ein Accura-Standardschema als Rückfall. |
+| Farbanalyse aus eigenem Bild, neun Farbvorlagen | Android liefert Dynamic Color selbst. Bleibt nur ein accura-Standardschema als Rückfall. |
 | Eigene sechsstellige PIN | Ersetzt durch Biometrie mit der Geräte-PIN als Rückfall. Sicherer und weniger Code. |
 | Globaler Stichtag für alle Daten | Ein Überbleibsel der Tabelle. Jeder Stand hat sein eigenes Datum, gerechnet wird mit dem jüngsten Stand bis heute. |
 | Von Hand gepflegte Entlastungen | Werden aus den Schulden berechnet. |
 | Tablet- und Desktop-Layout | v1 nur Handy. |
 | Vercel Analytics, jede Nutzungsanalyse | Keine Nutzungsdaten an Dritte. |
-| Mehrere Nutzer, Konto löschen, Rechtstexte | Accura bleibt eine App für Steven allein. |
+| Mehrere Nutzer, Konto löschen, Rechtstexte | accura bleibt eine App für Steven allein. |
 
 ### Bewusst nicht in v1
 
@@ -142,7 +142,7 @@ Die Ablösesumme ist nicht dasselbe wie die Restschuld, weil die Bank bei vorzei
 
 ## Rechnen und Erkenntnisse
 
-Steven will, dass Accura aus Schulden, Fixkosten, Gehalt und Rücklagen so viel Wissen wie möglich zieht. Die Darstellung soll später auf wenige, wichtige Zahlen verdichtet werden können. Daraus folgen drei Regeln für den Rechenkern:
+Steven will, dass accura aus Schulden, Fixkosten, Gehalt und Rücklagen so viel Wissen wie möglich zieht. Die Darstellung soll später auf wenige, wichtige Zahlen verdichtet werden können. Daraus folgen drei Regeln für den Rechenkern:
 
 1. **Alles wird auf dem Server gerechnet**, in einem getesteten Rechenkern in Convex. Die App rechnet selbst nichts Finanzielles.
 2. **Jede Kennzahl kommt als Paket:** Wert, Rechenweg mit den einbezogenen Posten, Alter der ältesten verwendeten Daten und ein Status. Der Status sagt, ob die Zahl belastbar ist, auf alten Daten beruht oder mangels Daten nicht berechenbar ist. So kann das Design später frei wählen, welche Zahl wo groß steht, ohne die Rechnung anzufassen.
@@ -216,13 +216,13 @@ Diese Gegenüberstellung war die Grundlage für den Beschluss. Verglichen sind K
 
 ### Warum Kotlin mit Compose
 
-Der Ausschlag kommt vom Design. Material 3 Expressive „deutlich konsequenter“ geht nur dort, wo Google es selbst baut. Mit React Native würde Accura das System wieder von Hand nachbilden, wie heute mit 3.700 Zeilen CSS. Genau dort entstehen die Brüche, die in der Bestandsaufnahme auffallen. Dazu kommen die nativen Schutzfunktionen, die Steven ausdrücklich will: Biometrie, Screenshot-Sperre, verschlüsselte Offline-Kopie. In Kotlin ist das jeweils ein Aufruf.
+Der Ausschlag kommt vom Design. Material 3 Expressive „deutlich konsequenter“ geht nur dort, wo Google es selbst baut. Mit React Native würde accura das System wieder von Hand nachbilden, wie heute mit 3.700 Zeilen CSS. Genau dort entstehen die Brüche, die in der Bestandsaufnahme auffallen. Dazu kommen die nativen Schutzfunktionen, die Steven ausdrücklich will: Biometrie, Screenshot-Sperre, verschlüsselte Offline-Kopie. In Kotlin ist das jeweils ein Aufruf.
 
 Die Schwächen und ihre Gegenmittel:
 
 - **Der Convex-Client ist jung.** Die App spricht Convex nur an einer Stelle an, Versionen werden festgepinnt. Fällt der Client aus, bleiben Convex' HTTP-Schnittstellen als Rückweg.
 - **Zwei Sprachen.** Wenn sich eine Convex-Funktion ändert, merkt das die App erst zur Laufzeit. Die Rechenlogik bleibt deshalb komplett in TypeScript, und ein Vertragstest prüft, dass die App jede Antwort von Convex lesen kann.
-- **Kein Offline-Bearbeiten.** Für Accura vertretbar: Stände trägt man ein, wenn man ohnehin aufs Konto schaut, also mit Netz. Die App sagt klar, wenn sie gerade nicht speichern kann.
+- **Kein Offline-Bearbeiten.** Für accura vertretbar: Stände trägt man ein, wenn man ohnehin aufs Konto schaut, also mit Netz. Die App sagt klar, wenn sie gerade nicht speichern kann.
 
 ### Wo was läuft
 
@@ -245,13 +245,13 @@ flowchart LR
 
 - **Convex** speichert die Daten und rechnet. Jede Abfrage liefert fertige Kennzahlen für eine Ansicht samt Rechenweg. Die App übergibt dafür das heutige Datum in Stevens Zeitzone.
 - **Die App** zeigt an, nimmt Eingaben entgegen und speichert den letzten Stand für offline.
-- **Clerk** übernimmt die Anmeldung im Hintergrund. Die Anmeldeseiten sind eigene Compose-Bildschirme im Accura-Design. Convex vertraut nur Clerk-Tokens und lässt nur Stevens Clerk-Konto durch.
+- **Clerk** übernimmt die Anmeldung im Hintergrund. Die Anmeldeseiten sind eigene Compose-Bildschirme im accura-Design. Convex vertraut nur Clerk-Tokens und lässt nur Stevens Clerk-Konto durch.
 
 ### Was die kostenlosen Pläne hergeben
 
 Geprüft am 11. Oktober 2026, Quellen in [Anhang D](#anhang-d-quellen).
 
-| Dienst | Kostenlos enthalten | Grenze, die Accura betrifft | Umgang |
+| Dienst | Kostenlos enthalten | Grenze, die accura betrifft | Umgang |
 | --- | --- | --- | --- |
 | Convex (Free) | EU-Region Dublin, 1 Million Funktionsaufrufe und 0,5 GB Datenbank im Monat, manuelle Backups | Keine automatischen Backups. Höchstens zwei gespeicherte Backups je Deployment, sieben Tage aufbewahrt. Harte Grenzen: Bei Überschreitung schlagen Änderungen fehl. | Eigenes Backup-Skript (siehe [Sicherung](#sicherung)). Eine Person bleibt weit unter den Grenzen. |
 | Clerk (Hobby) | Bis 50.000 aktive Nutzer, Anmeldung per E-Mail-Code, Einladungspflicht für neue Konten, eigene Anmeldeabläufe über die API | Keine Passkeys, keine Allowlist. Die fertigen Anmeldemasken tragen „Secured by Clerk“. | Eigene Anmeldeseiten in Compose über `clerk-android-api`, ohne die fertigen Masken und damit ohne Branding. Zugang sperrt Convex selbst auf Stevens Konto. |
@@ -320,7 +320,7 @@ Die heutige App bildet Material 3 Expressive im Web von Hand nach. Jede Ansicht 
 
 ### Wie es konsequent wird
 
-1. **Wenige Bausteine, überall gleich.** Ein Katalog von etwa zehn Accura-Bausteinen, zum Beispiel Hauptzahl-Karte, Kennzahl, Liste, Hinweis, Leerzustand, Datenalter-Chip, Betragsfeld. Jede Ansicht setzt sich nur daraus zusammen. Neue Bausteine nur mit Begründung.
+1. **Wenige Bausteine, überall gleich.** Ein Katalog von etwa zehn accura-Bausteinen, zum Beispiel Hauptzahl-Karte, Kennzahl, Liste, Hinweis, Leerzustand, Datenalter-Chip, Betragsfeld. Jede Ansicht setzt sich nur daraus zusammen. Neue Bausteine nur mit Begründung.
 2. **Eine Antwort pro Ansicht.** Oben steht groß die Antwort auf die Frage der Ansicht, darunter die Herleitung. Höchstens ein Expressive-Höhepunkt pro Bildschirm.
 3. **Wenige Zahlen zeigen, viele bereithalten.** Der Rechenkern liefert mehr Kennzahlen, als auf einen Bildschirm passen. Das Design entscheidet, welche groß stehen und welche erst beim Aufklappen erscheinen.
 4. **Expressive mit Absicht.** Formen und Bewegung zeigen Zustände: Eine Zahl wird gespeichert, ein Stand ist frisch oder alt, eine Rate läuft aus. Keine Dekoration. Systemeinstellung „Animationen entfernen“ wird beachtet.
@@ -345,8 +345,8 @@ Warum der visuelle Prototyp gleich in Compose entsteht: Expressive lebt von Bewe
 Die Produktion läuft noch mit der Google-Tabelle, die PostgreSQL-Umstellung wurde nie ausgeliefert. Der Neubau übernimmt deshalb keine Daten:
 
 1. **Ersterfassung.** Steven trägt seinen aktuellen Stand einmal über den geführten Ablauf in der App ein, mit Banking-App und Kreditverträgen als Quelle. Die Google-Tabelle ist veraltet und wird nicht genutzt.
-2. **Verlauf beginnt neu.** Ältere Stände werden nicht übernommen. Vergleiche in Accura starten mit dem ersten Eintrag. Der Restschuldverlauf entsteht trotzdem vollständig, weil die App ihn aus den Kreditdaten berechnet.
-3. **Alte App abschalten.** Sobald Steven nur noch die neue App nutzt, nimmt er die alte offline: Vercel-Projekt entfernen, Google-Anmeldeclient löschen, die nie genutzte Neon-Datenbank löschen. Das alte Repo wird archiviert, mit einem Hinweis in der README, dass Accura nicht mehr weiterentwickelt wird. Das sind Stevens Schritte, kein Agent ändert Produktion.
+2. **Verlauf beginnt neu.** Ältere Stände werden nicht übernommen. Vergleiche in accura starten mit dem ersten Eintrag. Der Restschuldverlauf entsteht trotzdem vollständig, weil die App ihn aus den Kreditdaten berechnet.
+3. **Alte App abschalten.** Sobald Steven nur noch die neue App nutzt, nimmt er die alte offline: Vercel-Projekt entfernen, Google-Anmeldeclient löschen, die nie genutzte Neon-Datenbank löschen. Das alte Repo wird archiviert, mit einem Hinweis in der README, dass accura nicht mehr weiterentwickelt wird. Das sind Stevens Schritte, kein Agent ändert Produktion.
 
 Vorher läuft die Ersterfassung einmal komplett mit den anonymen Testdaten auf einem Test-Deployment. Echte Daten gehen nur in das produktive Convex-Deployment.
 
@@ -362,10 +362,10 @@ Inhalt: `app/` für Android, `convex/` für Backend und Rechenkern, `scripts/` f
 
 ## Auslieferung auf Stevens Handy
 
-- **App-ID** `app.kiumu.accura`, Name „Accura“. Die ID lässt sich nach der ersten Installation nur mit Neuinstallation ändern.
+- **App-ID** `app.kiumu.accura`, Name „accura“. Die ID lässt sich nach der ersten Installation nur mit Neuinstallation ändern.
 - **Bauen auf Stevens Rechner**, signiert mit einem eigenen Schlüssel. Der Schlüssel liegt außerhalb des Repos und wird zusätzlich im Passwortmanager gesichert. Geht er verloren, muss die App einmal neu installiert werden. Die Daten liegen in Convex und gehen dabei nicht verloren.
 - **Installieren per ADB**, über WLAN-Debugging oder USB. Ein Befehl baut und installiert, Updates überschreiben die alte Version.
-- **Googles Entwicklerprüfung:** Ab 2027 verlangt Google weltweit verifizierte Entwickler, auch außerhalb des Play Stores. Installationen per ADB bleiben laut Google erlaubt. Accura ist davon also nicht betroffen, solange per ADB installiert wird.
+- **Googles Entwicklerprüfung:** Ab 2027 verlangt Google weltweit verifizierte Entwickler, auch außerhalb des Play Stores. Installationen per ADB bleiben laut Google erlaubt. accura ist davon also nicht betroffen, solange per ADB installiert wird.
 - **Kein Play Store.** Damit entfallen Play-Konto, Datenschutzangaben, Testpflichten und Konto-Löschung für Fremde.
 
 ## Phasen

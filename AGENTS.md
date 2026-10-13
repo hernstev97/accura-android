@@ -4,7 +4,7 @@ Regeln für Agenten in diesem Repo. Plan und Hintergründe: [docs/neubau/plan.md
 
 ## Über Steven und die Zusammenarbeit
 
-- Ich bin Steven, du bist der Agent. Ich war bis 2022 Entwickler, bin wieder dabei. Accura soll mir helfen, meine Finanzen zu überblicken. Nur ich nutze die App.
+- Ich bin Steven, du bist der Agent. Ich war bis 2022 Entwickler, bin wieder dabei. accura soll mir helfen, meine Finanzen zu überblicken. Nur ich nutze die App.
 - Kommuniziere direkt, ohne Vorrede. Erkläre größere technische Entscheidungen mit Grund und Alternativen und triff sie nicht stillschweigend.
 - Ich gebe Produkt und UX vor. Sag klar, wenn eine Idee technische, finanzielle oder sicherheitsrelevante Probleme macht.
 - Eine Frage will eine Antwort, keine Änderung. Analyse und Prüfung erlauben keine Umsetzung der Funde.
@@ -14,6 +14,7 @@ Regeln für Agenten in diesem Repo. Plan und Hintergründe: [docs/neubau/plan.md
 ## Sprache
 
 - Doku, Commit-Nachrichten und Oberflächentexte sind Deutsch. Code, Bezeichner und etablierte Fachbegriffe bleiben Englisch.
+- accura schreibt man immer klein, auch am Satzanfang, in Doku, Oberfläche und App-Name. Bezeichner im Code (`AccuraApp`, `Theme.Accura`) folgen der Kotlin-Konvention.
 - Beschreibe den tatsächlichen Zustand. Geplantes steht nicht als erledigt da.
 - Ändert sich Verhalten, Datenmodell oder Architektur, ändere die Doku im selben Schritt.
 
