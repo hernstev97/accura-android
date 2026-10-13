@@ -1,0 +1,24 @@
+{
+  "name": "accura-backend",
+  "private": true,
+  "type": "module",
+  "description": "accura: Convex-Backend und Rechenkern (siehe docs/)",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p . && tsc --noEmit -p convex",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "convex": "1.46.0"
+  },
+  "devDependencies": {
+    "@edge-runtime/vm": "5.0.0",
+    "@types/node": "24.19.2",
+    "convex-test": "0.0.61",
+    "typescript": "5.9.3",
+    "vitest": "5.0.4"
+  }
+}
