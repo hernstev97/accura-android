@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">accura</string>
 
     <!-- Navigation -->
@@ -51,6 +51,11 @@
     <string name="chip_data_today">Stand von heute</string>
     <string name="chip_data_from">Stand vom %1$s</string>
     <string name="chip_data_stale">Alt: %1$s, %2$s</string>
+    <string name="chip_unavailable">Noch nicht berechenbar</string>
+    <string name="badge_kind_actual">Eingetragen</string>
+    <string name="badge_kind_planned">Geplant</string>
+    <string name="badge_kind_estimated">Geschätzt</string>
+    <string name="badge_kind_calculated">Berechnet</string>
     <string name="how_calculated">So gerechnet</string>
     <string name="how_calculated_action">Rechenweg ein- oder ausblenden</string>
     <string name="how_kind_status">Art: %1$s. Status: %2$s.</string>
@@ -62,6 +67,17 @@
     <string name="status_ok">belastbar</string>
     <string name="status_stale">beruht auf alten Daten</string>
     <string name="status_unavailable">nicht berechenbar</string>
+
+    <!-- Eingaben und Hinweise -->
+    <string name="amount_read_as">Gelesen als %1$s</string>
+    <string name="amount_invalid">Bitte nur Ziffern und ein Komma, zum Beispiel 1.482,60.</string>
+    <string name="amount_minus">Im Minus</string>
+    <string name="step_progress" tools:ignore="PluralsCandidate">Thema %1$d von %2$d</string>
+    <string name="step_later">Später</string>
+    <string name="saved">Gespeichert</string>
+    <string name="hint_per_month">%1$s im Monat</string>
+    <string name="hint_per_year">%1$s im Jahr</string>
+    <string name="hint_waive">Bewusst so</string>
 
     <!-- Kennzahlen -->
     <string name="metric_available_until_salary">Bis Gehalt verfügbar</string>
@@ -82,9 +98,32 @@
     <string name="overview_empty_title">Noch nichts erfasst</string>
     <string name="overview_empty_text">Sobald du ein Konto einträgst, siehst du hier, was du hast.</string>
     <string name="overview_stale_title">Einige Stände sind alt</string>
-    <string name="section_room">Spielraum</string>
+    <string name="section_glance">Auf einen Blick</string>
+    <string name="all_metrics">Alle Kennzahlen</string>
+    <string name="all_metrics_action">Alle Kennzahlen ein- oder ausblenden</string>
+    <string name="desc_available_until_salary">Kontostand minus alles, was bis zum Gehalt fällig ist</string>
+    <string name="desc_daily_allowance">Bis Gehalt verfügbar, verteilt auf die Tage bis dahin</string>
+    <string name="desc_free_monthly">Einkommen minus feste Kosten, Rücklagen und Raten</string>
+    <string name="desc_buffer">Wie lange der Kontostand die notwendigen Kosten deckt</string>
+    <string name="desc_net_worth">Konten minus Ablösesummen</string>
+    <string name="desc_debt_remaining">Was nach Plan noch offen ist</string>
+    <string name="desc_debt_free">Monat der letzten Rate</string>
+    <string name="overview_spielraum_question">Wie viel kannst du bis zum Gehalt ausgeben?</string>
+    <string name="overview_spielraum_daily">Das sind %1$s pro Tag bis zum Gehalt.</string>
+    <string name="overview_spielraum_accounts">Auf deinen Konten</string>
+    <string name="overview_timeline_question">Was kommt auf dich zu?</string>
+    <string name="timeline_today">Heute, %1$s</string>
+    <string name="timeline_accounts">Auf deinen Konten</string>
+    <string name="timeline_until_salary">Bis zum Gehalt verfügbar: %1$s</string>
+    <string name="timeline_until_salary_daily">Bis zum Gehalt verfügbar: %1$s, das sind %2$s pro Tag.</string>
+    <string name="timeline_until_salary_missing">Bis zum Gehalt: %1$s</string>
+    <string name="timeline_monthly">Jeden Monat</string>
+    <string name="timeline_buffer">Puffer: %1$s</string>
+    <string name="timeline_relief_event">%1$s, letzte Rate am %2$s</string>
+    <string name="timeline_relief_more">+%1$s im Monat</string>
+    <string name="timeline_debt_free">Schuldenfrei</string>
+    <string name="timeline_debt_remaining">Restschuld heute: %1$s</string>
     <string name="section_income_split">Wohin dein Einkommen geht</string>
-    <string name="section_debts">Schulden</string>
     <string name="section_accounts">Konten</string>
     <string name="section_pockets">Pockets</string>
     <string name="pockets_note">Pockets sind eine zweite Sicht auf dasselbe Geld. Sie werden nicht zu den Konten addiert.</string>
@@ -161,6 +200,14 @@
     <string name="debug_offline">Offline-Kopie</string>
     <string name="debug_laden">Lädt</string>
     <string name="debug_fehler">Fehler</string>
+    <string name="debug_variant">Übersicht: Variante</string>
+    <string name="debug_cycle_scenario">Testdaten wechseln</string>
+    <string name="variant_kontostand">Kontostand zuerst</string>
+    <string name="variant_kontostand_text">Oben steht, was auf deinen Konten ist, mit einem Zeichen für frisch oder alt. Darunter drei Kennzahlen, Konten und alles Weitere zum Aufklappen.</string>
+    <string name="variant_spielraum">Spielraum zuerst</string>
+    <string name="variant_spielraum_text">Oben steht groß, was du bis zum Gehalt ausgeben kannst. Ändert sich die Zahl, zeigt die Bewegung, ob es mehr oder weniger wird. Darunter vier Kacheln.</string>
+    <string name="variant_zeitleiste">Zeitleiste</string>
+    <string name="variant_zeitleiste_text">Die Übersicht als Weg: heute, jeden Monat, wann eine Rate ausläuft, wann du schuldenfrei bist.</string>
 
     <plurals name="days_ago">
         <item quantity="one">vor %d Tag</item>
@@ -182,6 +229,10 @@
     <plurals name="payments_count">
         <item quantity="one">%d Rate</item>
         <item quantity="other">%d Raten</item>
+    </plurals>
+    <plurals name="timeline_relief_title">
+        <item quantity="one">Eine Rate läuft aus</item>
+        <item quantity="other">%d Raten laufen aus</item>
     </plurals>
     <plurals name="overview_stale_text">
         <item quantity="one">%d Stand ist älter als 7 Tage. Trag einen neuen ein, dann stimmen die Zahlen wieder.</item>

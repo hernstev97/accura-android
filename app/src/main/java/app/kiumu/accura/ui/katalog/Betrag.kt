@@ -16,7 +16,11 @@ import app.kiumu.accura.ui.format.formatCents
 /** Tabellarische Ziffern: Beträge untereinander stehen bündig. */
 private fun TextStyle.tabular(): TextStyle = copy(fontFeatureSettings = "tnum")
 
-/** Ein Betrag in einer Zeile. Er bricht nie um, sein Euro-Zeichen hängt per geschütztem Leerzeichen an der Zahl. */
+/**
+ * Ein Betrag in einer Zeile. Er bricht nie um, sein Euro-Zeichen hängt per geschütztem Leerzeichen an
+ * der Zahl. Mit [autoShrink] wird er kleiner statt abgeschnitten, wenn die Breite nicht reicht
+ * (große Schrift, schmale Spalte); dafür braucht er eine begrenzte Breite.
+ */
 @Composable
 fun Betrag(
     cents: Long,
@@ -25,6 +29,7 @@ fun Betrag(
     color: Color = Color.Unspecified,
     fontWeight: FontWeight? = null,
     textAlign: TextAlign? = null,
+    autoShrink: Boolean = false,
 ) {
     Text(
         text = formatCents(cents),
@@ -35,6 +40,7 @@ fun Betrag(
         textAlign = textAlign,
         softWrap = false,
         maxLines = 1,
+        autoSize = if (autoShrink) TextAutoSize.StepBased(minFontSize = MinSize, maxFontSize = style.fontSize, stepSize = 1.sp) else null,
     )
 }
 
@@ -43,17 +49,21 @@ fun Betrag(
  * Schrift groß eingestellt ist.
  */
 @Composable
-fun BetragGross(text: String, modifier: Modifier = Modifier, color: Color = Color.Unspecified) {
+fun BetragGross(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    style: TextStyle = MaterialTheme.typography.displayMedium,
+) {
     Text(
         text = text,
         modifier = modifier,
-        style = MaterialTheme.typography.displayMedium.tabular(),
-        fontWeight = FontWeight.SemiBold,
+        style = style.tabular(),
         color = color,
         softWrap = false,
         maxLines = 1,
-        autoSize = TextAutoSize.StepBased(minFontSize = MinSize, maxFontSize = 44.sp, stepSize = 1.sp),
+        autoSize = TextAutoSize.StepBased(minFontSize = MinSize, maxFontSize = style.fontSize, stepSize = 1.sp),
     )
 }
 
-private val MinSize = 16.sp
+private val MinSize = 12.sp

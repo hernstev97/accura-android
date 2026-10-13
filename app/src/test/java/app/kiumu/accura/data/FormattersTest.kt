@@ -56,6 +56,10 @@ class FormattersTest {
         assertEquals("5,6", formatMonthsX100(560))
         assertEquals("5,6", formatMonthsX100(569))
         assertEquals("12,0", formatMonthsX100(1200))
+        // Negativ (Konten im Minus): Vorzeichen vorn, nicht hinter dem Komma („0,-1“ war falsch).
+        assertEquals("${minus}0,1", formatMonthsX100(-11))
+        assertEquals("${minus}5,6", formatMonthsX100(-569))
+        assertEquals("0,0", formatMonthsX100(-5))
     }
 
     @Test
@@ -64,5 +68,35 @@ class FormattersTest {
         assertEquals("12. Okt.", formatDay(LocalDate.of(2026, 10, 12), today))
         assertEquals("20. Dez. 2029", formatDay(LocalDate.of(2029, 12, 20), today))
         assertEquals("Dezember 2029", formatMonth(YearMonth.of(2029, 12)))
+    }
+
+    @Test
+    fun `Betragsfeld liest Ziffern und ein Komma, wie im Klick-Dummy`() {
+        assertEquals(BetragEingabe.Gueltig(148_260), parseBetrag("1.482,60"))
+        assertEquals(BetragEingabe.Gueltig(148_260), parseBetrag("1482,6"))
+        assertEquals(BetragEingabe.Gueltig(148_200), parseBetrag("1482"))
+        assertEquals(BetragEingabe.Gueltig(148_200), parseBetrag("1.482"))
+        assertEquals(BetragEingabe.Gueltig(1_250), parseBetrag("12.5"))
+        assertEquals(BetragEingabe.Gueltig(5), parseBetrag("0,05"))
+        assertEquals(BetragEingabe.Gueltig(50), parseBetrag(",5"))
+        assertEquals(BetragEingabe.Gueltig(148_260), parseBetrag(" 1.482,60 € "))
+        assertEquals(BetragEingabe.Leer, parseBetrag("  "))
+    }
+
+    @Test
+    fun `Betragsfeld rät nicht und rundet nicht`() {
+        assertEquals(BetragEingabe.Ungueltig, parseBetrag("12,345"))
+        assertEquals(BetragEingabe.Ungueltig, parseBetrag("1,2,3"))
+        assertEquals(BetragEingabe.Ungueltig, parseBetrag("14.82,60"))
+        assertEquals(BetragEingabe.Ungueltig, parseBetrag("12a"))
+        assertEquals(BetragEingabe.Ungueltig, parseBetrag("99999999999999"))
+    }
+
+    @Test
+    fun `Im Minus und Minuszeichen machen den Betrag negativ`() {
+        assertEquals(BetragEingabe.Gueltig(-39_834), parseBetrag("398,34", minus = true))
+        assertEquals(BetragEingabe.Gueltig(-39_834), parseBetrag("-398,34"))
+        assertEquals(BetragEingabe.Gueltig(-39_834), parseBetrag("−398,34"))
+        assertEquals(BetragEingabe.Gueltig(0), parseBetrag("0", minus = true))
     }
 }
