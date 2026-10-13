@@ -1,4 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">accura</string>
+
+    <!-- Navigation -->
+    <string name="nav_overview">Übersicht</string>
+    <string name="nav_upcoming">Demnächst</string>
+    <string name="nav_budget">Budget</string>
+    <string name="nav_debts">Schulden</string>
+    <string name="menu_account">Konto</string>
+    <string name="menu_sign_out">Abmelden</string>
+    <string name="menu_debug">Entwicklung</string>
+    <string name="action_back">Zurück</string>
+
+    <!-- Anmeldung -->
+    <string name="signin_email_title">Anmelden</string>
+    <string name="signin_email_text">Gib deine E-Mail-Adresse ein. Du bekommst einen Code per E-Mail.</string>
+    <string name="signin_email_label">E-Mail-Adresse</string>
+    <string name="signin_code_title">Code eingeben</string>
+    <string name="signin_code_text">Wir haben einen sechsstelligen Code an %1$s geschickt.</string>
+    <string name="signin_code_label">Code</string>
+    <string name="signin_send_code">Code senden</string>
+    <string name="signin_confirm">Anmelden</string>
+    <string name="signin_busy">Einen Moment …</string>
+    <string name="signin_other_email">Andere E-Mail-Adresse</string>
+    <string name="signin_debug_hint">Testmodus ohne Konto: Jede gültige Adresse geht, der Code ist 123456.</string>
+    <string name="signin_error_invalid_email">Das ist keine gültige E-Mail-Adresse.</string>
+    <string name="signin_error_code_invalid">Der Code stimmt nicht. Prüfe ihn oder fordere einen neuen an.</string>
+    <string name="signin_error_code_expired">Der Code ist abgelaufen. Fordere einen neuen an.</string>
+    <string name="signin_error_offline">Gerade keine Verbindung. Es wurde nichts gesendet.</string>
+    <string name="signin_error_not_configured">Die Anmeldung ist in dieser Version noch nicht eingerichtet.</string>
+    <string name="signin_error_unknown">Das hat nicht geklappt. Versuche es noch einmal.</string>
+
+    <!-- Zustände -->
+    <string name="state_loading">Lädt</string>
+    <string name="state_retry">Erneut versuchen</string>
+    <string name="state_expanded">Aufgeklappt</string>
+    <string name="state_collapsed">Eingeklappt</string>
+    <string name="error_title">Das hat nicht geklappt</string>
+    <string name="error_offline">Gerade keine Verbindung.</string>
+    <string name="error_server">Der Server hat nicht geantwortet.</string>
+    <string name="error_unreadable">Die Antwort passt nicht zu dieser Version der App. Prüfe, ob die App aktuell ist.</string>
+    <string name="error_not_connected">Diese Version ist noch nicht mit dem Server verbunden. Es werden keine Zahlen angezeigt.</string>
+    <string name="stale_title">Das ist der letzte bekannte Stand</string>
+    <string name="stale_text">Gerade keine Verbindung. Die Zahlen sind von %1$s.</string>
+    <string name="value_unavailable">Nicht berechenbar</string>
+    <string name="value_months">%1$s Monate</string>
+
+    <!-- Datenalter und Rechenweg -->
+    <string name="chip_data_today">Stand von heute</string>
+    <string name="chip_data_from">Stand vom %1$s</string>
+    <string name="chip_data_stale">Alt: %1$s, %2$s</string>
+    <string name="how_calculated">So gerechnet</string>
+    <string name="how_calculated_action">Rechenweg ein- oder ausblenden</string>
+    <string name="how_kind_status">Art: %1$s. Status: %2$s.</string>
+    <string name="how_oldest">Ältester verwendeter Stand: %1$s</string>
+    <string name="kind_actual">eingetragen</string>
+    <string name="kind_planned">geplant</string>
+    <string name="kind_estimated">geschätzt</string>
+    <string name="kind_calculated">berechnet</string>
+    <string name="status_ok">belastbar</string>
+    <string name="status_stale">beruht auf alten Daten</string>
+    <string name="status_unavailable">nicht berechenbar</string>
+
+    <!-- Kennzahlen -->
+    <string name="metric_available_until_salary">Bis Gehalt verfügbar</string>
+    <string name="metric_daily_allowance">Tagesrahmen bis Gehalt</string>
+    <string name="metric_free_monthly">Frei im Monat</string>
+    <string name="metric_buffer">Puffer</string>
+    <string name="metric_net_worth">Nettovermögen</string>
+    <string name="metric_debt_remaining">Restschuld</string>
+    <string name="metric_debt_free">Schuldenfrei</string>
+    <string name="metric_pending">Fällig bis zum Gehalt</string>
+    <string name="metric_payoff_max">Ablösesumme, höchstens</string>
+    <string name="metric_interest_to_end">Zinsen bis Laufzeitende</string>
+    <string name="metric_extra_cost">Mehrkosten gegenüber Ablösung</string>
+
+    <!-- Übersicht -->
+    <string name="overview_main_question">Wie viel ist auf deinen Konten?</string>
+    <string name="overview_main_support">Summe der jüngsten Kontostände. Pockets sind darin schon enthalten und zählen nicht doppelt.</string>
+    <string name="overview_empty_title">Noch nichts erfasst</string>
+    <string name="overview_empty_text">Sobald du ein Konto einträgst, siehst du hier, was du hast.</string>
+    <string name="overview_stale_title">Einige Stände sind alt</string>
+    <string name="section_room">Spielraum</string>
+    <string name="section_income_split">Wohin dein Einkommen geht</string>
+    <string name="section_debts">Schulden</string>
+    <string name="section_accounts">Konten</string>
+    <string name="section_pockets">Pockets</string>
+    <string name="pockets_note">Pockets sind eine zweite Sicht auf dasselbe Geld. Sie werden nicht zu den Konten addiert.</string>
+    <string name="account_no_stand">Noch kein Stand eingetragen</string>
+    <string name="split_expenses">Ausgaben</string>
+    <string name="split_rates">Raten</string>
+    <string name="split_reserves">Rücklagen</string>
+    <string name="split_free">Frei</string>
+    <string name="relief_title">Nächster Spielraum</string>
+    <string name="relief_text">Ab %1$s wird eine Rate frei: %2$s mehr im Monat.</string>
+    <string name="relief_free_after">Frei im Monat danach: %1$s</string>
+    <string name="relief_from">Ab %1$s</string>
+
+    <!-- Demnächst -->
+    <string name="upcoming_main_question">Wie viel kann ich bis zum Gehalt noch ausgeben?</string>
+    <string name="upcoming_salary">Nächstes Gehalt am %1$s, %2$s.</string>
+    <string name="upcoming_empty_title">Nichts zu zeigen</string>
+    <string name="upcoming_empty_text">Es gibt noch keine Daten für diese Ansicht.</string>
+    <string name="upcoming_no_salary_title">Es fehlt: Gehaltstag</string>
+    <string name="upcoming_no_salary_text">Ohne Gehaltstag weiß accura nicht, bis wann gerechnet wird. Eine Zahl erfindet accura nicht.</string>
+    <string name="upcoming_no_payments">Bis zum Gehalt ist nichts mehr fällig.</string>
+    <string name="section_payments_until_salary">Fällig bis zum Gehalt</string>
+    <string name="upcoming_due">Fällig am %1$s, %2$s</string>
+    <string name="upcoming_shortly_before_salary">Kurz vor Gehalt</string>
+    <string name="source_debt">Rate</string>
+    <string name="source_budget">Budgetposten</string>
+
+    <!-- Budget -->
+    <string name="budget_main_question">Wie viel bleibt im Monat frei?</string>
+    <string name="budget_empty_title">Noch kein Budget</string>
+    <string name="budget_empty_text">Trag Einkommen und feste Kosten ein, dann zeigt accura, was im Monat frei bleibt.</string>
+    <string name="budget_overdrawn_text">Du hast %1$s mehr verplant, als hereinkommt.</string>
+    <string name="budget_income_missing_title">Es fehlt: Monatseinkommen</string>
+    <string name="budget_income_missing_text">Ohne Einkommen lässt sich nicht sagen, was frei bleibt.</string>
+    <string name="section_planned">Verplant im Monat</string>
+    <string name="budget_income">Einkommen</string>
+    <string name="budget_planned_total">Zusammen verplant</string>
+    <string name="budget_utilization">%1$s des Einkommens</string>
+    <string name="section_by_necessity">Nach Notwendigkeit</string>
+    <string name="section_by_category">Nach Kategorie</string>
+    <string name="budget_due_day">Fällig am %1$d.</string>
+    <string name="necessity_essential">Existenziell</string>
+    <string name="necessity_necessary">Notwendig</string>
+    <string name="necessity_worthwhile">Sinnvoll</string>
+    <string name="necessity_optional">Optional</string>
+    <string name="necessity_unnecessary">Unnötig</string>
+
+    <!-- Schulden -->
+    <string name="debts_main_question">Wie hoch ist deine Restschuld?</string>
+    <string name="debts_debt_free">Schuldenfrei: %1$s</string>
+    <string name="debts_empty_title">Keine Kredite erfasst</string>
+    <string name="debts_empty_text">Wenn du Kredite oder Ratenkäufe einträgst, rechnet accura den Weg auf null.</string>
+    <string name="section_debt_list">Deine Kredite</string>
+    <string name="section_relief">Wann Geld frei wird</string>
+    <string name="debts_next_payment">Nächste Rate am %1$s: %2$s</string>
+    <string name="debts_last_payment">Letzte Rate am %1$s</string>
+    <string name="debts_remaining">Noch %1$s, zusammen %2$s</string>
+    <string name="debts_rates">Sollzins %1$s, effektiv %2$s</string>
+    <string name="debts_deviation">Abweichung vom Bankstand vom %2$s: %1$s</string>
+    <string name="debts_invalid_title">Vertragsdaten unvollständig</string>
+    <string name="debts_warning_title">Bitte prüfen</string>
+    <string name="warning_payment_below_interest">Die Rate deckt den Zins nicht, die Restschuld wächst.</string>
+    <string name="warning_unexpected_residual">Nach der letzten Rate bleibt ein Rest oder Überschuss. Die Vertragsdaten passen nicht zusammen.</string>
+    <string name="warning_final_payment_far">Die letzte Rate ist mehr als doppelt so hoch wie die Monatsrate.</string>
+
+    <!-- Entwicklung (nur Debug-Build) -->
+    <string name="debug_title">Entwicklung</string>
+    <string name="debug_scenario">Szenario der Testdaten</string>
+    <string name="debug_standard">Standard</string>
+    <string name="debug_leer">Leer</string>
+    <string name="debug_negativ">Negativ</string>
+    <string name="debug_veraltet">Alte Stände</string>
+    <string name="debug_offline">Offline-Kopie</string>
+    <string name="debug_laden">Lädt</string>
+    <string name="debug_fehler">Fehler</string>
+
+    <plurals name="days_ago">
+        <item quantity="one">vor %d Tag</item>
+        <item quantity="other">vor %d Tagen</item>
+    </plurals>
+    <plurals name="days_in">
+        <item quantity="one">in %d Tag</item>
+        <item quantity="other">in %d Tagen</item>
+    </plurals>
+    <plurals name="days_in_or_today">
+        <item quantity="zero">heute</item>
+        <item quantity="one">in %d Tag</item>
+        <item quantity="other">in %d Tagen</item>
+    </plurals>
+    <plurals name="days_count">
+        <item quantity="one">%s Tag</item>
+        <item quantity="other">%s Tage</item>
+    </plurals>
+    <plurals name="payments_count">
+        <item quantity="one">%d Rate</item>
+        <item quantity="other">%d Raten</item>
+    </plurals>
+    <plurals name="overview_stale_text">
+        <item quantity="one">%d Stand ist älter als 7 Tage. Trag einen neuen ein, dann stimmen die Zahlen wieder.</item>
+        <item quantity="other">%d Stände sind älter als 7 Tage. Trag neue ein, dann stimmen die Zahlen wieder.</item>
+    </plurals>
 </resources>
