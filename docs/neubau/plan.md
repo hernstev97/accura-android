@@ -50,6 +50,7 @@ Erster Vorschlag am 10. Oktober 2026. Am 11. und 13. Oktober 2026 hat Steven die
 | Anmeldung | Clerk, aber mit eigener Oberfläche, die nahtlos zur App passt | Eigene Anmeldeseiten in Compose über `clerk-android-api` |
 | PR #25 | Mergen | Gemergt in `develop` |
 | Altes Repo | Seit 13. Oktober 2026 privat | Keine Änderung am Plan. Echte Finanzdaten gehören trotzdem nie ins Repo. |
+| Google-Anmeldung | Nicht gewünscht, nur Clerk | Anmeldung per E-Mail-Code. Kein Google-Cloud-Konto, kein OAuth-Client. Entscheidung Stevens, 13. Oktober 2026, während Phase 0. |
 
 ## Leitlinien für den Neubau
 
@@ -206,7 +207,7 @@ Diese Gegenüberstellung war die Grundlage für den Beschluss. Verglichen sind K
 | Kriterium | Kotlin + Jetpack Compose | React Native + Expo |
 | --- | --- | --- |
 | **Convex-Client** | Offiziell (`android-convexmobile` 0.8.0, Februar 2026). Noch vor 1.0. Live-Abfragen als Kotlin-Flow, Änderungen als suspend-Funktionen. | Offiziell und ausgereift (`convex` 1.46). Derselbe Client wie im Web. |
-| **Clerk-SDK** | Clerk Android v1, allgemein verfügbar seit Februar 2026 (aktuell 1.1.11). Fertige Compose-Anmeldemasken, native Google-Anmeldung. Verbindung zu Convex über `clerk-convex-kotlin` 0.16 von Clerk, noch 0.x. | `@clerk/expo` 4.x, ausgereift. Native Anmeldemasken seit März 2026, noch als Beta markiert. Verbindung zu Convex über `ConvexProviderWithClerk`. |
+| **Clerk-SDK** | Clerk Android v1, allgemein verfügbar seit Februar 2026 (aktuell 1.1.11). Fertige Compose-Anmeldemasken, Anmeldung per E-Mail-Code. Verbindung zu Convex über `clerk-convex-kotlin` 0.16 von Clerk, noch 0.x. | `@clerk/expo` 4.x, ausgereift. Native Anmeldemasken seit März 2026, noch als Beta markiert. Verbindung zu Convex über `ConvexProviderWithClerk`. |
 | **Material 3 Expressive** | Nativ von Google. In Compose Material 3 1.5 (Beta seit 7. Oktober 2026) sind Expressive-Theme, Bewegungsschema, Button-Gruppen, Floating Toolbar und flexible Leisten stabil. Formen-Morphing und der neue Ladeindikator sind noch experimentell. | Keine ausgereifte Expressive-Bibliothek. React Native Paper ist Material 3 ohne Expressive. Expo UI bindet einzelne echte Compose-Bausteine ein, aber nicht das ganze System. |
 | **Tempo** | Langsamere Builds, mehr Startaufwand. Danach zügig, weil die Bausteine fertig sind. | Schneller Start, schnelles Neuladen. Langsamer, sobald Expressive nachgebaut werden muss. |
 | **Offline** | Kein Offline-Speicher im Convex-Client. Den letzten Stand speichert die App selbst. | Wiederholt Änderungen nach Verbindungsabbruch, solange die App läuft. Den letzten Stand muss man ebenfalls selbst speichern. |
@@ -253,9 +254,8 @@ Geprüft am 11. Oktober 2026, Quellen in [Anhang D](#anhang-d-quellen).
 | Dienst | Kostenlos enthalten | Grenze, die Accura betrifft | Umgang |
 | --- | --- | --- | --- |
 | Convex (Free) | EU-Region Dublin, 1 Million Funktionsaufrufe und 0,5 GB Datenbank im Monat, manuelle Backups | Keine automatischen Backups. Höchstens zwei gespeicherte Backups je Deployment, sieben Tage aufbewahrt. Harte Grenzen: Bei Überschreitung schlagen Änderungen fehl. | Eigenes Backup-Skript (siehe [Sicherung](#sicherung)). Eine Person bleibt weit unter den Grenzen. |
-| Clerk (Hobby) | Bis 50.000 aktive Nutzer, Google-Anmeldung, Einladungspflicht für neue Konten, eigene Anmeldeabläufe über die API | Keine Passkeys, keine Allowlist. Die fertigen Anmeldemasken tragen „Secured by Clerk“. | Eigene Anmeldeseiten in Compose über `clerk-android-api`, ohne die fertigen Masken und damit ohne Branding. Zugang sperrt Convex selbst auf Stevens Konto. |
+| Clerk (Hobby) | Bis 50.000 aktive Nutzer, Anmeldung per E-Mail-Code, Einladungspflicht für neue Konten, eigene Anmeldeabläufe über die API | Keine Passkeys, keine Allowlist. Die fertigen Anmeldemasken tragen „Secured by Clerk“. | Eigene Anmeldeseiten in Compose über `clerk-android-api`, ohne die fertigen Masken und damit ohne Branding. Zugang sperrt Convex selbst auf Stevens Konto. |
 | GitHub (privates Repo) | Actions mit begrenzten Freiminuten | Android-Builds sind langsam | CI schlank halten, Builds cachen. Große Prüfungen bei Bedarf lokal. |
-| Google Cloud | OAuth-Client für die Google-Anmeldung | – | Nur für die Anmeldung, keine Abrechnung nötig. |
 
 Für die Produktivumgebung verlangt Clerk eine eigene Domain. `kiumu.app` ist vorhanden, eine Subdomain mit ein paar DNS-Einträgen reicht.
 
@@ -374,7 +374,7 @@ Die Größen sind grob: S = wenige Tage Agentenarbeit, M = ein bis zwei Wochen, 
 
 | Phase | Inhalt | Fertig, wenn | Größe |
 | --- | --- | --- | --- |
-| 0. Einrichten und sichern | Editor-Ordner und Design-Notizen sichern. Privates Repo, Convex-Projekt in der EU, Clerk-Anwendung mit Domain, Google-Anmeldeclient, Signierschlüssel, ADB-Verbindung zum Pixel. | Alle Konten da, eine leere App lässt sich per ADB installieren. | S |
+| 0. Einrichten und sichern | Editor-Ordner und Design-Notizen sichern. Privates Repo, Convex-Projekt in der EU, Clerk-Anwendung mit Domain, Signierschlüssel, ADB-Verbindung zum Pixel. | Alle Konten da, eine leere App lässt sich per ADB installieren. | S |
 | 1. Design | Leitfaden, Klick-Dummies der Abläufe, visueller Compose-Prototyp mit Testdaten. | Steven hat Abläufe und eine Gestaltung freigegeben. | M |
 | 2. Fundament | Convex-Schema, Anmeldung, Zugriffsschutz mit Tests, Rechenkern mit allen Testfällen, CI, App-Gerüst mit Theme und Anmeldung. | Steven meldet sich in der App an und sieht leere Ansichten. Alle Rechentests grün. | M |
 | 3. Ansichten und Kennzahlen | Die vier Ansichten, alle v1-Kennzahlen, Tilgungspläne, Einspar-Hinweise, Datenalter, „So gerechnet“, Offline-Lesen, Beträge ausblenden. | Alle Ansichten in allen Zuständen per Screenshot-Test abgesichert. | L |
@@ -406,7 +406,6 @@ Phase 1 und der Anfang von Phase 2 können parallel laufen, weil das Backend vom
 Keine Grundsatzfragen mehr. Diese Details fallen in der Design-Phase am Klick-Dummy:
 
 - Quelle für den Lebensmittel-Richtwert und die Breite der Spanne.
-- Anmeldewege neben Google, etwa ein Code per E-Mail als Rückfall.
 - Wie viele Einspar-Hinweise gleichzeitig sichtbar sind und wo sie stehen.
 - Welche Vorlagen für feste Kosten angeboten werden.
 
@@ -417,7 +416,7 @@ Keine Grundsatzfragen mehr. Diese Details fallen in der Design-Phase am Klick-Du
 | Sprache, UI | Kotlin 2.x, Jetpack Compose mit Material 3 1.5 (stabil, sobald veröffentlicht), `MaterialExpressiveTheme`, `MotionScheme.expressive()` |
 | Mindestversion | Android 12 (API 31). Es gibt nur ein Zielgerät, und ab Android 12 sind Dynamic Color und die Biometrie-Schnittstellen ohne Rückfälle verfügbar. |
 | Backend | Convex (TypeScript), kostenloser Plan, Region EU, Validatoren für jedes Argument |
-| Anmeldung | `com.clerk:clerk-android-api` ohne `clerk-android-ui`, `clerk-convex-kotlin`; eigene Anmeldeseiten in Compose nach dem Beispiel `samples/custom-flows` im Clerk-Repo; native Google-Anmeldung über die Kontoauswahl des Systems; Convex-Integration im Clerk-Dashboard aktiviert; Einladungspflicht für neue Konten |
+| Anmeldung | `com.clerk:clerk-android-api` ohne `clerk-android-ui`, `clerk-convex-kotlin`; eigene Anmeldeseiten in Compose nach dem Beispiel `samples/custom-flows` im Clerk-Repo; Anmeldung per E-Mail-Code, ohne Google; Convex-Integration im Clerk-Dashboard aktiviert; Einladungspflicht für neue Konten |
 | Convex-Client | `dev.convex:android-convexmobile`, gekapselt in einer Datenschicht |
 | Serialisierung | `kotlinx.serialization`; Geld als `Long` |
 | Lokal | DataStore für Einstellungen, eine verschlüsselte Datei im app-privaten Speicher für den letzten Stand, Schlüssel im Android-Keystore |

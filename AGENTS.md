@@ -61,4 +61,4 @@ Regeln für Agenten in diesem Repo. Plan und Hintergründe: [docs/neubau/plan.md
 
 - Arbeitsbranches vom Standardbranch `main`, Änderungen per Pull Request. Kein Merge, kein Push auf `main`, kein Force Push ohne ausdrücklichen Auftrag.
 - Lösche nichts und überschreibe keine fremden Änderungen. Ein Commit pro Thema.
-- Deployments in die Convex-Produktion und Änderungen an Clerk oder Google nur auf Auftrag.
+- Deployments in die Convex-Produktion und Änderungen an Clerk nur auf Auftrag.
