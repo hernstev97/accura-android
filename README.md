@@ -2,7 +2,7 @@
 
 Private Finanz-App nur für Steven. Kotlin mit Jetpack Compose, Convex als Backend (EU-Region), Clerk für die Anmeldung. Kein Play Store: Die App wird lokal gebaut und per ADB auf das Pixel installiert.
 
-Stand: Phase 0, leere App. Der Plan steht in [docs/neubau/plan.md](docs/neubau/plan.md), die Bestandsaufnahme der Vorgänger-App in [docs/neubau/bestandsaufnahme.md](docs/neubau/bestandsaufnahme.md). Konten und IDs: [docs/einrichtung.md](docs/einrichtung.md).
+Stand: Phase 0 abgeschlossen, leere App läuft auf dem Pixel. Der Plan steht in [docs/neubau/plan.md](docs/neubau/plan.md), die Bestandsaufnahme der Vorgänger-App in [docs/neubau/bestandsaufnahme.md](docs/neubau/bestandsaufnahme.md). Konten und IDs: [docs/einrichtung.md](docs/einrichtung.md).
 
 ## Bauen und installieren
 
