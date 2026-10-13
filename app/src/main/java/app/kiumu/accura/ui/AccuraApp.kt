@@ -1,5 +1,6 @@
 package app.kiumu.accura.ui
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -56,12 +57,15 @@ import app.kiumu.accura.ui.anmeldung.SignInScreen
 import app.kiumu.accura.ui.anmeldung.SignInStep
 import app.kiumu.accura.ui.anmeldung.SignInViewModel
 import app.kiumu.accura.ui.katalog.Laden
+import app.kiumu.accura.ui.katalog.SwapIcon
+import app.kiumu.accura.nextWithData
 import app.kiumu.accura.ui.navigation.Destination
 import app.kiumu.accura.ui.navigation.DebugRoute
 import app.kiumu.accura.ui.screens.BudgetScreen
 import app.kiumu.accura.ui.screens.DebtsScreen
 import app.kiumu.accura.ui.screens.DebugScreen
 import app.kiumu.accura.ui.screens.OverviewScreen
+import app.kiumu.accura.ui.screens.OverviewVariant
 import app.kiumu.accura.ui.screens.UpcomingScreen
 import app.kiumu.accura.ui.screens.ViewStateViewModel
 import app.kiumu.accura.ui.theme.AccuraTheme
@@ -72,8 +76,13 @@ import app.kiumu.accura.ui.theme.AccuraTheme
  * angemeldete Teil samt seiner ViewModels, es bleiben keine Finanzdaten im Speicher hängen.
  */
 @Composable
-fun AccuraApp(graph: AppGraph, modifier: Modifier = Modifier, dynamicColor: Boolean = true) {
-    AccuraTheme(dynamicColor = dynamicColor) {
+fun AccuraApp(
+    graph: AppGraph,
+    modifier: Modifier = Modifier,
+    dynamicColor: Boolean = true,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+) {
+    AccuraTheme(darkTheme = darkTheme, dynamicColor = dynamicColor) {
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val session by graph.auth.session.collectAsStateWithLifecycle()
             when (session) {
@@ -166,6 +175,14 @@ private fun MainScaffold(graph: AppGraph) {
                     }
                 },
                 actions = {
+                    val tools = graph.debugTools
+                    if (tools != null && current != null) {
+                        // Nur Debug-Build: Testdaten wechseln, ohne die Ansicht zu verlassen. So sind
+                        // Formwechsel und Zahlbewegung im Prototyp zu sehen.
+                        IconButton(onClick = { tools.select(tools.scenario.value.nextWithData()) }) {
+                            Icon(SwapIcon, contentDescription = stringResource(R.string.debug_cycle_scenario))
+                        }
+                    }
                     Box {
                         IconButton(onClick = { menuOpen = true }) {
                             Icon(Icons.Default.AccountCircle, contentDescription = stringResource(R.string.menu_account))
@@ -224,7 +241,8 @@ private fun MainScaffold(graph: AppGraph) {
             modifier = Modifier.padding(padding),
         ) {
             composable(Destination.Overview.route) {
-                ViewRoute(graph, graph.finance::overview) { state, retry -> OverviewScreen(state, retry) }
+                val variant = graph.debugTools?.overviewVariant?.collectAsStateWithLifecycle()?.value ?: OverviewVariant.Standard
+                ViewRoute(graph, graph.finance::overview) { state, retry -> OverviewScreen(state, retry, variant = variant) }
             }
             composable(Destination.Upcoming.route) {
                 ViewRoute(graph, graph.finance::upcoming) { state, retry -> UpcomingScreen(state, retry) }

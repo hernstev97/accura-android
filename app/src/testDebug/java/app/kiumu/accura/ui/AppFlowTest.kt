@@ -20,6 +20,7 @@ import app.kiumu.accura.DebugTools
 import app.kiumu.accura.auth.FakeAuthGateway
 import app.kiumu.accura.data.Vertrag
 import app.kiumu.accura.data.fake.FakeFinanceRepository
+import app.kiumu.accura.ui.screens.OverviewVariant
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
@@ -41,10 +42,15 @@ class AppFlowTest {
     val rule = createAndroidComposeRule<ComponentActivity>()
 
     private val scenario = MutableStateFlow(DebugScenario.STANDARD)
+    private val variant = MutableStateFlow(OverviewVariant.Standard)
     private val tools = object : DebugTools {
         override val scenario: StateFlow<DebugScenario> = this@AppFlowTest.scenario
         override fun select(scenario: DebugScenario) {
             this@AppFlowTest.scenario.value = scenario
+        }
+        override val overviewVariant: StateFlow<OverviewVariant> = this@AppFlowTest.variant
+        override fun selectOverviewVariant(variant: OverviewVariant) {
+            this@AppFlowTest.variant.value = variant
         }
     }
     private val graph = AppGraph(
@@ -172,6 +178,30 @@ class AppFlowTest {
         text("Leer").performClick()
         rule.onNodeWithContentDescription("Zurück").performClick()
         rule.waitUntil(5_000) { rule.onAllNodes(hasText("Noch nichts erfasst")).fetchSemanticsNodes().isNotEmpty() }
+    }
+
+    @Test
+    fun `Debug-Menü schaltet die Variante der Übersicht um`() {
+        start()
+        signIn()
+        rule.onNodeWithContentDescription("Konto").performClick()
+        text("Entwicklung").performClick()
+        text("Zeitleiste").performClick()
+        rule.onNodeWithContentDescription("Zurück").performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Was kommt auf dich zu?")).fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithContentDescription("Konto").performClick()
+        text("Entwicklung").performClick()
+        text("Spielraum zuerst").performClick()
+        rule.onNodeWithContentDescription("Zurück").performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Wie viel kannst du bis zum Gehalt ausgeben?")).fetchSemanticsNodes().isNotEmpty() }
+    }
+
+    @Test
+    fun `Testdaten wechseln schaltet auf der Übersicht zu alten Ständen`() {
+        start()
+        signIn()
+        rule.onNodeWithContentDescription("Testdaten wechseln").performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Einige Stände sind alt")).fetchSemanticsNodes().isNotEmpty() }
     }
 }
 

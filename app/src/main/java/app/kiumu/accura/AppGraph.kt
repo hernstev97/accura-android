@@ -3,6 +3,7 @@ package app.kiumu.accura
 import android.content.Context
 import app.kiumu.accura.auth.AuthGateway
 import app.kiumu.accura.data.FinanceRepository
+import app.kiumu.accura.ui.screens.OverviewVariant
 import java.time.Clock
 import java.time.ZoneId
 import kotlinx.coroutines.flow.StateFlow
@@ -13,10 +14,22 @@ val StevenZone: ZoneId = ZoneId.of("Europe/Berlin")
 /** Szenarien der Fake-Datenquelle für den Debug-Build. */
 enum class DebugScenario { STANDARD, LEER, NEGATIV, VERALTET, OHNE_GEHALTSTAG, OFFLINE_KOPIE, LADEN, FEHLER }
 
+/** Reihenfolge für „Testdaten wechseln“: nur Szenarien mit Daten, damit Formen und Zahlen sichtbar umschalten. */
+fun DebugScenario.nextWithData(): DebugScenario = when (this) {
+    DebugScenario.STANDARD -> DebugScenario.VERALTET
+    DebugScenario.VERALTET -> DebugScenario.NEGATIV
+    DebugScenario.NEGATIV -> DebugScenario.OHNE_GEHALTSTAG
+    else -> DebugScenario.STANDARD
+}
+
 /** Schalter, die es nur im Debug-Build gibt. */
 interface DebugTools {
     val scenario: StateFlow<DebugScenario>
     fun select(scenario: DebugScenario)
+
+    /** Variante der Übersicht im Prototyp. */
+    val overviewVariant: StateFlow<OverviewVariant>
+    fun selectOverviewVariant(variant: OverviewVariant)
 }
 
 /**

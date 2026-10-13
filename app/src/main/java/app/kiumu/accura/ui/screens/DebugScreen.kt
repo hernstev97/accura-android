@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,12 +19,25 @@ import app.kiumu.accura.ui.katalog.Abschnitt
 import app.kiumu.accura.ui.katalog.Ansicht
 import app.kiumu.accura.ui.katalog.KatalogInhalt
 
-/** Verstecktes Debug-Menü: Szenario der Fake-Daten wählen, darunter der Bausteinkatalog. */
+/** Verstecktes Debug-Menü: Variante der Übersicht und Szenario der Fake-Daten wählen, darunter der Bausteinkatalog. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun DebugScreen(tools: DebugTools, modifier: Modifier = Modifier) {
     val current by tools.scenario.collectAsStateWithLifecycle()
+    val variant by tools.overviewVariant.collectAsStateWithLifecycle()
     Ansicht(banner = {}, modifier = modifier) {
+        Abschnitt(stringResource(R.string.debug_variant))
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            OverviewVariant.entries.forEach { option ->
+                FilterChip(
+                    selected = option == variant,
+                    onClick = { tools.selectOverviewVariant(option) },
+                    label = { Text(stringResource(option.label)) },
+                )
+            }
+        }
+        Text(stringResource(variant.description), style = MaterialTheme.typography.bodyMedium)
+
         Abschnitt(stringResource(R.string.debug_scenario))
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             DebugScenario.entries.forEach { scenario ->

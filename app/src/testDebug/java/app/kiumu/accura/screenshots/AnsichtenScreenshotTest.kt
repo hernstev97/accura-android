@@ -33,6 +33,9 @@ private fun <T> zustand(scenario: DebugScenario, pick: FinanceRepository.(LocalD
         FakeFinanceRepository(MutableStateFlow(scenario), readJson = Vertrag::read).pick(Heute).first()
     }
 
+/** Übersicht im Zustand eines Szenarios der Fake-Daten. */
+fun uebersichtZustand(scenario: DebugScenario): ViewState<app.kiumu.accura.data.model.OverviewModel> = zustand(scenario) { d -> overview(d) }
+
 /** Die vier Ansichten, jede mit dem Bildschirm, der einen [ViewState] annimmt. */
 enum class Ansicht(val ordner: String, val render: @Composable (DebugScenario) -> Unit) {
     Uebersicht("uebersicht", { OverviewScreen(zustand(it) { d -> overview(d) }, onRetry = {}) }),
