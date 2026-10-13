@@ -1,0 +1,22 @@
+# Gradle / Android
+.gradle/
+build/
+local.properties
+*.apk
+*.aab
+*.jks
+*.keystore
+captures/
+.idea/
+*.iml
+
+# Geheimnisse und Daten: gehören nie ins Repo
+.env
+.env.*
+*.pem
+secrets/
+*.backup.zip
+backups/
+
+# Node (Convex)
+node_modules/
