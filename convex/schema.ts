@@ -18,6 +18,10 @@ const int = v.int64();
 const calendarDay = v.string();
 const timestampMs = v.int64();
 
+export const accountKind = v.union(v.literal("bank"), v.literal("wallet"), v.literal("cash"));
+export const budgetKind = v.union(v.literal("expense"), v.literal("reserve"));
+export const debtKind = v.union(v.literal("loan"), v.literal("installment"));
+
 export const necessity = v.union(
   v.literal("essential"),
   v.literal("necessary"),
@@ -39,7 +43,7 @@ export default defineSchema({
   accounts: defineTable({
     userId: v.id("users"),
     name: v.string(),
-    kind: v.union(v.literal("bank"), v.literal("wallet"), v.literal("cash")),
+    kind: accountKind,
     order: int,
     active: v.boolean(),
   }).index("by_user", ["userId"]),
@@ -73,7 +77,7 @@ export default defineSchema({
     label: v.string(),
     monthlyAmountCents: cents,
     necessity,
-    kind: v.union(v.literal("expense"), v.literal("reserve")),
+    kind: budgetKind,
     category: v.string(),
     dueDay: v.optional(int),
     // Art eines Abos oder Vertrags, freier Text (z. B. „Streaming“). Gleiche Art fällt im Einspar-Hinweis auf.
@@ -93,7 +97,7 @@ export default defineSchema({
   debts: defineTable({
     userId: v.id("users"),
     lender: v.string(),
-    kind: v.union(v.literal("loan"), v.literal("installment")),
+    kind: debtKind,
     principalCents: cents,
     nominalRateBps: int,
     effectiveRateBps: int,
@@ -117,10 +121,11 @@ export default defineSchema({
     recordedAt: timestampMs,
   }).index("by_user_debt_day", ["userId", "debtId", "day"]),
 
-  // Nur das Kalorienziel, keine Körperdaten.
+  // Nur das Kalorienziel, keine Körperdaten. `active: false` heißt archiviert.
   householdMembers: defineTable({
     userId: v.id("users"),
     label: v.string(),
     dailyKcal: int,
+    active: v.boolean(),
   }).index("by_user", ["userId"]),
 });

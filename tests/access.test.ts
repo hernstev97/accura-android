@@ -27,8 +27,27 @@ describe("jede öffentliche Funktion läuft über den gemeinsamen Wrapper", () =
   it("findet die erwarteten Funktionen (der Test ist nicht leer)", async () => {
     const names = (await allFunctions()).filter(({ fn }) => fn.isPublic).map(({ name }) => name).sort();
     expect(names).toEqual([
+      "accounts:create",
+      "accounts:setActive",
+      "accounts:update",
+      "budgetItems:create",
+      "budgetItems:setActive",
+      "budgetItems:update",
+      "dataExport:all",
+      "debts:create",
+      "debts:setActive",
+      "debts:update",
       "hints:setWaived",
+      "household:create",
+      "household:setActive",
+      "household:update",
+      "pockets:create",
+      "pockets:setActive",
+      "pockets:update",
+      "records:list",
+      "stands:record",
       "users:ensureUser",
+      "users:updateSettings",
       "views:budget",
       "views:debtSchedule",
       "views:debts",
@@ -64,6 +83,63 @@ describe("jede öffentliche Funktion läuft über den gemeinsamen Wrapper", () =
   });
 });
 
+const ownerUser = (t: Client) =>
+  t.run((ctx) => ctx.db.insert("users", { clerkTokenIdentifier: OWNER_TOKEN, homeTimeZone: "Europe/Berlin", createdAt: 0n }));
+
+const account = { name: "K", kind: "bank" as const, order: 1n, active: true };
+const ownerAccount = async (t: Client) => {
+  const userId = await ownerUser(t);
+  return await t.run((ctx) => ctx.db.insert("accounts", { userId, ...account }));
+};
+
+const pocket = async (t: Client) => {
+  const accountId = await ownerAccount(t);
+  const fields = { accountId, name: "P", order: 1n, active: true };
+  const id = await t.run(async (ctx) => {
+    const owner = (await ctx.db.get(accountId))!.userId;
+    return await ctx.db.insert("pockets", { userId: owner, ...fields });
+  });
+  return { id, fields };
+};
+
+const budgetItem = {
+  label: "X", monthlyAmountCents: 1n, necessity: "optional" as const, kind: "expense" as const, category: "Abo", dueDay: null,
+  contractType: null, contractEndDay: null, noticePeriodDays: null, noticePeriodMonths: null, note: null, order: 1n, active: true,
+};
+const ownerBudgetItem = async (t: Client) => {
+  const userId = await ownerUser(t);
+  return await t.run((ctx) =>
+    ctx.db.insert("budgetItems", { userId, label: "X", monthlyAmountCents: 1n, necessity: "optional", kind: "expense", category: "Abo", order: 1n, active: true }),
+  );
+};
+
+const debt = {
+  lender: "X", kind: "loan" as const, principalCents: 1n, nominalRateBps: 0n, effectiveRateBps: 0n, monthlyPaymentCents: 1n,
+  firstPaymentDay: "2026-01-01", paymentCount: 1n, finalPaymentCents: null, specialRepaymentYearlyCents: null, note: null, order: 1n, active: true,
+};
+const ownerDebt = async (t: Client) => {
+  const userId = await ownerUser(t);
+  return await t.run((ctx) =>
+    ctx.db.insert("debts", {
+      userId, lender: "X", kind: "loan", principalCents: 1n, nominalRateBps: 0n, effectiveRateBps: 0n,
+      monthlyPaymentCents: 1n, firstPaymentDay: "2026-01-01", paymentCount: 1n, order: 1n, active: true,
+    }),
+  );
+};
+
+const member = { label: "Ich", dailyKcal: 2_000n, active: true };
+const ownerMember = async (t: Client) => {
+  const userId = await ownerUser(t);
+  return await t.run((ctx) => ctx.db.insert("householdMembers", { userId, ...member }));
+};
+
+/** Stände brauchen einen Tag, der zur Uhr passt (höchstens ein Tag Abstand zum UTC-Datum). */
+const todayUtc = () => new Date().toISOString().slice(0, 10);
+
+const { active: _accountActive, ...accountValues } = account;
+const { active: _itemActive, ...budgetItemValues } = budgetItem;
+const { active: _debtActive, ...debtValues } = debt;
+
 /** Gültige Argumente je öffentlicher Funktion. Neue Funktionen müssen hier ergänzt werden. */
 const calls = {
   "views:overview": (t: Client) => t.query(api.views.overview, { today: "2026-08-08" }),
@@ -91,6 +167,55 @@ const calls = {
     return t.mutation(api.hints.setWaived, { budgetItemId, waived: true });
   },
   "users:ensureUser": (t: Client) => t.mutation(api.users.ensureUser, {}),
+  "users:updateSettings": async (t: Client) => {
+    await ownerUser(t);
+    const expected = { monthlyIncomeCents: null, salaryDay: null, homeTimeZone: "Europe/Berlin" };
+    return t.mutation(api.users.updateSettings, { ...expected, monthlyIncomeCents: 1n, salaryDay: 1n, expected });
+  },
+  "accounts:create": async (t: Client) => {
+    await ownerUser(t);
+    return t.mutation(api.accounts.create, { name: "Konto", kind: "bank" });
+  },
+  "accounts:update": async (t: Client) =>
+    t.mutation(api.accounts.update, { id: await ownerAccount(t), ...accountValues, name: "K2", expected: account }),
+  "accounts:setActive": async (t: Client) =>
+    t.mutation(api.accounts.setActive, { id: await ownerAccount(t), active: false, expected: account }),
+  "pockets:create": async (t: Client) => t.mutation(api.pockets.create, { accountId: await ownerAccount(t), name: "Pocket" }),
+  "pockets:update": async (t: Client) => {
+    const { id, fields } = await pocket(t);
+    return t.mutation(api.pockets.update, { id, accountId: fields.accountId, name: "P2", order: 1n, expected: fields });
+  },
+  "pockets:setActive": async (t: Client) => {
+    const { id, fields } = await pocket(t);
+    return t.mutation(api.pockets.setActive, { id, active: false, expected: fields });
+  },
+  "budgetItems:create": async (t: Client) => {
+    await ownerUser(t);
+    return t.mutation(api.budgetItems.create, { label: "Miete", monthlyAmountCents: 1n, necessity: "essential", kind: "expense", category: "Wohnen" });
+  },
+  "budgetItems:update": async (t: Client) =>
+    t.mutation(api.budgetItems.update, { id: await ownerBudgetItem(t), ...budgetItemValues, label: "Y", expected: budgetItem }),
+  "budgetItems:setActive": async (t: Client) =>
+    t.mutation(api.budgetItems.setActive, { id: await ownerBudgetItem(t), active: false, expected: budgetItem }),
+  "debts:create": async (t: Client) => {
+    await ownerUser(t);
+    const { active: _active, ...values } = debt;
+    return t.mutation(api.debts.create, values);
+  },
+  "debts:update": async (t: Client) => t.mutation(api.debts.update, { id: await ownerDebt(t), ...debtValues, lender: "Y", expected: debt }),
+  "debts:setActive": async (t: Client) => t.mutation(api.debts.setActive, { id: await ownerDebt(t), active: false, expected: debt }),
+  "household:create": async (t: Client) => {
+    await ownerUser(t);
+    return t.mutation(api.household.create, { label: "Ich", dailyKcal: 2_000n });
+  },
+  "household:update": async (t: Client) =>
+    t.mutation(api.household.update, { id: await ownerMember(t), label: "Ich", dailyKcal: 2_100n, expected: member }),
+  "household:setActive": async (t: Client) =>
+    t.mutation(api.household.setActive, { id: await ownerMember(t), active: false, expected: member }),
+  "stands:record": async (t: Client) =>
+    t.mutation(api.stands.record, { day: todayUtc(), accounts: [{ id: await ownerAccount(t), balanceCents: 1n, expected: null }] }),
+  "records:list": (t: Client) => t.query(api.records.list, {}),
+  "dataExport:all": (t: Client) => t.query(api.dataExport.all, {}),
 } as const;
 
 describe("Zugriff: angemeldet, nicht angemeldet, falsches Konto", () => {

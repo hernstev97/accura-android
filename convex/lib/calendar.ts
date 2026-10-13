@@ -164,6 +164,19 @@ export function isValidTimeZone(timeZone: string): boolean {
 }
 
 /**
+ * Ob `day` zum Zeitpunkt `nowMs` in irgendeiner Zeitzone „heute“ sein kann:
+ * höchstens einen Tag vom UTC-Datum entfernt (Zeitzonen reichen von UTC−12
+ * bis UTC+14). Bestimmt keinen Tag, sondern prüft den vom Gerät gelieferten,
+ * damit ein falsch gestelltes Datum keinen Stand weit in Zukunft oder
+ * Vergangenheit anlegt. Nur für Mutationen.
+ */
+export function isPlausibleToday(day: CalendarDay, nowMs: number): boolean {
+  if (!isCalendarDay(day) || !Number.isFinite(nowMs)) return false;
+  const utcToday = new Date(nowMs).toISOString().slice(0, 10);
+  return Math.abs(diffDays(utcToday, day)) <= 1;
+}
+
+/**
  * Kalendertag eines Zeitpunkts in einer IANA-Zeitzone. Für Mutationen und
  * Clients gedacht (z. B. der Tag eines `recordedAt`), nie für Abfragen.
  */
