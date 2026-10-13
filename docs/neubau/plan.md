@@ -338,6 +338,8 @@ Die heutige App bildet Material 3 Expressive im Web von Hand nach. Jede Ansicht 
 | 4. Bausteinkatalog | Ein verstecktes Debug-Menü zeigt alle Bausteine in allen Zuständen. Screenshot-Tests frieren sie ein. | Agent |
 | 5. Umsetzung | Die Ansichten werden aus dem Katalog gebaut. Abweichungen vom Prototyp nur nach Rückfrage. | Agent |
 
+Stand 13. Oktober 2026: Schritt 1 und 2 liegen als Entwurf vor ([Leitfaden](../design/leitfaden.md), [Klick-Dummys](../../design/README.md)), Steven prüft noch.
+
 Warum der visuelle Prototyp gleich in Compose entsteht: Expressive lebt von Bewegung und Formwechseln. Ein HTML- oder Figma-Bild zeigt das nicht ehrlich, und der Prototyp-Code ist später zum Teil weiterverwendbar.
 
 ## Start ohne Datenumzug

@@ -22,7 +22,8 @@ Regeln für Agenten in diesem Repo. Plan und Hintergründe: [docs/neubau/plan.md
 
 - `app/` Android-App (Kotlin, Jetpack Compose). Zeigt an, rechnet nicht.
 - `convex/` Backend und Rechenkern in TypeScript. Alle Finanzlogik liegt hier.
-- `scripts/` Installation, später Backup und Restore.
+- `scripts/` Installation, Klick-Dummys ausliefern, später Backup und Restore.
+- `design/` Klick-Dummys (reines HTML, CSS, JavaScript, ausgedachte Testdaten). Regeln: `docs/design/leitfaden.md`.
 - `docs/` Doku. `docs/neubau/` enthält Plan und Bestandsaufnahme aus dem Altprojekt.
 
 ## Kotlin und Compose
