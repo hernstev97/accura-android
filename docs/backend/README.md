@@ -1,12 +1,12 @@
 # Backend (Convex)
 
-Stand: Phase 2, Teil Backend. Beschrieben ist, was gebaut ist. Plan und Hintergründe: [../neubau/plan.md](../neubau/plan.md).
+Stand: Phase 2, Teil Backend, dazu die Einspar-Hinweise aus Phase 3 ohne Lebensmittel-Richtwert. Beschrieben ist, was gebaut ist. Plan und Hintergründe: [../neubau/plan.md](../neubau/plan.md).
 
 | Thema | Seite |
 | --- | --- |
 | Tabellen, Typen, Abweichungen vom Plan | [schema.md](schema.md) |
 | Prüfung von Token und Konto, interne Funktionen | [zugriffsschutz.md](zugriffsschutz.md) |
-| Rechenregeln, Kennzahlen, Antwortformat der Ansichten | [rechenregeln.md](rechenregeln.md) |
+| Rechenregeln, Kennzahlen, Einspar-Hinweise, Antwortformat der Ansichten | [rechenregeln.md](rechenregeln.md) |
 
 ## Aufbau
 
@@ -14,8 +14,9 @@ Stand: Phase 2, Teil Backend. Beschrieben ist, was gebaut ist. Plan und Hintergr
 convex/
   schema.ts, auth.config.ts   Tabellen, Clerk-Aussteller
   access.ts                   gemeinsamer Wrapper für alle öffentlichen Funktionen
-  views.ts                    Abfragen je Ansicht (overview, budget, debts, debtSchedule, upcoming)
+  views.ts                    Abfragen je Ansicht (overview, budget, debts, debtSchedule, upcoming, hints)
   users.ts                    ensureUser
+  hints.ts                    setWaived („bewusst so“ für Einspar-Hinweise)
   maintenance.ts              nur intern: anonyme Testdaten in ein Dev-Deployment
   lib/                        reiner Rechenkern, kennt Convex nur in load.ts und seed.ts
   _generated/                 von `npx convex dev` erzeugt, eingecheckt

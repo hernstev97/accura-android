@@ -14,6 +14,26 @@ function recordedDay(recordedAt: bigint, timeZone: string): CalendarDay | null {
   }
 }
 
+/** Ein Budgetposten in der Form des Rechenkerns. Auch die Mutation für „bewusst so“ nutzt das. */
+export function budgetItemInput(item: Doc<"budgetItems">): BudgetItemInput {
+  return {
+    id: item._id,
+    label: item.label,
+    monthlyAmountCents: fromInt64(item.monthlyAmountCents),
+    necessity: item.necessity,
+    kind: item.kind,
+    category: item.category,
+    dueDay: fromOptionalInt64(item.dueDay),
+    contractType: item.contractType ?? null,
+    contractEndDay: item.contractEndDay ?? null,
+    noticePeriodDays: fromOptionalInt64(item.noticePeriodDays),
+    noticePeriodMonths: fromOptionalInt64(item.noticePeriodMonths),
+    waivedHintFingerprint: item.waivedHintFingerprint ?? null,
+    order: fromInt64(item.order),
+    active: item.active,
+  };
+}
+
 export function emptyInput(today: CalendarDay): FinanceInput {
   return { today, incomeCents: null, salaryDay: null, accounts: [], pockets: [], budgetItems: [], debts: [] };
 }
@@ -73,19 +93,7 @@ export async function loadFinanceInput(db: Db, user: Doc<"users"> | null, today:
     })),
   );
 
-  const budgetInputs: BudgetItemInput[] = budgetItems.map((item) => ({
-    id: item._id,
-    label: item.label,
-    monthlyAmountCents: fromInt64(item.monthlyAmountCents),
-    necessity: item.necessity,
-    kind: item.kind,
-    category: item.category,
-    dueDay: fromOptionalInt64(item.dueDay),
-    contractEndDay: item.contractEndDay ?? null,
-    noticePeriodDays: fromOptionalInt64(item.noticePeriodDays),
-    order: fromInt64(item.order),
-    active: item.active,
-  }));
+  const budgetInputs: BudgetItemInput[] = budgetItems.map(budgetItemInput);
 
   const debtInputs: DebtInput[] = await Promise.all(
     debts.map(async (debt) => {

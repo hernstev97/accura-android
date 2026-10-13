@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { ownerQuery, requireCalendarDay } from "./access";
+import { buildHints } from "./lib/hints";
 import { loadFinanceInput } from "./lib/load";
 import { buildBudget, buildDebtSchedule, buildDebts, buildOverview, buildUpcoming } from "./lib/views";
 import { toWire } from "./lib/wire";
@@ -52,5 +53,18 @@ export const upcoming = ownerQuery({
   handler: async (ctx, args) => {
     const today = requireCalendarDay(args.today, "today");
     return toWire(buildUpcoming(await loadFinanceInput(ctx.db, ctx.owner.user, today)));
+  },
+});
+
+/**
+ * Alle Einspar-Hinweise, auch ausgeblendete (Status `waived`). Eine eigene
+ * Abfrage statt eines Teils von `budget`: Wo die Hinweise stehen und wie viele
+ * zu sehen sind, entscheidet das Design, und die übrigen Modelle bleiben gleich.
+ */
+export const hints = ownerQuery({
+  args: { today: v.string() },
+  handler: async (ctx, args) => {
+    const today = requireCalendarDay(args.today, "today");
+    return toWire(buildHints(await loadFinanceInput(ctx.db, ctx.owner.user, today)));
   },
 });

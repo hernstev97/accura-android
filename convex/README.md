@@ -4,6 +4,7 @@ Backend und Rechenkern in TypeScript. Doku: [../docs/backend/](../docs/backend/R
 
 - `access.ts`: gemeinsamer Wrapper (`ownerQuery`, `ownerMutation`) für alle öffentlichen Funktionen. Keine öffentliche Funktion ohne Wrapper, ein Test prüft das.
 - `views.ts`: eine Abfrage je Ansicht, `today` kommt als Argument.
+- `hints.ts`: „bewusst so“ für Einspar-Hinweise (`hints:setWaived`).
 - `lib/`: reiner Rechenkern ohne Convex-Abhängigkeit (außer `load.ts` und `seed.ts`).
 - Tests liegen in `../tests/`, nicht hier, weil Convex jede Datei in diesem Ordner bündelt.
 - `_generated/` entsteht durch `npx convex dev --once` und wird eingecheckt.

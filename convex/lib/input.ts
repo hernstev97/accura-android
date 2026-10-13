@@ -45,8 +45,14 @@ export type BudgetItemInput = {
   kind: BudgetKind;
   category: string;
   dueDay: number | null;
-  contractEndDay: CalendarDay | null;
+  /** Art eines Abos oder Vertrags, freier Text; `null`, wenn nicht erfasst. */
+  contractType: string | null;
+  /** Wie gespeichert; der Kern prüft, ob es ein gültiger Tag ist. */
+  contractEndDay: string | null;
   noticePeriodDays: number | null;
+  noticePeriodMonths: number | null;
+  /** Stand des Postens beim „bewusst so“; `null`, wenn kein Hinweis ausgeblendet ist. */
+  waivedHintFingerprint: string | null;
   order: number;
   active: boolean;
 };

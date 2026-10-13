@@ -18,7 +18,7 @@ Quelle: `convex/schema.ts`. Ausgangspunkt war Anhang B des Plans.
 | `accountBalances` | `userId`, `accountId`, `day`, `balanceCents`, `recordedAt` | `by_user_account_day` |
 | `pockets` | `userId`, `accountId`, `name`, `order`, `active` | `by_user` |
 | `pocketBalances` | `userId`, `pocketId`, `day`, `balanceCents`, `recordedAt` | `by_user_pocket_day` |
-| `budgetItems` | `userId`, `label`, `monthlyAmountCents`, `necessity`, `kind` (expense, reserve), `category`, `dueDay?`, `contractEndDay?`, `noticePeriodDays?`, `waivedHintAt?`, `note?`, `order`, `active` | `by_user` |
+| `budgetItems` | `userId`, `label`, `monthlyAmountCents`, `necessity`, `kind` (expense, reserve), `category`, `dueDay?`, `contractType?`, `contractEndDay?`, `noticePeriodDays?`, `noticePeriodMonths?`, `waivedHintAt?`, `waivedHintFingerprint?`, `note?`, `order`, `active` | `by_user` |
 | `debts` | `userId`, `lender`, `kind` (loan, installment), `principalCents`, `nominalRateBps`, `effectiveRateBps`, `monthlyPaymentCents`, `firstPaymentDay`, `paymentCount`, `finalPaymentCents?`, `specialRepaymentYearlyCents?`, `note?`, `order`, `active` | `by_user` |
 | `debtBalances` | `userId`, `debtId`, `day`, `balanceCents`, `payoffQuoteCents?`, `recordedAt` | `by_user_debt_day` |
 | `householdMembers` | `userId`, `label`, `dailyKcal` | `by_user` |
@@ -36,9 +36,14 @@ Es gibt keine Tabellen für Entlastungen, Meilensteine oder Summen. Alles folgt 
 | `debtBalances.source: "bank"` entfällt. | Ein Feld mit genau einem möglichen Wert trägt keine Information. Die Tabelle steht für bestätigte Bankstände. |
 | `users.homeTimeZone` ist beim Anlegen `Europe/Berlin`, falls die App nichts mitschickt. | Annahme für Stevens Wohnort. Die App kann sie beim Anlegen setzen. |
 | Zusätzlicher Index über `(userId, Konto/Pocket/Kredit, day)` statt eines allgemeinen. | Erlaubt, je Konto genau den jüngsten Stand bis heute zu lesen, ohne die ganze Historie zu laden. |
+| Neu: `budgetItems.contractType?` (Art, freier Text). | Mehrere Abos derselben Art sollen im Einspar-Hinweis auffallen. Kein vorhandenes Feld trägt die Art: Die Kategorie ist bei allen Abos „Abo“, der Name ist freier Text wie „Streaming A“, und die Art aus dem Namen zu raten hieße, Anbieter zu erkennen. Für eine feste Liste von Arten bräuchte es eine Entscheidung, ein optionales Textfeld nicht. |
+| Neu: `budgetItems.noticePeriodMonths?` neben `noticePeriodDays?`. Höchstens eins von beiden ist gesetzt. | Verträge nennen Kündigungsfristen meist in Monaten. „3 Monate“ sind je nach Lage 89 bis 92 Tage. Als 90 Tage erfasst, läge der letzte Kündigungstag bei Vertragsende 31.12. auf dem 02.10. statt auf dem 30.09., also zwei Tage zu spät. Wochen lassen sich exakt in Tagen erfassen. |
+| Neu: `budgetItems.waivedHintFingerprint?` neben `waivedHintAt?`. | „Bewusst so“ gilt, bis sich der Posten ändert. `waivedHintAt` allein reicht dafür nicht, weil Posten kein Änderungsdatum haben. Der Fingerabdruck hält beim Ausblenden fest, wie die für Hinweise relevanten Felder aussahen (`hintFingerprint` in `lib/hints.ts`), und die Abfrage vergleicht ihn mit dem Posten. Die Alternative wäre ein `updatedAt` an jedem Posten. Das müsste jede schreibende Funktion pflegen, und es holte den Hinweis auch nach einer geänderten Notiz oder Reihenfolge zurück. |
 
-Nicht umgesetzt (kommt mit den Phasen 3 und 4): Funktionen zum Anlegen und Ändern von Konten, Posten und Krediten samt Konfliktschutz; alles rund um Einspar-Hinweise und Haushalt.
+Nicht umgesetzt (kommt mit den Phasen 3 und 4): Funktionen zum Anlegen und Ändern von Konten, Posten und Krediten samt Konfliktschutz; der Lebensmittel-Richtwert und alles rund um den Haushalt.
 
 ## Prüfung der Daten
 
 Die Abfragen nehmen gespeicherte Werte als gegeben, prüfen aber die Vertragsdaten eines Kredits (`validateTerms` in `lib/amortization.ts`): Beträge ganz und nicht negativ, Zins 0 bis 100 %, 1 bis 600 Raten, gültiger Tag der ersten Rate. Ein Kredit mit ungültigen Daten erscheint als `state: "invalid"` mit Hinweisen und lässt die Summen „nicht berechenbar“ werden, statt falsch zu rechnen. Die schreibenden Funktionen (Phase 4) müssen dieselben Regeln beim Speichern erzwingen, insbesondere gültige Kalendertage (`isCalendarDay`) und ganze Zahlen im sicheren Bereich.
+
+Vertragsende und Kündigungsfrist eines Postens prüft `cancellation` in `lib/notice.ts` beim Lesen. Ein ungültiger Tag, eine negative Frist, eine Frist über zehn Jahre oder eine Frist in Tagen und Monaten zugleich ergeben `state: "invalid"` statt eines Kündigungstags. Auch diese Regeln gehören später in die Bearbeiten-Funktionen. Um „bewusst so“ müssen sie sich nicht kümmern: Ein geänderter Posten passt nicht mehr zum Fingerabdruck, und der Hinweis ist wieder da.
