@@ -50,7 +50,10 @@ fun formatBps(bps: Int): String {
     return "$sign$number$NBSP%"
 }
 
-/** Ganze Prozent aus Basispunkten, für Anteile: 7166 → `72 %`, 7150 → `72 %`. */
+/** Ganze Prozent, wie das Backend sie liefert: 72 → `72 %`. Die App rundet nicht selbst. */
+fun formatPercent(percent: Int): String = "$percent$NBSP%"
+
+/** Ganze Prozent aus Basispunkten, für einzeln gerundete Anteile: 7166 → `72 %`, 7150 → `72 %`. */
 fun formatWholePercent(bps: Int): String = "${(bps + 50) / 100}$NBSP%"
 
 /**

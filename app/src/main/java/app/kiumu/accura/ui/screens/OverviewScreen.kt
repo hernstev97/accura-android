@@ -19,7 +19,7 @@ import app.kiumu.accura.data.model.OverviewModel
 import app.kiumu.accura.data.model.SalaryStatus
 import app.kiumu.accura.ui.format.formatCents
 import app.kiumu.accura.ui.format.formatMonth
-import app.kiumu.accura.ui.format.formatWholePercent
+import app.kiumu.accura.ui.format.formatPercent
 import app.kiumu.accura.ui.katalog.Abschnitt
 import app.kiumu.accura.ui.katalog.Ansicht
 import app.kiumu.accura.ui.katalog.Anteil
@@ -81,7 +81,7 @@ private fun OverviewContent(model: OverviewModel, banner: @Composable () -> Unit
                     Anteil(
                         label = stringResource(part.key.labelRes()),
                         cents = part.cents,
-                        shareText = part.shareBps?.let(::formatWholePercent),
+                        shareText = part.sharePercent?.let(::formatPercent),
                         tone = part.key.tone(),
                     )
                 },

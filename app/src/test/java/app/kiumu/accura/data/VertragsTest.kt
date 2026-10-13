@@ -97,6 +97,10 @@ class VertragsTest {
         // Der Ring summiert exakt auf 100 %, der Rundungsrest geht an den größten Anteil (7.167 → 7.166).
         assertEquals(listOf(7_166, 1_355, 1_000, 479), model.incomeSplit?.parts?.map { it.shareBps })
         assertEquals(10_000, model.incomeSplit?.parts?.sumOf { it.shareBps ?: 0 })
+        // Zum Anzeigen ganze Prozent, die auf genau 100 aufgehen (größter Rest): 72 + 13 + 10 + 5,
+        // einzeln gerundet wären es 72 + 14 + 10 + 5 = 101.
+        assertEquals(listOf(72, 13, 10, 5), model.incomeSplit?.parts?.map { it.sharePercent })
+        assertEquals(100, model.incomeSplit?.parts?.sumOf { it.sharePercent ?: 0 })
         assertEquals(YearMonth.of(2026, 10), model.nextRelief?.freeFromMonth)
         assertEquals(12_000L, model.nextRelief?.monthlyReliefCents)
         assertEquals(0, model.dataAge.staleCount)

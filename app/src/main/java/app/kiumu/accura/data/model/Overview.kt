@@ -28,7 +28,13 @@ enum class IncomePartKey {
 }
 
 @Serializable
-data class IncomePart(val key: IncomePartKey, val cents: Long, val shareBps: Int? = null)
+data class IncomePart(
+    val key: IncomePartKey,
+    val cents: Long,
+    val shareBps: Int? = null,
+    /** Ganze Prozent zum Anzeigen; das Backend gleicht sie auf genau 100 aus (größter Rest). */
+    val sharePercent: Int? = null,
+)
 
 @Serializable
 data class IncomeSplit(val incomeCents: Long, val parts: List<IncomePart>)
