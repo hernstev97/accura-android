@@ -10,10 +10,10 @@ Paket `app.kiumu.accura` im Modul `app`. Es gibt ein einziges Gradle-Modul. Them
 | `data/` | `FinanceRepository` (eine Schnittstelle, Modelle je Ansicht als Fluss von `ViewState`), `ViewState`, `ErrorKind`, `FinanceJson`, `todayFlow` (Tageswechsel) |
 | `data/model/` | Kotlin-Spiegel der Convex-Antworten, siehe [datenschicht.md](datenschicht.md) |
 | `auth/` | `AuthGateway` (E-Mail-Code in zwei Schritten, `Session`), Release-Variante „nicht eingerichtet“ |
-| `ui/theme/` | `AccuraTheme` (Material 3 Expressive, Dynamic Color, „Animationen entfernen“), feste Farbrollen `AccuraColors`, Rückfall-Schema `RueckfallFarben` (erzeugt), Schrift und Skala `Typografie` |
-| `ui/katalog/` | Bausteine nach dem Leitfaden: Hauptzahl-Karte, Kennzahl, „So gerechnet“, Liste, Hinweis, Einspar-Hinweis, Leerzustand, Datenalter-Chip und Art, Betragsfeld, Auswahl, Schrittanzeige, Aufteilungsbalken, Expressive-Zeichen (`Expressive.kt`), Lade-, Fehler- und Veraltet-Zustand, `Bausteinkatalog` |
-| `ui/format/` | Anzeigeformate (Cent, Prozent, Datum), reine Funktionen |
-| `ui/screens/` | Übersicht in drei Varianten (Prototyp, `OverviewVariant`, siehe [prototyp.md](prototyp.md)), Demnächst, Budget, Schulden (zustandslos, nehmen einen `ViewState`), Debug-Menü |
+| `ui/theme/` | `AccuraTheme` (Material 3 Expressive, Dynamic Color, „Animationen entfernen“), feste Farbrollen `AccuraColors`, Rückfall-Schema `RueckfallFarben` (erzeugt), Schrift und Skala `Typografie`, Abstände und Radien `Raster` und `AccuraShapes` |
+| `ui/katalog/` | Bausteine nach dem Leitfaden: Hauptzahl-Karte, Kennzahl, „So gerechnet“, Liste, Hinweis, Einspar-Hinweis, Leerzustand, Datenalter-Chip und Art, Betragsfeld, Auswahl, Schrittanzeige, Aufteilungsbalken, Expressive-Zeichen (`Expressive.kt`), Lade-, Fehler- und Veraltet-Zustand, `Bausteinkatalog`. Dazu aus Runde 2 des Prototyps: Kachel, Wert-Kachel, Blatt und Pillen-Knopf (`Kacheln.kt`), Ring und Anteil-Pille (`Aufteilung.kt`), Listengruppe (`Gruppe.kt`), Zeitleiste (`Zeitleiste.kt`), Diagramme mit Canvas (`Diagramme.kt`) |
+| `ui/format/` | Anzeigeformate (Cent, Prozent, Datum, Achsengrenzen für Diagramme), reine Funktionen |
+| `ui/screens/` | Übersicht, Demnächst, Budget, Schulden (zustandslos, nehmen einen `ViewState`; Gestaltung siehe [prototyp.md](prototyp.md)), Debug-Menü |
 | `ui/anmeldung/` | Anmeldeseite und ihr ViewModel |
 | `ui/navigation/` | die vier Ziele |
 | `src/debug/` | Fake-Anmeldung, Fake-Datenquelle, `createAppGraph` mit Testdaten |
@@ -27,8 +27,8 @@ Paket `app.kiumu.accura` im Modul `app`. Es gibt ein einziges Gradle-Modul. Them
 
 - Die Anmeldung ist ein **Zustand**, keine Route (`AccuraApp`). Abgemeldet erreicht niemand eine Ansicht, auch nicht über Zurück.
 - Jeder Sitzungszustand hat einen eigenen ViewModel-Speicher (`SessionScope`). Beim Abmelden verschwinden die ViewModels der Ansichten samt ihren Finanzdaten, beim Anmelden bleibt kein halber Anmeldeschritt hängen.
-- Angemeldet: `Scaffold` mit Titel, Konto-Menü (Abmelden, im Debug-Build „Entwicklung“) und `ShortNavigationBar` mit den vier Ansichten (Compose Navigation). Die Leiste skaliert die Schrift nur bis 130 %, weil vier Namen sonst mitten im Wort brechen; der Inhalt skaliert voll.
-- Das Debug-Menü „Entwicklung“ schaltet die Variante der Übersicht und das Szenario der Fake-Daten (Standard, Leer, Negativ, Alte Stände, Ohne Gehaltstag, Offline-Kopie, Lädt, Fehler) und zeigt den Bausteinkatalog. Im Debug-Build schaltet zusätzlich das Symbol „Testdaten wechseln“ in der Kopfzeile durch die Szenarien mit Daten, ohne die Ansicht zu verlassen.
+- Angemeldet: `Scaffold` mit Titel, Konto-Menü (Abmelden, im Debug-Build „Entwicklung“), `ShortNavigationBar` mit den vier Ansichten (Compose Navigation) und einer Snackbar. Die Hauptaktionen „Stände aktualisieren“ und „Gehaltstag eintragen“ zeigen dort bis zur Ersterfassung (Phase 3) den Hinweis „Eintragen kommt mit der Ersterfassung.“ Die Leiste skaliert die Schrift nur bis 130 %, weil vier Namen sonst mitten im Wort brechen; der Inhalt skaliert voll.
+- Das Debug-Menü „Entwicklung“ schaltet das Szenario der Fake-Daten (Standard, Leer, Negativ, Alte Stände, Ohne Gehaltstag, Offline-Kopie, Lädt, Fehler) und zeigt den Bausteinkatalog. Im Debug-Build schaltet zusätzlich das Symbol „Testdaten wechseln“ in der Kopfzeile durch die Szenarien mit Daten, ohne die Ansicht zu verlassen.
 - Fake-Anmeldung (nur Debug): jede gültige Adresse bekommt einen Code, der Code ist `123456`. `offline@example.test` meldet „keine Verbindung“, `000000` „Code abgelaufen“.
 
 ## Material 3 und Version
@@ -42,6 +42,7 @@ Farben: Dynamic Color als Grundstimmung (`dynamicLightColorScheme`/`dynamicDarkC
 ## Regeln im Code
 
 - Composables rechnen nichts nach. Anzeigeformate (`ui/format`) setzen Zahlen nur zusammen, ohne Kommazahlen. „Leer“ entscheidet das Modell (`isEmpty`, Status `empty`, keine Kredite).
+- Anteile des Einkommens zeigt die App so, wie das Backend sie liefert (`sharePercent`, ganze Prozent, zusammen 100). Sie summiert keine Anteile. Diagramme zeichnen nur, was als Text daneben steht; gerundet werden nur Achsen.
 - Beträge stehen einzeilig mit tabellarischen Ziffern und geschütztem Leerzeichen vor dem Euro-Zeichen. Die große Zahl schrumpft (`TextAutoSize`), statt abgeschnitten zu werden. Bei Schrift ab 130 % stehen Kennzahlen und Listenzeilen gestapelt.
 - Datenalter-Chip: Uhr, gestrichelter Rand und das Wort „Alt“ tragen die Aussage, nicht nur die Farbe.
 - Alle Texte stehen in `strings.xml`. Ausnahme: Beschriftungen und Beispieldaten des Bausteinkatalogs (nur Debug-Menü, nur Entwicklern sichtbar).
@@ -56,18 +57,17 @@ Farben: Dynamic Color als Grundstimmung (`dynamicLightColorScheme`/`dynamicDarkC
 | Screenshots ohne Emulator (Roborazzi) | `src/testDebug/.../screenshots`, Referenzen in `src/test/screenshots` | `./gradlew :app:verifyRoborazziDebug`, neu aufnehmen mit `:app:recordRoborazziDebug` |
 | Lint | | `./gradlew :app:lint` |
 
-Screenshot-Tests: jede Ansicht in Hell, Dunkel, großer Schrift (200 %), leer, negativ, alte Stände, Offline-Kopie, Übersicht und Demnächst zusätzlich ohne Gehaltstag, die Varianten „Spielraum zuerst“ und „Zeitleiste“ der Übersicht (`uebersicht-spielraum/`, `uebersicht-zeitleiste/`), dazu die ganze App mit Leiste, die Anmeldung und der Katalog (auch in voller Länge). Roborazzi vergleicht mit einer kleinen Toleranz (0,5 %).
+Screenshot-Tests: jede Ansicht in Hell, Dunkel, großer Schrift (200 %), leer, negativ, alte Stände, Offline-Kopie, Übersicht und Demnächst zusätzlich ohne Gehaltstag, jede Ansicht in voller Länge, dazu die ganze App mit Leiste, die Anmeldung und der Katalog (auch in voller Länge). Roborazzi vergleicht mit einer kleinen Toleranz (0,5 %).
 
-Weitere Tests: `BarrierefreiheitTest` (48 dp, Namen, 200 % ohne abgeschnittene Texte, je Variante und Szenario), `BewegungTest` („Animationen entfernen“), `KontrastTest` (Farbrollen und Rückfall-Schema).
+Weitere Tests: `BarrierefreiheitTest` (48 dp, Namen, 200 % ohne abgeschnittene Texte, je Ansicht und Szenario), `BewegungTest` („Animationen entfernen“), `KontrastTest` (Farbrollen, Rückfall-Schema, Kacheln, Anteil-Pillen). `AppFlowTest` prüft auch das Blatt einer Kachel, den Platzhalter-Hinweis und die Tabelle zur Restschuldkurve.
 
 Robolectric läuft mit Android 16 (API 36, `robolectric.properties`): Mit API 37 scheitert Espresso in Robolectric 4.17 (`InputManagerEventInjectionStrategy`). Die App selbst zielt auf API 37 und wurde im Emulator mit API 37 geprüft.
 
 ## Offen
 
 - Clerk (`clerk-android-api`) und Convex-Client hinter `AuthGateway` und `FinanceRepository`. Dort kommt auch die Zuordnung von int64 (`Long`) und die Offline-Kopie dazu.
-- Wahl der Übersicht-Variante und des Rückfall-Farbtons (siehe [prototyp.md](prototyp.md)).
+- Offene Gestaltungsfragen und Rückfall-Farbton: siehe [prototyp.md](prototyp.md), Abschnitt „Offen“.
 - Sperre, `FLAG_SECURE`, verschlüsselte Offline-Kopie (Phase 5).
 - Anmeldung: Schritt und E-Mail überleben Drehen und Prozess-Ende (`rememberSaveable` in `SignInRoute`, weil `SessionScope` einen eigenen ViewModel-Speicher ohne `SavedStateHandle` hat). Der Code selbst bleibt nicht erhalten, er ist nur kurz gültig. Der Test `Code-Schritt bleibt nach Drehen oder Prozess-Ende stehen` schlägt ohne diese Lösung fehl.
 - TalkBack-Durchgang von Hand. Namen und Rollen sind gesetzt, ein Durchgang mit dem Screenreader steht aus.
 - CI für die App (Lint, Tests, `verifyRoborazziDebug`).
-- Einkommens-Ring: Das Backend liefert Anteile, die exakt 10.000 Basispunkte ergeben. Die App zeigt sie als ganze Prozent, je Anteil gerundet; mit den Testdaten ergibt das 72 + 14 + 10 + 5 = 101 %. Ob ganze Prozent vom Backend kommen oder die App Nachkommastellen zeigt, ist offen.
