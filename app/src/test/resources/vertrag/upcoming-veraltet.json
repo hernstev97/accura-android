@@ -1,0 +1,225 @@
+{
+  "today": "2026-08-08",
+  "nextSalaryDay": "2026-08-25",
+  "daysUntilSalary": 17,
+  "payments": [
+    {
+      "id": "installment-a",
+      "name": "Finanzierung A",
+      "source": "debt",
+      "cents": 12000,
+      "dueDay": "2026-08-15",
+      "dayOfMonth": 15,
+      "daysUntilDue": 7,
+      "isShortlyBeforeSalary": false
+    },
+    {
+      "id": "insurance",
+      "name": "Versicherungen",
+      "source": "budget",
+      "cents": 10000,
+      "dueDay": "2026-08-15",
+      "dayOfMonth": 15,
+      "daysUntilDue": 7,
+      "isShortlyBeforeSalary": false
+    },
+    {
+      "id": "primary-loan",
+      "name": "Ratenkredit",
+      "source": "debt",
+      "cents": 22645,
+      "dueDay": "2026-08-20",
+      "dayOfMonth": 20,
+      "daysUntilDue": 12,
+      "isShortlyBeforeSalary": true
+    }
+  ],
+  "pendingPayments": {
+    "key": "pendingPayments",
+    "unit": "cents",
+    "kind": "planned",
+    "value": 44645,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Finanzierung A",
+        "cents": 12000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-15"
+      },
+      {
+        "op": "plus",
+        "label": "Versicherungen",
+        "cents": 10000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-15"
+      },
+      {
+        "op": "plus",
+        "label": "Ratenkredit",
+        "cents": 22645,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-20"
+      },
+      {
+        "op": "result",
+        "label": "Fällig bis zum Gehalt",
+        "cents": 44645,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "accountsTotal": {
+    "key": "accountsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": 135075,
+    "day": null,
+    "status": "stale",
+    "reason": "Der älteste Stand ist mehr als 7 Tage alt.",
+    "dataAgeDays": 38,
+    "oldestDataDay": "2026-07-01",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Alltagskonto",
+        "cents": 120025,
+        "bps": null,
+        "count": null,
+        "day": "2026-07-01"
+      },
+      {
+        "op": "plus",
+        "label": "Reise-Wallet",
+        "cents": 12050,
+        "bps": null,
+        "count": null,
+        "day": "2026-07-01"
+      },
+      {
+        "op": "plus",
+        "label": "Bargeld",
+        "cents": 3000,
+        "bps": null,
+        "count": null,
+        "day": "2026-07-01"
+      },
+      {
+        "op": "result",
+        "label": "Auf den Konten",
+        "cents": 135075,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "availableUntilSalary": {
+    "key": "availableUntilSalary",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 90430,
+    "day": null,
+    "status": "stale",
+    "reason": "Die Kontostände sind nicht mehr frisch.",
+    "dataAgeDays": 38,
+    "oldestDataDay": "2026-07-01",
+    "steps": [
+      {
+        "op": "start",
+        "label": "Auf den Konten",
+        "cents": 135075,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Finanzierung A",
+        "cents": 12000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-15"
+      },
+      {
+        "op": "minus",
+        "label": "Versicherungen",
+        "cents": 10000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-15"
+      },
+      {
+        "op": "minus",
+        "label": "Ratenkredit",
+        "cents": 22645,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-20"
+      },
+      {
+        "op": "note",
+        "label": "Nächstes Gehalt",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-25"
+      },
+      {
+        "op": "result",
+        "label": "Bis Gehalt verfügbar",
+        "cents": 90430,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "dailyAllowance": {
+    "key": "dailyAllowance",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 5319,
+    "day": null,
+    "status": "stale",
+    "reason": "Die Kontostände sind nicht mehr frisch.",
+    "dataAgeDays": 38,
+    "oldestDataDay": "2026-07-01",
+    "steps": [
+      {
+        "op": "start",
+        "label": "Bis Gehalt verfügbar",
+        "cents": 90430,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Tage bis zum Gehalt",
+        "cents": null,
+        "bps": null,
+        "count": 17,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Pro Tag, abgerundet",
+        "cents": 5319,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  }
+}

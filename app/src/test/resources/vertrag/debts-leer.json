@@ -1,0 +1,125 @@
+{
+  "today": "2026-08-08",
+  "debts": [],
+  "remaining": {
+    "key": "debtRemaining",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 0,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "result",
+        "label": "Restschuld nach Plan",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "payoffMax": {
+    "key": "payoffMax",
+    "unit": "cents",
+    "kind": "estimated",
+    "value": 0,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "result",
+        "label": "Ablösesumme höchstens",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "interestToEnd": {
+    "key": "interestToEnd",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 0,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "result",
+        "label": "Zinsen bis Laufzeitende",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "extraCostVsPayoff": {
+    "key": "extraCostVsPayoff",
+    "unit": "cents",
+    "kind": "estimated",
+    "value": 0,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "start",
+        "label": "Noch planmäßig zu zahlen",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Ablösesumme höchstens",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Mehrkosten gegenüber sofortiger Ablösung",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "debtFreeDay": {
+    "key": "debtFreeDay",
+    "unit": "day",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "ok",
+    "reason": "Keine laufenden Schulden.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "monthlyRatesCents": 0,
+  "relief": [],
+  "trajectory": [
+    {
+      "day": "2026-08-08",
+      "month": "2026-08",
+      "balanceCents": 0
+    }
+  ]
+}

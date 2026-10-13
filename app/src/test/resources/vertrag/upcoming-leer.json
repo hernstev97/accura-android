@@ -1,0 +1,54 @@
+{
+  "today": "2026-08-08",
+  "nextSalaryDay": null,
+  "daysUntilSalary": null,
+  "payments": [],
+  "pendingPayments": {
+    "key": "pendingPayments",
+    "unit": "cents",
+    "kind": "planned",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "accountsTotal": {
+    "key": "accountsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Noch kein Konto erfasst.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "availableUntilSalary": {
+    "key": "availableUntilSalary",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "dailyAllowance": {
+    "key": "dailyAllowance",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  }
+}

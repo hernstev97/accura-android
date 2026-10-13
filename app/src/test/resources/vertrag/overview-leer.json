@@ -1,0 +1,131 @@
+{
+  "today": "2026-08-08",
+  "isEmpty": true,
+  "accounts": [],
+  "pockets": [],
+  "accountsTotal": {
+    "key": "accountsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Noch kein Konto erfasst.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "pocketsTotal": {
+    "key": "pocketsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Noch kein Pocket erfasst.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "availableUntilSalary": {
+    "key": "availableUntilSalary",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "dailyAllowance": {
+    "key": "dailyAllowance",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "freeMonthly": {
+    "key": "freeMonthly",
+    "unit": "cents",
+    "kind": "planned",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Das Monatseinkommen fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "bufferMonths": {
+    "key": "bufferMonths",
+    "unit": "monthsX100",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Noch kein Konto erfasst.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "netWorth": {
+    "key": "netWorth",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Noch kein Konto erfasst.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "debtRemaining": {
+    "key": "debtRemaining",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 0,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "result",
+        "label": "Restschuld nach Plan",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "debtFreeDay": {
+    "key": "debtFreeDay",
+    "unit": "day",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "ok",
+    "reason": "Keine laufenden Schulden.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "incomeSplit": null,
+  "nextRelief": null,
+  "dataAge": {
+    "oldestDay": null,
+    "oldestAgeDays": null,
+    "staleCount": 0,
+    "items": []
+  }
+}
