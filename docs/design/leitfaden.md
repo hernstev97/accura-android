@@ -8,6 +8,13 @@
 
 Stand: 13. Oktober 2026. **Entwurf, Steven prüft.** Quellen sind der Plan und Stevens geparkte Notizen zu Material 3 Expressive. Was der Plan nicht festlegt, steht als „offen“ da. Die Werte unter „Dummy“ gelten für die HTML-Klick-Dummys, nicht für die spätere Compose-App.
 
+## Richtung (Steven, 13. Oktober 2026)
+
+- **Nah an der alten Web-App bleiben**, aber geradeziehen und sauber machen. Aufbau der Übersicht wie dort: Begrüßung mit Monat, Einkommens-Ring links mit drei Füll-Kacheln rechts (Ausgaben, Rücklagen, frei), darunter zwei Kennzahl-Kacheln (jetzt verfügbar, Rücklagen), die Karte „Nächster Spielraum“, Konten als Liste, Pockets als Kachelraster. Schulden wie „Dein Weg auf null“ mit Restschuldkurve und den Stufen „Mehr frei durch auslaufende Raten“.
+- **Vorbild für die Ausführung ist Google Health** (Android): großer Ring mit drei pillenförmigen Kacheln daneben, Kacheln mit kräftiger Füllfarbe für den Fokus, gedämpfte Kacheln für den Rest, große Pillen-Knöpfe für die Hauptaktionen, ein Raster „wichtigste Werte“ mit kleinen Verläufen und „Keine Daten“-Chips, Karten mit großen Radien auf dunklem Grund, eine Leiste mit wenigen Zielen.
+- **Die Zeitleiste aus dem Prototyp (Variante C) bleibt**, als Baustein für „Was kommt“: heute, jeden Monat, auslaufende Raten, schuldenfrei.
+- Die Varianten A und B des ersten Prototyps entfallen in dieser Form.
+
 ## Die sieben Regeln
 
 1. **Wenige Bausteine, überall gleich.** Jede Ansicht setzt sich nur aus dem Katalog unten zusammen. Neue Bausteine nur mit Begründung.
