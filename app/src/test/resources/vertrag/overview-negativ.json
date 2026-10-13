@@ -689,22 +689,26 @@
       {
         "key": "expenses",
         "cents": 215000,
-        "shareBps": 14333
+        "shareBps": 14333,
+        "sharePercent": 143
       },
       {
         "key": "rates",
         "cents": 40645,
-        "shareBps": 2710
+        "shareBps": 2710,
+        "sharePercent": 27
       },
       {
         "key": "reserves",
         "cents": 30000,
-        "shareBps": 2000
+        "shareBps": 2000,
+        "sharePercent": 20
       },
       {
         "key": "free",
         "cents": -135645,
-        "shareBps": -9043
+        "shareBps": -9043,
+        "sharePercent": -90
       }
     ]
   },
