@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addCents, floorDiv, floorMulDiv, monthlyInterestCents, mulDivRound, ratioBps, sumCents } from "../../convex/lib/money";
+import { addCents, floorDiv, floorMulDiv, monthlyInterestCents, mulDivRound, ratioBps, splitBps, sumCents } from "../../convex/lib/money";
 import { fromInt64, toInt64, toWire } from "../../convex/lib/wire";
 
 describe("Rundung auf ganze Cent", () => {
@@ -54,6 +54,60 @@ describe("Anteile in Basispunkten", () => {
 
   it("lässt negative Anteile negativ", () => {
     expect(ratioBps(-14_500, 100_000)).toBe(-1_450);
+  });
+});
+
+describe("Anteile, die sich auf 100 % summieren", () => {
+  it("lässt exakte Anteile unverändert", () => {
+    expect(splitBps([50_000, 25_000, 25_000], 100_000)).toEqual([5_000, 2_500, 2_500]);
+  });
+
+  it("gibt einen fehlenden Basispunkt (Drittel) dem größten Anteil: 3.333 × 3 = 9.999", () => {
+    // Einzeln gerundet: 3.333 + 3.333 + 3.333 = 9.999. Gleichstand: der erste ist der größte.
+    expect(splitBps([10_000, 10_000, 10_000], 30_000)).toEqual([3_334, 3_333, 3_333]);
+  });
+
+  it("nimmt einen überzähligen Basispunkt vom größten Anteil: 7.167 + 1.355 + 1.000 + 479 = 10.001", () => {
+    expect(ratioBps(215_000, 300_000)! + ratioBps(40_645, 300_000)! + ratioBps(30_000, 300_000)! + ratioBps(14_355, 300_000)!).toBe(10_001);
+    expect(splitBps([215_000, 40_645, 30_000, 14_355], 300_000)).toEqual([7_166, 1_355, 1_000, 479]);
+  });
+
+  it("verteilt auch einen Rest von −2 auf den größten Anteil, nicht auf die halben Werte", () => {
+    // Echte Anteile 4.999,5 / 2.500,5 / 2.499,5 / 0,5 – jeder halbe Wert rundet auf: 5.000 + 2.501 + 2.500 + 1 = 10.002.
+    expect(splitBps([9_999, 5_001, 4_999, 1], 20_000)).toEqual([4_998, 2_501, 2_500, 1]);
+  });
+
+  it("gibt bei Gleichstand dem ersten der größten Anteile den Rest", () => {
+    expect(splitBps([0, 10_000, 10_000, 10_000], 30_000)).toEqual([0, 3_334, 3_333, 3_333]);
+  });
+
+  it("verträgt einen negativen Anteil, die Summe bleibt 100 %", () => {
+    // Einkommen 300,01 €: überplant um 99,99 €, der freie Anteil ist negativ.
+    const shares = splitBps([200_000, 100_000, 100_000, -99_999], 300_001);
+    expect(shares.reduce((sum, share) => sum! + share!, 0)).toBe(10_000);
+    expect(shares[3]).toBeLessThan(0);
+  });
+
+  it("summiert für viele Aufteilungen immer genau auf 10.000 und weicht höchstens 2 Basispunkte von der Einzelrundung ab", () => {
+    let seed = 12_345;
+    const next = (max: number) => {
+      seed = (seed * 1_103_515_245 + 12_345) % 2_147_483_648;
+      return seed % max;
+    };
+    for (let run = 0; run < 2_000; run++) {
+      const parts = [next(200_000), next(100_000), next(50_000), next(80_000)];
+      const whole = parts.reduce((sum, part) => sum + part, 0);
+      if (whole === 0) continue;
+      const shares = splitBps(parts, whole)!;
+      expect(shares.reduce((sum, share) => sum! + share!, 0)).toBe(10_000);
+      parts.forEach((part, index) => expect(Math.abs(shares[index]! - ratioBps(part, whole)!)).toBeLessThanOrEqual(2));
+    }
+  });
+
+  it("erfindet keinen Anteil ohne positive Bezugsgröße", () => {
+    expect(splitBps([100, 200], 0)).toEqual([null, null]);
+    expect(splitBps([100, 200], -5)).toEqual([null, null]);
+    expect(splitBps([], 100)).toEqual([]);
   });
 });
 

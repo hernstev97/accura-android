@@ -6,7 +6,7 @@ Quelle: `convex/lib/` (reine Funktionen), getestet in `tests/lib/`. Der Rechenke
 
 - **Cent.** Alle Beträge sind sichere Integer in Cent. Multiplikation mit anschließender Division läuft über BigInt (`lib/money.ts`).
 - **Rundung.** Auf ganze Cent und Basispunkte wird kaufmännisch gerundet, halbe Werte von null weg (2,5 → 3, −2,5 → −3). Ausnahmen, immer abgerundet: Tagesrahmen und Puffer (siehe unten).
-- **Anteile** in Basispunkten (10.000 = 100 %) sind einzeln gerundet. Ihre Summe kann um 1 bis 2 Basispunkte von 10.000 abweichen. Die Cent-Beträge dahinter gehen genau auf. Ohne positive Bezugsgröße ist der Anteil `null`.
+- **Anteile** in Basispunkten (10.000 = 100 %) sind einzeln gerundet. Ihre Summe kann um 1 bis 2 Basispunkte von 10.000 abweichen. Die Cent-Beträge dahinter gehen genau auf. Ohne positive Bezugsgröße ist der Anteil `null`. **Ausnahme Einkommens-Ring** (`incomeSplit` der Übersicht): Dort summieren sich die Anteile exakt auf 10.000. Der Rest nach dem Runden (meist −2 bis +2) geht an den größten Anteil, bei Gleichstand an den ersten (`splitBps` in `lib/money.ts`). Beispiel: 7.167 + 1.355 + 1.000 + 479 = 10.001, also bekommt der größte Anteil 7.166.
 - **Kalender.** Tage sind `"JJJJ-MM-TT"`, gerechnet wird über Tagesnummern (`lib/calendar.ts`), nie über `Date` in einer Zeitzone. **Das heutige Datum ist ein Argument** jeder Abfrage (`today`) und kommt aus Stevens Zeitzone. Es gibt keine Uhr in Abfragen, weil Convex Abfrageergebnisse zwischenspeichert. `calendarDayInZone` rechnet einen Zeitpunkt in einen Tag um (für Mutationen, etwa den Tag eines `recordedAt`).
 - **Tag 29 bis 31** rutscht in kurzen Monaten auf den letzten Tag. Bei Raten bleibt der Tag der ersten Rate maßgeblich (31. Jan. → 28. Feb. → 31. März).
 - **Negative Werte bleiben negativ.** Nichts wird auf null geschönt.
@@ -38,7 +38,7 @@ Die Labels der Rechenwege sind deutsche Texte aus dem Backend (feste Formulierun
 | `accountsTotal` | Summe der jüngsten Stände aller aktiven Konten bis heute. Fehlt einem aktiven Konto der Stand, ist sie `unavailable`. |
 | `pocketsTotal` | Wie oben für Pockets, nur Information. |
 | `pendingPayments` | Summe der Zahlungen im Fenster [heute, nächster Gehaltstag). |
-| `availableUntilSalary` | `accountsTotal − pendingPayments`. Ohne Gehaltstag `unavailable`. |
+| `availableUntilSalary` | `accountsTotal − pendingPayments`. Ohne Gehaltstag `unavailable` (`salaryStatus: "missing"`). |
 | `dailyAllowance` | `availableUntilSalary ÷ Tage bis zum Gehalt`, **abgerundet**, damit Tage × Tagesrahmen den Betrag nie übersteigen. Am Gehaltstag selbst `unavailable`. |
 | `freeMonthly` | `Einkommen − aktive Budgetposten (Ausgaben und Rücklagen) − Monatsraten laufender Kredite`. Ohne Einkommen `unavailable`. |
 | `bufferMonths` | `accountsTotal ÷ notwendige Kosten pro Monat`, in Hundertstel Monaten, abgerundet. Notwendige Kosten: aktive Ausgaben der Stufen `essential` und `necessary` plus Monatsraten (Rücklagen zählen nicht). Ohne solche Kosten `unavailable`. |
@@ -49,7 +49,27 @@ Die Labels der Rechenwege sind deutsche Texte aus dem Backend (feste Formulierun
 | `extraCostVsPayoff` | Noch planmäßig zu zahlen minus `payoffMax`. |
 | `debtFreeDay` | Letzte Rate aller laufenden Kredite. Ohne laufende Schulden `day = null`, Status `ok`. |
 
-**Fälligkeiten (Demnächst).** Das Fenster beginnt heute (heute fällige Zahlungen zählen mit) und endet vor dem nächsten Gehaltstag (Zahlungen am Gehaltstag selbst zählen nicht). Der Gehaltstag ist der nächste am oder nach heute. Budgetposten mit `dueDay` fallen monatlich an, solange `contractEndDay` nicht überschritten ist. Kredite liefern ihre Raten aus dem Tilgungsplan, einschließlich der Schlussrate. „Kurz vor Gehalt“ gilt für Fälligkeiten 1 bis 7 Tage vor dem Gehalt. Gegenüber der Altanwendung gilt neu: Ohne Gehaltstag zeigt die App keine Zahl, statt den Kontostand als „sicher verfügbar“ auszugeben.
+**Fälligkeiten (Demnächst).** Das Fenster beginnt heute (heute fällige Zahlungen zählen mit) und endet vor dem nächsten Gehaltstag (Zahlungen am Gehaltstag selbst zählen nicht). Der Gehaltstag ist der nächste am oder nach heute. Budgetposten mit `dueDay` fallen monatlich an, solange `contractEndDay` nicht überschritten ist. Kredite liefern ihre Raten aus dem Tilgungsplan, einschließlich der Schlussrate. „Kurz vor Gehalt“ gilt für Fälligkeiten 1 bis 7 Tage vor dem Gehalt. Gegenüber der Altanwendung gilt neu: Ohne Gehaltstag gibt es keine Zahl, statt den Kontostand als „sicher verfügbar“ auszugeben. Übersicht und Demnächst melden dann `salaryStatus: "missing"` (sonst `"set"`); `pendingPayments`, `availableUntilSalary` und `dailyAllowance` sind `unavailable` mit dem Grund „Der Gehaltstag fehlt.“ und einem Rechenweg aus einer Zeile (`note`), die erklärt, dass der Gehaltstag einzutragen ist. Ein ungültiger Gehaltstag (nicht 1 bis 31) zählt als fehlend.
+
+### Zahlungen rund um den Gehaltstag (Regel von heute, noch nicht bestätigt)
+
+Das Fenster „bis Gehalt“ ist halboffen: Es beginnt heute und endet am Gehaltstag, ohne ihn einzuschließen. Eine Zahlung, die heute fällig ist, zählt also mit, eine Zahlung am Gehaltstag selbst nicht, weil sie als vom neuen Gehalt gedeckt gilt. Ist heute der Gehaltstag, ist das Fenster leer: keine Zahlungen, kein Tagesrahmen, und „bis Gehalt verfügbar“ ist der volle Kontostand. Am Tag danach beginnt das Fenster bis zum nächsten Gehaltstag. Ein Gehaltstag über 28 rutscht im kurzen Monat auf den letzten Tag, eine Zahlung mit Tag 29 bis 31 ebenso; fallen beide auf denselben Tag, zählt die Zahlung nicht. Wochenenden kennt die Regel nicht, der Gehaltstag bleibt der Kalendertag. Folge: Eine Zahlung genau am Gehaltstag erscheint in keinem Zeitraum und wird nirgends abgezogen. Belegt durch `tests/lib/gehaltstag.test.ts`; Konto 1.000,00 €, Zahlung 100,00 €.
+
+| Fall | Heute | Gehaltstag | Zahlung am | zählt bis Gehalt? | Verfügbar bis Gehalt |
+| --- | --- | --- | --- | --- | --- |
+| Tag davor | 20.08.2026 | 25.08. | 24.08. | ja | 900,00 € (180,00 € pro Tag) |
+| Am Gehaltstag | 20.08.2026 | 25.08. | 25.08. | nein | 1.000,00 € (200,00 € pro Tag) |
+| Tag danach | 20.08.2026 | 25.08. | 26.08. | nein, gehört zum nächsten Zeitraum | 1.000,00 € |
+| Heute fällig | 20.08.2026 | 25.08. | 20.08. | ja | 900,00 € |
+| Heute ist Gehaltstag | 25.08.2026 | 25.08. | 25.08. | nein, kein Fenster | 1.000,00 €, kein Tagesrahmen |
+| Tag nach dem Gehaltstag | 26.08.2026 | 25.08. (nächster: 25.09.) | 25.08. | nein, vorbei und im nächsten Fenster nicht enthalten | 1.000,00 € |
+| Kurzer Monat | 20.02.2026 | 31. → 28.02. | 30. oder 31. → 28.02. | nein, gleicher Tag | 1.000,00 € |
+| Kurzer Monat, Tag davor | 20.02.2026 | 31. → 28.02. | 27.02. | ja | 900,00 € |
+| Schaltjahr | 20.02.2028 | 31. → 29.02. | 29.02. / 28.02. | nein / ja | 1.000,00 € / 900,00 € |
+| Wochenende | 20.08.2026 | 29.08. (Samstag) | 28.08. / 29.08. | ja / nein, keine Verschiebung auf Freitag | 900,00 € / 1.000,00 € |
+| Monatsende | 28.08.2026 | 05.09. | 31.08. | ja | 900,00 € |
+| Letzter Tag vor dem 1. | 30.08.2026 | 01.09. | 31.08. / 01.09. | ja / nein | 900,00 € / 1.000,00 € |
+| Kreditrate | 10.09.2026 | 15.09. / 16.09. | Rate am 15.09. | nein / ja | – |
 
 **Monatsraten.** Als Rate zählt jeder aktive Kredit, der ab heute noch eine Rate hat, mit seiner Monatsrate. Ein Kredit, dessen erste Rate noch aussteht, zählt schon mit (vorsichtig geplant).
 
@@ -76,11 +96,11 @@ Alle erwarten `today` und liefern ein Modell, in dem jede Ganzzahl `int64` ist. 
 
 | Abfrage | Inhalt |
 | --- | --- |
-| `views:overview` | Konten und Pockets mit Stand und Alter, `accountsTotal`, `availableUntilSalary`, `dailyAllowance`, `freeMonthly`, `bufferMonths`, `netWorth`, `debtRemaining`, `debtFreeDay`, Aufteilung des Einkommens, nächste Entlastung, Datenalter je Stand |
+| `views:overview` | `salaryStatus`, Konten und Pockets mit Stand und Alter, `accountsTotal`, `availableUntilSalary`, `dailyAllowance`, `freeMonthly`, `bufferMonths`, `netWorth`, `debtRemaining`, `debtFreeDay`, Aufteilung des Einkommens, nächste Entlastung, Datenalter je Stand |
 | `views:budget` | Status (`empty`, `income_missing`, `within_budget`, `overdrawn`), Einkommen, Ausgaben, Rücklagen, Raten, `freeMonthly`, Auslastung, Posten nach Notwendigkeit und Kategorie |
 | `views:debts` | je Kredit: Vertragsdaten, Restschuld (Kennzahl), nächste und letzte Rate, Restzahlungen, Zinsen, Ablösesumme, Abweichung vom Bankstand, Beispiel Sondertilgung, Warnungen; dazu die Summen, Entlastungen und der Verlauf |
 | `views:debtSchedule` | Tilgungsplan eines Kredits (Raten ab dem Bankstand, `paid` oder `upcoming`) |
-| `views:upcoming` | Gehaltstag, Tage bis dahin, Zahlungen, `pendingPayments`, `availableUntilSalary`, `dailyAllowance` |
+| `views:upcoming` | `salaryStatus`, Gehaltstag, Tage bis dahin, Zahlungen, `pendingPayments`, `availableUntilSalary`, `dailyAllowance` |
 
 Aus der Altanwendung übernommen (und in `tests/lib/views.test.ts` nachgebildet) sind die Regeln und Grenzfälle zu Gehaltstag, Fälligkeitstag am Monatsende und im Schaltjahr, Zahlung am Gehaltstag, Zahlung von gestern, negative Kontostände, leere Budgets, Einkommen ≤ 0 und sehr große Beträge. Die Testdaten sind neu ausgedacht; sie stehen in `convex/lib/fixtures.ts`.
 

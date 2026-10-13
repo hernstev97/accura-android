@@ -1,11 +1,11 @@
 import type { DebtPlan, ScheduleRow, ScheduleWarning } from "./amortization";
 import type { CalendarDay } from "./calendar";
-import { derive, standView, type Derived, type StandView } from "./derive";
+import { derive, standView, type Derived, type SalaryStatus, type StandView } from "./derive";
 import type { DebtState, SpecialRepaymentExample } from "./debts";
 import { DEBT_ANCHOR_STALE_AFTER_DAYS, ageInDays, isStale } from "./freshness";
 import type { AccountKind, DebtKind, FinanceInput, Necessity } from "./input";
 import { metric, steps, unavailable, type Metric } from "./metric";
-import { ratioBps } from "./money";
+import { ratioBps, splitBps } from "./money";
 import type { UpcomingPayment } from "./upcoming";
 
 /**
@@ -27,6 +27,8 @@ export type DataAgeItem = {
 
 export type OverviewModel = {
   today: CalendarDay;
+  /** `missing`: Es ist kein Gehaltstag gesetzt, „Bis Gehalt“ und Tagesrahmen haben keine Zahl. */
+  salaryStatus: SalaryStatus;
   /** Es ist noch gar nichts erfasst. */
   isEmpty: boolean;
   accounts: { id: string; name: string; kind: AccountKind; stand: StandView | null }[];
@@ -95,19 +97,25 @@ export function buildOverview(input: FinanceInput): OverviewModel {
   const incomeSplit =
     d.split === null || input.incomeCents === null
       ? null
-      : {
-          incomeCents: input.incomeCents,
-          parts: [
+      : (() => {
+          const parts = [
             { key: "expenses" as const, cents: d.split.expensesCents },
             { key: "rates" as const, cents: d.split.ratesCents },
             { key: "reserves" as const, cents: d.split.reservesCents },
             { key: "free" as const, cents: d.split.freeCents },
-          ].map((part) => ({ ...part, shareBps: ratioBps(part.cents, input.incomeCents!) })),
-        };
+          ];
+          // Der Ring summiert exakt auf 100 %: Der Rest nach dem Runden geht an den größten Anteil.
+          const shares = splitBps(parts.map((part) => part.cents), input.incomeCents);
+          return {
+            incomeCents: input.incomeCents,
+            parts: parts.map((part, index) => ({ ...part, shareBps: shares[index] ?? null })),
+          };
+        })();
 
   const relief = d.debtAggregates.relief[0];
   return {
     today,
+    salaryStatus: d.salaryStatus,
     isEmpty:
       input.accounts.length === 0 &&
       input.budgetItems.length === 0 &&
@@ -437,6 +445,8 @@ export function buildDebtSchedule(input: FinanceInput, debtId: string): DebtSche
 
 export type UpcomingModel = {
   today: CalendarDay;
+  /** `missing`: Es ist kein Gehaltstag gesetzt, „Bis Gehalt“ und Tagesrahmen haben keine Zahl. */
+  salaryStatus: SalaryStatus;
   nextSalaryDay: CalendarDay | null;
   daysUntilSalary: number | null;
   payments: UpcomingPayment[];
@@ -450,6 +460,7 @@ export function buildUpcoming(input: FinanceInput): UpcomingModel {
   const d = derive(input);
   return {
     today: d.today,
+    salaryStatus: d.salaryStatus,
     nextSalaryDay: d.nextSalary,
     daysUntilSalary: d.daysUntilSalary,
     payments: d.payments,

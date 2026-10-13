@@ -178,13 +178,41 @@ describe("Demnächst", () => {
     expect(model.dailyAllowance.value).toBe(-1_450); // −24.645 ÷ 17 = −1.449,7 → abgerundet −1.450
   });
 
-  it("macht ohne Gehaltstag keine Rechnung auf", () => {
+  it("macht ohne Gehaltstag keine Rechnung auf und sagt, dass der Gehaltstag fehlt", () => {
     const model = buildUpcoming(withToday(TODAY, (i) => (i.salaryDay = null)));
+    expect(model.salaryStatus).toBe("missing");
     expect(model.nextSalaryDay).toBeNull();
+    expect(model.daysUntilSalary).toBeNull();
     expect(model.payments).toEqual([]);
-    expect(model.availableUntilSalary).toMatchObject({ status: "unavailable", value: null, reason: "Der Gehaltstag fehlt." });
-    expect(model.dailyAllowance.status).toBe("unavailable");
     expect(model.accountsTotal.value).toBe(135_075);
+    // Kein Kontostand als „sicher verfügbar“: weder Zahl noch Tagesrahmen, dafür Grund und Rechenweg-Hinweis.
+    for (const metric of [model.pendingPayments, model.availableUntilSalary, model.dailyAllowance]) {
+      expect(metric).toMatchObject({ status: "unavailable", value: null, reason: "Der Gehaltstag fehlt." });
+      expect(metric.steps).toHaveLength(1);
+      expect(metric.steps[0]).toMatchObject({ op: "note", cents: null });
+      expect(metric.steps[0]!.label).toContain("Gehaltstag");
+    }
+  });
+
+  it("meldet den Gehaltstag in Übersicht und Demnächst als gesetzt, wenn er da ist", () => {
+    expect(buildUpcoming(base()).salaryStatus).toBe("set");
+    expect(buildOverview(base()).salaryStatus).toBe("set");
+    expect(buildUpcoming(base()).availableUntilSalary.steps[0]).toMatchObject({ op: "start" });
+  });
+
+  it("zeigt in der Übersicht ohne Gehaltstag keine Zahl bis Gehalt, die übrigen Kennzahlen bleiben", () => {
+    const overview = buildOverview(withToday(TODAY, (i) => (i.salaryDay = null)));
+    expect(overview.salaryStatus).toBe("missing");
+    expect(overview.availableUntilSalary).toMatchObject({ status: "unavailable", value: null, reason: "Der Gehaltstag fehlt." });
+    expect(overview.dailyAllowance).toMatchObject({ status: "unavailable", value: null });
+    expect(overview.accountsTotal.value).toBe(135_075);
+    expect(overview.freeMonthly.value).toBe(14_355);
+  });
+
+  it("zählt einen ungültigen Gehaltstag wie einen fehlenden", () => {
+    const model = buildUpcoming(withToday(TODAY, (i) => (i.salaryDay = 32)));
+    expect(model.salaryStatus).toBe("missing");
+    expect(model.availableUntilSalary.value).toBeNull();
   });
 });
 
@@ -325,11 +353,12 @@ describe("Frei im Monat, Aufteilung, Puffer, Nettovermögen", () => {
     expect(steps.slice(1, -1).reduce((sum, s) => sum - (s.cents ?? 0), 300_000)).toBe(14_355);
   });
 
-  it("teilt das Einkommen auf; die Anteile sind einzeln gerundet", () => {
+  it("teilt das Einkommen auf; die Anteile summieren sich exakt auf 100 %", () => {
+    // Einzeln gerundet wären es 7.167 + 1.355 + 1.000 + 479 = 10.001. Der Rest (−1) geht an den größten Anteil.
     expect(overview.incomeSplit).toEqual({
       incomeCents: 300_000,
       parts: [
-        { key: "expenses", cents: 215_000, shareBps: 7_167 },
+        { key: "expenses", cents: 215_000, shareBps: 7_166 },
         { key: "rates", cents: 40_645, shareBps: 1_355 },
         { key: "reserves", cents: 30_000, shareBps: 1_000 },
         { key: "free", cents: 14_355, shareBps: 479 },
@@ -337,6 +366,7 @@ describe("Frei im Monat, Aufteilung, Puffer, Nettovermögen", () => {
     });
     const cents = overview.incomeSplit!.parts.reduce((sum, part) => sum + part.cents, 0);
     expect(cents).toBe(300_000); // in Cent geht es genau auf
+    expect(overview.incomeSplit!.parts.reduce((sum, part) => sum + part.shareBps!, 0)).toBe(10_000);
   });
 
   it("rechnet den Puffer in Hundertstel Monaten, abgerundet, ohne Rücklagen und freiwillige Posten", () => {

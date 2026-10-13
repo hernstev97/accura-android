@@ -59,6 +59,25 @@ export function ratioBps(part: number, whole: number): number | null {
   return whole > 0 ? mulDivRound(part, 10_000, whole) : null;
 }
 
+/**
+ * Anteile am Ganzen in Basispunkten, die sich exakt auf 10.000 summieren.
+ * Jeder Anteil wird kaufmännisch gerundet (`ratioBps`); der Rest nach dem
+ * Runden (meist −2 bis +2) geht an den größten Anteil, bei Gleichstand an den
+ * ersten. Ohne positive Bezugsgröße sind alle Anteile `null`.
+ */
+export function splitBps(parts: readonly number[], whole: number): (number | null)[] {
+  if (whole <= 0) return parts.map(() => null);
+  const shares = parts.map((part) => mulDivRound(part, 10_000, whole));
+  if (parts.length === 0) return shares;
+  const rest = 10_000 - sumCents(shares);
+  let largest = 0;
+  parts.forEach((part, index) => {
+    if (part > parts[largest]!) largest = index;
+  });
+  shares[largest] = shares[largest]! + rest;
+  return shares;
+}
+
 /** Monatszins in Cent: Restschuld × Jahreszins ÷ 12, gerundet auf ganze Cent. */
 export function monthlyInterestCents(balanceCents: number, nominalRateBps: number): number {
   return mulDivRound(balanceCents, nominalRateBps, 120_000);

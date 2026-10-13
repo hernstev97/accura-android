@@ -75,8 +75,19 @@ function standSum(
   );
 }
 
+/** `missing`: Kein (gültiger) Gehaltstag gesetzt. Dann gibt es keinen Zeitraum „bis Gehalt“. */
+export type SalaryStatus = "set" | "missing";
+
+export const SALARY_MISSING_REASON = "Der Gehaltstag fehlt.";
+
+/** Rechenweg-Hinweis, solange der Gehaltstag fehlt (statt eines Kontostands als „sicher verfügbar“). */
+const salaryMissingSteps = (): Step[] => [
+  steps.note("Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura."),
+];
+
 export type Derived = {
   today: CalendarDay;
+  salaryStatus: SalaryStatus;
   accounts: AccountInput[];
   pockets: PocketInput[];
   budget: BudgetTotals;
@@ -118,7 +129,11 @@ export function derive(input: FinanceInput): Derived {
 
   const pendingPayments =
     nextSalary === null
-      ? unavailable({ key: "pendingPayments", unit: "cents", kind: "planned" }, "Der Gehaltstag fehlt.", today)
+      ? unavailable(
+          { key: "pendingPayments", unit: "cents", kind: "planned", steps: salaryMissingSteps() },
+          SALARY_MISSING_REASON,
+          today,
+        )
       : metric(
           {
             key: "pendingPayments",
@@ -136,7 +151,7 @@ export function derive(input: FinanceInput): Derived {
 
   const availableUntilSalary = (() => {
     const base = { key: "availableUntilSalary", unit: "cents", kind: "calculated" } as const;
-    if (nextSalary === null) return unavailable(base, "Der Gehaltstag fehlt.", today);
+    if (nextSalary === null) return unavailable({ ...base, steps: salaryMissingSteps() }, SALARY_MISSING_REASON, today);
     if (accountsTotal.value === null) return unavailable(base, accountsTotal.reason ?? "Kontostände fehlen.", today);
     const value = accountsTotal.value - pendingCents;
     return metric(
@@ -159,6 +174,7 @@ export function derive(input: FinanceInput): Derived {
 
   const dailyAllowance = (() => {
     const base = { key: "dailyAllowance", unit: "cents", kind: "calculated" } as const;
+    if (nextSalary === null) return unavailable({ ...base, steps: salaryMissingSteps() }, SALARY_MISSING_REASON, today);
     if (availableUntilSalary.value === null) {
       return unavailable(base, availableUntilSalary.reason ?? "Nicht berechenbar.", today);
     }
@@ -273,6 +289,7 @@ export function derive(input: FinanceInput): Derived {
 
   return {
     today,
+    salaryStatus: nextSalary === null ? "missing" : "set",
     accounts,
     pockets,
     budget,
