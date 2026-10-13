@@ -1,6 +1,8 @@
 package app.kiumu.accura.ui
 
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.StateRestorationTester
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -11,6 +13,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import app.kiumu.accura.AppGraph
 import app.kiumu.accura.DebugScenario
 import app.kiumu.accura.DebugTools
@@ -71,6 +74,21 @@ class AppFlowTest {
         text("E-Mail-Adresse").assertExists()
         text("Code senden").assertIsNotEnabled()
         rule.onAllNodes(hasText("Übersicht")).assertCountEquals0()
+    }
+
+    @OptIn(ExperimentalTestApi::class)
+    @Test
+    fun `Code-Schritt bleibt nach Drehen oder Prozess-Ende stehen`() = runAndroidComposeUiTest<ComponentActivity> {
+        val tester = StateRestorationTester(this)
+        tester.setContent { AccuraApp(graph, dynamicColor = false) }
+        onNodeWithText("E-Mail-Adresse").performTextInput("test@example.test")
+        onNodeWithText("Code senden").performClick()
+        onNodeWithText("Anmelden").assertExists()
+
+        tester.emulateSaveAndRestore()
+
+        onNodeWithText("Anmelden").assertExists()
+        check(onAllNodes(hasText("E-Mail-Adresse")).fetchSemanticsNodes().isEmpty()) { "Der erste Schritt ist wieder sichtbar" }
     }
 
     @Test

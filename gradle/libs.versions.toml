@@ -1,6 +1,6 @@
 [versions]
 agp = "9.4.1"
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 composeBom = "2026.09.00"
 # Material 3 kommt bewusst nicht aus der BOM (dort 1.4.0). In 1.4.0 sind die Expressive-Bausteine
 # (MaterialExpressiveTheme, MotionScheme.expressive, LoadingIndicator, ShortNavigationBar) intern

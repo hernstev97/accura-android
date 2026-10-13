@@ -65,6 +65,6 @@ Robolectric läuft mit Android 16 (API 36, `robolectric.properties`): Mit API 37
 - Clerk (`clerk-android-api`) und Convex-Client hinter `AuthGateway` und `FinanceRepository`. Dort kommt auch die Zuordnung von int64 (`Long`) und die Offline-Kopie dazu.
 - Schrift Google Sans Flex, Übertragung der Typografie-Skala des Leitfadens, Rückfall-Farbton.
 - Sperre, `FLAG_SECURE`, verschlüsselte Offline-Kopie (Phase 5).
-- Der Anmeldeschritt „Code“ geht beim Drehen des Geräts verloren, weil der Speicher an die Activity gebunden ist (kein `SavedStateHandle`).
+- Anmeldung: Schritt und E-Mail überleben Drehen und Prozess-Ende (`rememberSaveable` in `SignInRoute`, weil `SessionScope` einen eigenen ViewModel-Speicher ohne `SavedStateHandle` hat). Der Code selbst bleibt nicht erhalten, er ist nur kurz gültig. Der Test `Code-Schritt bleibt nach Drehen oder Prozess-Ende stehen` schlägt ohne diese Lösung fehl.
 - TalkBack-Durchgang von Hand. Namen und Rollen sind gesetzt, ein Durchgang mit dem Screenreader steht aus.
 - CI für die App (Lint, Tests, `verifyRoborazziDebug`).

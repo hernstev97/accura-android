@@ -20,9 +20,17 @@ data class SignInUiState(
     val error: AuthError? = null,
 )
 
-/** Zwei Schritte: E-Mail eingeben, Code eingeben. Die Sitzung selbst hält der [AuthGateway]. */
-class SignInViewModel(private val auth: AuthGateway) : ViewModel() {
-    private val _state = MutableStateFlow(SignInUiState())
+/**
+ * Zwei Schritte: E-Mail eingeben, Code eingeben. Die Sitzung selbst hält der [AuthGateway].
+ * Schritt und E-Mail kann die Oberfläche beim Drehen oder nach einem Prozess-Ende wieder mitgeben
+ * ([initialStep], [initialEmail]). Der Code gehört nicht dazu: Er ist nur kurz gültig.
+ */
+class SignInViewModel(
+    private val auth: AuthGateway,
+    initialStep: SignInStep = SignInStep.EMAIL,
+    initialEmail: String = "",
+) : ViewModel() {
+    private val _state = MutableStateFlow(SignInUiState(step = initialStep, email = initialEmail))
     val state: StateFlow<SignInUiState> = _state
 
     fun onEmailChange(value: String) = _state.update { it.copy(email = value, error = null) }

@@ -21,11 +21,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -51,6 +53,7 @@ import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import app.kiumu.accura.ui.anmeldung.SignInScreen
+import app.kiumu.accura.ui.anmeldung.SignInStep
 import app.kiumu.accura.ui.anmeldung.SignInViewModel
 import app.kiumu.accura.ui.katalog.Laden
 import app.kiumu.accura.ui.navigation.Destination
@@ -86,8 +89,26 @@ private const val NavBarMaxFontScale = 1.3f
 
 @Composable
 private fun SignInRoute(graph: AppGraph) {
-    val viewModel = viewModel<SignInViewModel>(factory = viewModelFactory { initializer { SignInViewModel(graph.auth) } })
+    // Der ViewModel-Speicher dieser Route ist der eigene aus SessionScope und geht beim Drehen verloren.
+    // Schritt und E-Mail liegen deshalb zusätzlich im gespeicherten Compose-Zustand der Activity.
+    var savedStep by rememberSaveable { mutableStateOf(SignInStep.EMAIL.name) }
+    var savedEmail by rememberSaveable { mutableStateOf("") }
+    val viewModel = viewModel<SignInViewModel>(
+        factory = viewModelFactory {
+            initializer {
+                SignInViewModel(
+                    graph.auth,
+                    initialStep = runCatching { SignInStep.valueOf(savedStep) }.getOrDefault(SignInStep.EMAIL),
+                    initialEmail = savedEmail,
+                )
+            }
+        },
+    )
     val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(state.step, state.email) {
+        savedStep = state.step.name
+        savedEmail = state.email
+    }
     SignInScreen(
         state = state,
         onEmailChange = viewModel::onEmailChange,

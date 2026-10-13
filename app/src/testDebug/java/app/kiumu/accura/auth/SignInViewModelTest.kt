@@ -84,4 +84,12 @@ class SignInViewModelTest {
         assertEquals(SignInStep.EMAIL, viewModel.state.value.step)
         assertEquals("", viewModel.state.value.code)
     }
+
+    @Test
+    fun `Mitgegebener Schritt und E-Mail starten den Dialog dort, der Code bleibt leer`() {
+        val restored = SignInViewModel(auth, SignInStep.CODE, "test@example.test")
+        assertEquals(SignInStep.CODE, restored.state.value.step)
+        assertEquals("test@example.test", restored.state.value.email)
+        assertEquals("", restored.state.value.code)
+    }
 }
