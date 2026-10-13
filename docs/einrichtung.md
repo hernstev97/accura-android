@@ -18,7 +18,8 @@ Stand: Phase 0 abgeschlossen, 13. Oktober 2026. Hier stehen IDs und Orte, keine 
 - Dev: `dev/main`, `jovial-chickadee-454`, URL `https://jovial-chickadee-454.eu-west-1.convex.cloud`.
 - Prod: `production`, `abundant-lemur-455`, URL `https://abundant-lemur-455.eu-west-1.convex.cloud`.
 - Angelegt mit `npx convex project create` und `npx convex deployment create … --region eu`. Convex-Zugangsdaten liegen in `~/.convex/config.json`.
-- Zugriff auf Stevens Clerk-Konto und Backup-Skript folgen in Phase 2 und 5.
+- Backend-Code (Schema, Zugriffsschutz, Rechenkern) liegt in `convex/`, siehe [backend/](backend/README.md). Das Dev-Deployment hat das Schema und die Funktionen (Stand Phase 2, Backend). Die Produktion ist noch leer.
+- Offen pro Deployment: Umgebungsvariable `ALLOWED_CLERK_SUBJECT` (Clerk-Nutzer-ID von Steven, in Dev und Prod verschieden), Details in [backend/zugriffsschutz.md](backend/zugriffsschutz.md). Ohne sie weist das Backend jeden Aufruf ab. Das Backup-Skript folgt in Phase 5.
 
 ## Clerk
 
