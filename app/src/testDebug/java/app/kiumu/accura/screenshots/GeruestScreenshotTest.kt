@@ -35,7 +35,8 @@ class GeruestScreenshotTest {
     )
 
     private fun aufnahme(name: String, dark: Boolean = false, fontScale: Float = 1f) {
-        rule.setContent { Aufnahme(dark, fontScale) { AccuraApp(graph(), dynamicColor = false) } }
+        // AccuraApp setzt ein eigenes Theme; Hell oder Dunkel muss deshalb ausdrücklich hinein.
+        rule.setContent { Aufnahme(dark, fontScale) { AccuraApp(graph(), dynamicColor = false, darkTheme = dark) } }
         rule.waitForIdle()
         rule.onRoot().captureRoboImage("$ReferenzOrdner/geruest/$name.png", roborazziOptions = Toleranz)
     }

@@ -56,6 +56,10 @@ class FormattersTest {
         assertEquals("5,6", formatMonthsX100(560))
         assertEquals("5,6", formatMonthsX100(569))
         assertEquals("12,0", formatMonthsX100(1200))
+        // Negativ (Konten im Minus): Vorzeichen vorn, nicht hinter dem Komma („0,-1“ war falsch).
+        assertEquals("\u22120,1", formatMonthsX100(-11))
+        assertEquals("\u22125,6", formatMonthsX100(-569))
+        assertEquals("0,0", formatMonthsX100(-5))
     }
 
     @Test

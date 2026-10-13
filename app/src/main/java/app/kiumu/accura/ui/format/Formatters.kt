@@ -53,10 +53,14 @@ fun formatBps(bps: Int): String {
 /** Ganze Prozent aus Basispunkten, für Anteile: 7166 → `72 %`, 7150 → `72 %`. */
 fun formatWholePercent(bps: Int): String = "${(bps + 50) / 100}$NBSP%"
 
-/** Monate mal 100 → `5,6`, abgeschnitten (nicht gerundet) auf eine Nachkommastelle. Das Wort „Monate“ setzt die Oberfläche. */
+/**
+ * Monate mal 100 → `5,6`, abgeschnitten (nicht gerundet) auf eine Nachkommastelle, negativ mit
+ * Minuszeichen (`−0,1`). Das Wort „Monate“ setzt die Oberfläche.
+ */
 fun formatMonthsX100(value: Long): String {
-    val tenths = value / 10
-    return "${tenths / 10},${tenths % 10}"
+    val tenths = kotlin.math.abs(value) / 10
+    val sign = if (value < 0 && tenths > 0) "−" else ""
+    return "$sign${tenths / 10},${tenths % 10}"
 }
 
 private val dayShort = DateTimeFormatter.ofPattern("d. MMM", Locale.GERMAN)

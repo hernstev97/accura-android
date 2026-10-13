@@ -19,6 +19,7 @@ import androidx.compose.material3.ShortNavigationBarItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -72,8 +73,13 @@ import app.kiumu.accura.ui.theme.AccuraTheme
  * angemeldete Teil samt seiner ViewModels, es bleiben keine Finanzdaten im Speicher hängen.
  */
 @Composable
-fun AccuraApp(graph: AppGraph, modifier: Modifier = Modifier, dynamicColor: Boolean = true) {
-    AccuraTheme(dynamicColor = dynamicColor) {
+fun AccuraApp(
+    graph: AppGraph,
+    modifier: Modifier = Modifier,
+    dynamicColor: Boolean = true,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+) {
+    AccuraTheme(darkTheme = darkTheme, dynamicColor = dynamicColor) {
         Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val session by graph.auth.session.collectAsStateWithLifecycle()
             when (session) {
