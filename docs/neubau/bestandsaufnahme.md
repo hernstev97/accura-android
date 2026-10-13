@@ -1,16 +1,16 @@
-# Bestandsaufnahme: Accura vor dem Neubau
+# Bestandsaufnahme: accura vor dem Neubau
 
 > **Zielgruppe:** Steven als Produktverantwortlicher; in den Anhängen auch Agenten, die den Neubau umsetzen.
 > **Zweck und Lernziel:** Auf einen Blick verstehen, was die heutige App kann, wie sie gebaut ist, was trägt, was halb fertig ist und was wackelt.
 > **Voraussetzungen:** Keine. Technische Details stehen nur in den Anhängen.
-> **Kanonisch für:** Den Ist-Stand von Accura am 10. Oktober 2026 als Grundlage für den Neubau.
+> **Kanonisch für:** Den Ist-Stand von accura am 10. Oktober 2026 als Grundlage für den Neubau.
 > **Verwandte Dokumente:** [Plan für den Neubau](plan.md), [Funktionen](../produkt/funktionen.md), [Entwicklungsstand](../produkt/entwicklungsstand.md), [Roadmap](../produkt/roadmap.md)
 
 Stand: 10. Oktober 2026, Branch `develop` (Commit `eb3c562`, PR #23). Geprüft wurden Code, Doku, Entscheidungen (ADRs), alle Branches, die offenen ACC-Issues in XLR8 und die laufende App im Mock-Modus. Alle Zahlen in dieser Seite und in verlinkten Bildern stammen aus den anonymen Testdaten des Repositorys, nicht aus Stevens Finanzen.
 
 ## Kurzfassung
 
-- **Was Accura heute ist:** eine installierbare Web-App (PWA) für genau eine Person. Sie zeigt vier Ansichten: Übersicht, Demnächst, Budget, Schulden. Die Daten liegen in PostgreSQL. Anmeldung über Google.
+- **Was accura heute ist:** eine installierbare Web-App (PWA) für genau eine Person. Sie zeigt vier Ansichten: Übersicht, Demnächst, Budget, Schulden. Die Daten liegen in PostgreSQL. Anmeldung über Google.
 - **Was gut ist:** Die Rechenlogik ist sauber. Geld wird in ganzen Cents gerechnet und ist mit über 230 Tests abgesichert. Datenschutz und Barrierefreiheit wurden ernst genommen. Die Doku ist ungewöhnlich gründlich.
 - **Was fehlt:** Man kann in der App nichts eintragen oder ändern. Neue Stände kommen nur über ein Terminal-Skript in die Datenbank. Der fertige Editor dafür liegt unveröffentlicht in einem lokalen Arbeitsordner.
 - **Was wackelt:** Die App sagt „Aktuell“, auch wenn die Kontostände Wochen alt sind. Darauf rechnet sie trotzdem „Bis Gehalt verfügbar“. Das ist für eine Geld-App das größte Vertrauensproblem.
@@ -19,7 +19,7 @@ Stand: 10. Oktober 2026, Branch `develop` (Commit `eb3c562`, PR #23). Geprüft w
 
 ## Was die App für den Nutzer tut
 
-Accura beantwortet fünf Fragen: Was habe ich wirklich? Was wird bis zum Gehalt noch fällig? Wie viel kann ich sicher ausgeben? Welche Schulden habe ich und wie entwickeln sie sich? Wann wird wie viel Geld frei?
+accura beantwortet fünf Fragen: Was habe ich wirklich? Was wird bis zum Gehalt noch fällig? Wie viel kann ich sicher ausgeben? Welche Schulden habe ich und wie entwickeln sie sich? Wann wird wie viel Geld frei?
 
 ### Die vier Ansichten
 
@@ -51,7 +51,7 @@ Auf dem Handy liegt unten eine Navigationsleiste, auf großen Bildschirmen eine 
 
 ## Woher die Zahlen kommen
 
-Kurz erklärt: Accura speichert keine fertigen Summen. Es speichert Bausteine und rechnet bei jedem Öffnen neu.
+Kurz erklärt: accura speichert keine fertigen Summen. Es speichert Bausteine und rechnet bei jedem Öffnen neu.
 
 - **Stammdaten:** Konten, Pockets, Budgetposten (Betrag, Notwendigkeit, Fälligkeitstag), Schulden (Rate, Fälligkeitstag).
 - **Stände mit Datum („Snapshots“):** Kontostand am Tag X, Restschuld am Tag X. Ältere Stände bleiben erhalten.
@@ -152,7 +152,7 @@ Sortiert nach Bedeutung für das Vertrauen in die Zahlen.
 | ACC-65 | Eigenes Datenmodell und sichere Bearbeitung | **v1** | Kern des Neubaus. |
 | ACC-72 | In-App-Editor | **v1** | Ohne Bearbeiten in der App veralten die Daten. Der unveröffentlichte Editor dient als Fachvorlage. |
 | ACC-67 | Angstfreies Erst-Onboarding | **v1** (schlank) | Der Neubau startet ohne Datenumzug leer. Steven erfasst seine Daten in der App. |
-| ACC-81 | Freigabe für weitere Nutzer | **entfällt** vorerst | Accura bleibt eine App nur für Steven (Beschluss vom 11. Oktober 2026). |
+| ACC-81 | Freigabe für weitere Nutzer | **entfällt** vorerst | accura bleibt eine App nur für Steven (Beschluss vom 11. Oktober 2026). |
 | ACC-80 | Design-/UX-Prüfung mit GPT-6 Astra | **in neuer Form** | Wird zur Design-Phase des Neubaus mit klickbaren Prototypen. |
 | ACC-13 | Datensparsame Fehlerdiagnose, Security-Header | **in neuer Form** | Header entfallen bei nativer App. Datensparsames Absturz-Logging bleibt Pflicht. |
 | ACC-68 | Lizenz und Markenschutz vor Codex-for-OSS | **entfällt** vorerst | Das neue Repo ist privat. Die Frage kommt erst bei einer Veröffentlichung wieder. |

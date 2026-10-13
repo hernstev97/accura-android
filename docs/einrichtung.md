@@ -8,7 +8,7 @@ Stand: Phase 0 abgeschlossen, 13. Oktober 2026. Hier stehen IDs und Orte, keine 
 | --- | --- | --- |
 | GitHub | `hernstev97/accura-android`, privat | kostenlos |
 | Convex | Projekt `accura`, Dev- und Prod-Deployment in Europe (Ireland) | Free |
-| Clerk | Anwendung „Accura“, Development und Production | Hobby |
+| Clerk | Anwendung „accura“, Development und Production | Hobby |
 | Signierschlüssel | `~/.config/accura/signing/`, siehe [SIGNIERUNG.md](SIGNIERUNG.md) | – |
 
 ## Convex
@@ -22,7 +22,7 @@ Stand: Phase 0 abgeschlossen, 13. Oktober 2026. Hier stehen IDs und Orte, keine 
 
 ## Clerk
 
-- Anwendung „Accura“ (`app_3Kd99G6eoZT2kHPibNWZ2wDa4HB`) im selben Clerk-Konto wie xlr8 und learning-platform, Plan Hobby.
+- Anwendung „accura“ (`app_3Kd99G6eoZT2kHPibNWZ2wDa4HB`) im selben Clerk-Konto wie xlr8 und learning-platform, Plan Hobby.
 - Development-Instance `ins_3Kd99FR01ueHUVbb9o8t040uWHD`, Production-Instance `ins_3Kd9v4iSwCuYlclp00Pi49egEuD` (Domain `accura.kiumu.app`, Frontend-API `https://clerk.accura.kiumu.app`).
 - Anmeldung nur über Clerk per E-Mail-Code. Kein Passwort, kein Google, kein Google-Cloud-Konto (Beschluss Stevens vom 13. Oktober 2026).
 - Einladungspflicht: `auth_access_control.sign_up_mode = restricted` in Development und Production. Niemand registriert sich ohne Einladung. Stevens Konto entsteht in Phase 2 per Einladung.
@@ -45,4 +45,4 @@ Den Stand prüft `npx clerk@latest deploy status`. `accura.kiumu.app` selbst hat
 
 ## ADB und Installation
 
-Pixel 10 Pro, Seriennummer `65190DLCH002SW`, per USB. `scripts/install.sh` baut die signierte Release-App und installiert sie. Am 13. Oktober 2026 installiert und gestartet, der Bildschirm zeigt „Accura“.
+Pixel 10 Pro, Seriennummer `65190DLCH002SW`, per USB. `scripts/install.sh` baut die signierte Release-App und installiert sie. Am 13. Oktober 2026 installiert und gestartet, der Bildschirm zeigt „accura“.

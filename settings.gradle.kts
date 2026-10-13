@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Accura"
+rootProject.name = "accura"
 include(":app")
