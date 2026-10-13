@@ -27,7 +27,7 @@ class ZustaendeScreenshotTest {
     val rule = createComposeRule()
 
     private fun aufnahme(name: String, dark: Boolean = false, fontScale: Float = 1f, content: @androidx.compose.runtime.Composable () -> Unit) {
-        rule.setContent { Aufnahme(dark, fontScale, content) }
+        rule.setContent { Aufnahme(dark, fontScale, content = content) }
         rule.onRoot().captureRoboImage("$ReferenzOrdner/$name.png", roborazziOptions = Toleranz)
     }
 
