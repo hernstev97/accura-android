@@ -358,15 +358,16 @@ describe("Frei im Monat, Aufteilung, Puffer, Nettovermögen", () => {
     expect(overview.incomeSplit).toEqual({
       incomeCents: 300_000,
       parts: [
-        { key: "expenses", cents: 215_000, shareBps: 7_166 },
-        { key: "rates", cents: 40_645, shareBps: 1_355 },
-        { key: "reserves", cents: 30_000, shareBps: 1_000 },
-        { key: "free", cents: 14_355, shareBps: 479 },
+        { key: "expenses", cents: 215_000, shareBps: 7_166, sharePercent: 72 },
+        { key: "rates", cents: 40_645, shareBps: 1_355, sharePercent: 13 },
+        { key: "reserves", cents: 30_000, shareBps: 1_000, sharePercent: 10 },
+        { key: "free", cents: 14_355, shareBps: 479, sharePercent: 5 },
       ],
     });
     const cents = overview.incomeSplit!.parts.reduce((sum, part) => sum + part.cents, 0);
     expect(cents).toBe(300_000); // in Cent geht es genau auf
     expect(overview.incomeSplit!.parts.reduce((sum, part) => sum + part.shareBps!, 0)).toBe(10_000);
+    expect(overview.incomeSplit!.parts.reduce((sum, part) => sum + part.sharePercent!, 0)).toBe(100);
   });
 
   it("rechnet den Puffer in Hundertstel Monaten, abgerundet, ohne Rücklagen und freiwillige Posten", () => {

@@ -5,7 +5,7 @@ import type { DebtState, SpecialRepaymentExample } from "./debts";
 import { DEBT_ANCHOR_STALE_AFTER_DAYS, ageInDays, isStale } from "./freshness";
 import type { AccountKind, DebtKind, FinanceInput, Necessity } from "./input";
 import { metric, steps, unavailable, type Metric } from "./metric";
-import { ratioBps, splitBps } from "./money";
+import { ratioBps, splitBps, splitWholePercent } from "./money";
 import type { UpcomingPayment } from "./upcoming";
 
 /**
@@ -45,7 +45,13 @@ export type OverviewModel = {
   debtFreeDay: Metric;
   incomeSplit: {
     incomeCents: number;
-    parts: { key: "expenses" | "rates" | "reserves" | "free"; cents: number; shareBps: number | null }[];
+    parts: {
+      key: "expenses" | "rates" | "reserves" | "free";
+      cents: number;
+      shareBps: number | null;
+      /** Ganze Prozent zum Anzeigen, summiert auf genau 100 (größter Rest). */
+      sharePercent: number | null;
+    }[];
   } | null;
   nextRelief: {
     freeFromMonth: string;
@@ -104,11 +110,18 @@ export function buildOverview(input: FinanceInput): OverviewModel {
             { key: "reserves" as const, cents: d.split.reservesCents },
             { key: "free" as const, cents: d.split.freeCents },
           ];
-          // Der Ring summiert exakt auf 100 %: Der Rest nach dem Runden geht an den größten Anteil.
-          const shares = splitBps(parts.map((part) => part.cents), input.incomeCents);
+          // Der Ring summiert exakt auf 100 %: in Basispunkten geht der Rest an den größten Anteil,
+          // die ganzen Prozent zum Anzeigen folgen dem größten Rest (siehe splitWholePercent).
+          const cents = parts.map((part) => part.cents);
+          const shares = splitBps(cents, input.incomeCents);
+          const percents = splitWholePercent(cents, input.incomeCents);
           return {
             incomeCents: input.incomeCents,
-            parts: parts.map((part, index) => ({ ...part, shareBps: shares[index] ?? null })),
+            parts: parts.map((part, index) => ({
+              ...part,
+              shareBps: shares[index] ?? null,
+              sharePercent: percents[index] ?? null,
+            })),
           };
         })();
 
