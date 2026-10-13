@@ -47,11 +47,24 @@ private const val StaleCornerPercent = 18f
  * Datenalter-Chip. Form und Text tragen die Aussage, nicht nur die Farbe: Ein frischer Stand ist eine
  * runde Pille mit Haken, ein alter Stand ist fast eckig, hat einen gestrichelten Rand, eine Uhr und das
  * Wort „Alt“. Wechselt der Zustand, geht die Form mit (ohne Bewegung, wenn Animationen aus sind).
- * [today] kommt aus dem Modell, nicht von einer Uhr.
+ * [today] kommt aus dem Modell, nicht von einer Uhr. [oldest] sagt „Ältester Stand“ (Zusammenfassung
+ * über alle Stände einer Ansicht).
  */
 @Composable
-fun DatenalterChip(day: LocalDate, ageDays: Int, stale: Boolean, today: LocalDate, modifier: Modifier = Modifier) {
-    val whenText = if (ageDays == 0) stringResource(R.string.chip_data_today) else stringResource(R.string.chip_data_from, formatDay(day, today))
+fun DatenalterChip(
+    day: LocalDate,
+    ageDays: Int,
+    stale: Boolean,
+    today: LocalDate,
+    modifier: Modifier = Modifier,
+    oldest: Boolean = false,
+) {
+    val whenText = when {
+        oldest && ageDays == 0 -> stringResource(R.string.chip_oldest_today)
+        oldest -> stringResource(R.string.chip_oldest_from, formatDay(day, today))
+        ageDays == 0 -> stringResource(R.string.chip_data_today)
+        else -> stringResource(R.string.chip_data_from, formatDay(day, today))
+    }
     val text = if (stale) {
         stringResource(R.string.chip_data_stale, whenText, pluralStringResource(R.plurals.days_ago, ageDays, ageDays))
     } else {

@@ -3,6 +3,7 @@ package app.kiumu.accura.ui.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 
 /** Eine Farbrolle mit fester Bedeutung: Fläche, Text darauf, Akzent für Linien und Symbole. */
 @Immutable
@@ -30,7 +31,8 @@ val LightAccuraColors = AccuraColors(
     free = RoleColors(Color(0xFFC6EDCF), Color(0xFF00210C), Color(0xFF1B6B35)),
     reserve = RoleColors(Color(0xFFDCE1FF), Color(0xFF071A4D), Color(0xFF3F55A5)),
     attention = RoleColors(Color(0xFFFFE3B3), Color(0xFF2A1800), Color(0xFF8A5100)),
-    debt = RoleColors(Color(0xFFE1E3EC), Color(0xFF1A1D2A), Color(0xFF565C70)),
+    // Fläche eine Stufe tiefer als im Klick-Dummy (#E1E3EC), damit die Hauptkarte sich von gedämpften Kacheln abhebt.
+    debt = RoleColors(Color(0xFFD8DCEA), Color(0xFF1A1D2A), Color(0xFF565C70)),
 )
 
 val DarkAccuraColors = AccuraColors(
@@ -39,5 +41,14 @@ val DarkAccuraColors = AccuraColors(
     attention = RoleColors(Color(0xFF4E3200), Color(0xFFFFE3B3), Color(0xFFFFB95B)),
     debt = RoleColors(Color(0xFF2C3040), Color(0xFFE1E3EC), Color(0xFFB9BED3)),
 )
+
+/** Deckkraft des Akzents in der Füllung einer Anteil-Pille. */
+const val FuellungDeckkraft = 0.3f
+
+/**
+ * Füllung einer Anteil-Pille: der Akzent der Rolle, abgeschwächt über der Spur. So bleibt Text in
+ * „onSurface“ auf Füllung und Spur lesbar (KontrastTest), und die Füllung ist trotzdem kräftig.
+ */
+fun RoleColors.fuellung(spur: Color): Color = accent.copy(alpha = FuellungDeckkraft).compositeOver(spur)
 
 val LocalAccuraColors = staticCompositionLocalOf { LightAccuraColors }

@@ -6,7 +6,9 @@ import app.kiumu.accura.ui.theme.AccuraColors
 import app.kiumu.accura.ui.theme.DarkAccuraColors
 import app.kiumu.accura.ui.theme.LightAccuraColors
 import app.kiumu.accura.ui.theme.RueckfallDunkel
+import app.kiumu.accura.ui.theme.RoleColors
 import app.kiumu.accura.ui.theme.RueckfallHell
+import app.kiumu.accura.ui.theme.fuellung
 import androidx.compose.material3.ColorScheme
 import kotlin.math.max
 import kotlin.math.min
@@ -51,6 +53,31 @@ class KontrastTest {
             check("$theme Symbol auf Achtung", scheme.surface, colors.attention.accent, 3.0)
             check("$theme Symbol auf frei", scheme.surface, colors.free.accent, 3.0)
             check("$theme Symbol auf Schulden", scheme.surface, colors.debt.accent, 3.0)
+        }
+    }
+
+    @Test
+    fun `Kacheln, Listengruppen und Anteil-Pillen sind lesbar`() {
+        themes.forEach { (theme, colors, s) ->
+            // Gedämpfte Kachel und Listengruppe: Fläche surfaceContainer, Summenzeile surfaceContainerHighest.
+            check("$theme Text auf Kachel", s.onSurface, s.surfaceContainer, 4.5)
+            check("$theme Zusatz auf Kachel", s.onSurfaceVariant, s.surfaceContainer, 4.5)
+            check("$theme Text auf Summenzeile", s.onSurface, s.surfaceContainerHighest, 4.5)
+            // Pillen-Knopf.
+            check("$theme Pillen-Knopf", s.onPrimaryContainer, s.primaryContainer, 4.5)
+            val neutral = RoleColors(s.primaryContainer, s.onPrimaryContainer, s.primary)
+            mapOf("neutral" to neutral, "frei" to colors.free, "Rücklage" to colors.reserve, "Achtung" to colors.attention, "Schulden" to colors.debt)
+                .forEach { (role, rc) ->
+                    // Punkt vor dem Namen, Linie und Kante im Diagramm auf einer gedämpften Kachel.
+                    check("$theme $role Akzent auf Kachel", rc.accent, s.surfaceContainer, 3.0)
+                    // Anteil-Pille: Text in onSurface über Spur und Füllung, die Kante hebt sich von der Spur ab.
+                    val spur = s.surfaceContainerHigh
+                    check("$theme $role Pillentext auf Spur", s.onSurface, spur, 4.5)
+                    check("$theme $role Pillentext auf Füllung", s.onSurface, rc.fuellung(spur), 4.5)
+                    check("$theme $role Kante auf Spur", rc.accent, spur, 3.0)
+                }
+            // „Frei“ im Minus: ganze Pille in der Fläche „Achtung“, Text in deren Textfarbe.
+            check("$theme Achtung-Pille Text auf Füllung", colors.attention.onContainer, colors.attention.fuellung(colors.attention.container), 4.5)
         }
     }
 

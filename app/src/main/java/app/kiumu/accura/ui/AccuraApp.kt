@@ -15,6 +15,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.ShortNavigationBar
 import androidx.compose.material3.ShortNavigationBarItem
 import androidx.compose.material3.Surface
@@ -65,7 +67,6 @@ import app.kiumu.accura.ui.screens.BudgetScreen
 import app.kiumu.accura.ui.screens.DebtsScreen
 import app.kiumu.accura.ui.screens.DebugScreen
 import app.kiumu.accura.ui.screens.OverviewScreen
-import app.kiumu.accura.ui.screens.OverviewVariant
 import app.kiumu.accura.ui.screens.UpcomingScreen
 import app.kiumu.accura.ui.screens.ViewStateViewModel
 import app.kiumu.accura.ui.theme.AccuraTheme
@@ -154,8 +155,19 @@ private fun MainScaffold(graph: AppGraph) {
     val onDebug = route == DebugRoute
     var menuOpen by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val snackbar = remember { SnackbarHostState() }
+    val platzhalterText = stringResource(R.string.placeholder_capture)
+    // Platzhalter-Ziel im Prototyp: Eintragen kommt mit der Ersterfassung (Phase 3). Ein kurzer Hinweis
+    // statt eines toten Knopfs; TalkBack liest ihn vor.
+    val platzhalter: () -> Unit = {
+        scope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            snackbar.showSnackbar(platzhalterText)
+        }
+    }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
             TopAppBar(
                 title = {
@@ -241,11 +253,14 @@ private fun MainScaffold(graph: AppGraph) {
             modifier = Modifier.padding(padding),
         ) {
             composable(Destination.Overview.route) {
-                val variant = graph.debugTools?.overviewVariant?.collectAsStateWithLifecycle()?.value ?: OverviewVariant.Standard
-                ViewRoute(graph, graph.finance::overview) { state, retry -> OverviewScreen(state, retry, variant = variant) }
+                ViewRoute(graph, graph.finance::overview) { state, retry ->
+                    OverviewScreen(state, retry, onStaendeAktualisieren = platzhalter)
+                }
             }
             composable(Destination.Upcoming.route) {
-                ViewRoute(graph, graph.finance::upcoming) { state, retry -> UpcomingScreen(state, retry) }
+                ViewRoute(graph, graph.finance::upcoming) { state, retry ->
+                    UpcomingScreen(state, retry, onGehaltstagEintragen = platzhalter)
+                }
             }
             composable(Destination.Budget.route) {
                 ViewRoute(graph, graph.finance::budget) { state, retry -> BudgetScreen(state, retry) }

@@ -57,6 +57,7 @@ import app.kiumu.accura.data.model.MetricUnit
 import app.kiumu.accura.ui.format.formatCents
 import app.kiumu.accura.ui.format.formatMetricNumber
 import app.kiumu.accura.ui.theme.AccuraTheme
+import app.kiumu.accura.ui.theme.Raster
 import app.kiumu.accura.ui.theme.RoleColors
 import java.time.LocalDate
 
@@ -94,7 +95,7 @@ fun metricDisplayValue(metric: Metric): String {
  * Ruhiger Text statt einer Zahl, wenn eine Angabe fehlt (zum Beispiel „Gehaltstag eintragen“).
  * Steht nur, wenn die Kennzahl keinen Wert hat: Eine Zahl des Backends verdeckt er nie.
  */
-private fun missingHintFor(metric: Metric, missingHint: String?): String? =
+internal fun missingHintFor(metric: Metric, missingHint: String?): String? =
     missingHint?.takeIf { formatMetricNumber(metric) == null }
 
 /**
@@ -148,14 +149,14 @@ fun HauptzahlKarte(
     val colors = tone.colors()
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.extraLarge,
+        shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = colors.container, contentColor = colors.onContainer),
     ) {
         HauptzahlInhalt(
             question = question,
             metric = metric,
             today = today,
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(Raster.Hauptkarte),
             supporting = supporting,
             missingHint = missingHint,
             zeichen = zeichen,
@@ -340,7 +341,7 @@ fun EinsparHinweisKarte(
     }
 }
 
-/** Leerzustand: was fehlt, ein Satz, ein Schritt zur Lösung. Nie eine leere Fläche. */
+/** Leerzustand: was fehlt, ein Satz, ein Schritt zur Lösung (Pillen-Knopf). Nie eine leere Fläche. */
 @Composable
 fun Leerzustand(
     title: String,
@@ -349,29 +350,38 @@ fun Leerzustand(
     aktion: String? = null,
     onAktion: () -> Unit = {},
 ) {
-    OutlinedCard(
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-    ) {
-        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.semantics { heading() })
-            Text(text, style = MaterialTheme.typography.bodyMedium)
-            if (aktion != null) {
-                FilledTonalButton(onClick = onAktion, modifier = Modifier.padding(top = 4.dp)) { Text(aktion) }
-            }
+    Kachel(modifier = modifier.fillMaxWidth(), innen = Raster.Hauptkarte) {
+        Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.semantics { heading() })
+        Text(text, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (aktion != null) {
+            PillenKnopf(text = aktion, onClick = onAktion, modifier = Modifier.padding(top = Raster.Eng))
         }
     }
 }
 
-/** Abschnittsüberschrift. */
+/** Abschnittsüberschrift, optional mit einem leisen Satz darunter. Darüber steht mehr Luft als zwischen Kacheln. */
 @Composable
-fun Abschnitt(title: String, modifier: Modifier = Modifier) {
-    Text(
-        text = title,
-        modifier = modifier.padding(top = 8.dp).semantics { heading() },
-        style = MaterialTheme.typography.titleMedium,
-    )
+fun Abschnitt(title: String, modifier: Modifier = Modifier, untertitel: String? = null) {
+    Column(modifier = modifier.padding(top = Raster.Abschnitt), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(text = title, modifier = Modifier.semantics { heading() }, style = MaterialTheme.typography.titleMedium)
+        untertitel?.let {
+            Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+/**
+ * Kopf einer Ansicht: Titel (Begrüßung oder Thema) und ein Satz darunter, zum Beispiel
+ * „Dein August 2026 auf einen Blick.“
+ */
+@Composable
+fun Kopfzeile(titel: String, untertitel: String?, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.padding(top = 4.dp, bottom = 4.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(titel, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.semantics { heading() })
+        untertitel?.let {
+            Text(it, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
 }
 
 data class Anteil(val label: String, val cents: Long, val shareText: String?, val tone: Tone)

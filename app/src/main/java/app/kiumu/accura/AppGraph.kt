@@ -3,7 +3,6 @@ package app.kiumu.accura
 import android.content.Context
 import app.kiumu.accura.auth.AuthGateway
 import app.kiumu.accura.data.FinanceRepository
-import app.kiumu.accura.ui.screens.OverviewVariant
 import java.time.Clock
 import java.time.ZoneId
 import kotlinx.coroutines.flow.StateFlow
@@ -26,10 +25,6 @@ fun DebugScenario.nextWithData(): DebugScenario = when (this) {
 interface DebugTools {
     val scenario: StateFlow<DebugScenario>
     fun select(scenario: DebugScenario)
-
-    /** Variante der Übersicht im Prototyp. */
-    val overviewVariant: StateFlow<OverviewVariant>
-    fun selectOverviewVariant(variant: OverviewVariant)
 }
 
 /**

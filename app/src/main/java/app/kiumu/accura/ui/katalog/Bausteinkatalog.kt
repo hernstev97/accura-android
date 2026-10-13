@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -190,11 +192,76 @@ fun ColumnScope.KatalogInhalt() {
     Aufteilungsbalken(
         listOf(
             Anteil("Ausgaben", 215_000, "72 %", Tone.Neutral),
-            Anteil("Raten", 40_645, "14 %", Tone.Debt),
+            Anteil("Raten", 40_645, "13 %", Tone.Debt),
             Anteil("Rücklagen", 30_000, "10 %", Tone.Reserve),
             Anteil("Frei", 14_355, "5 %", Tone.Free),
         ),
     )
+
+    Abschnitt("12 · Kachel und Wert-Kachel (Runde 2)")
+    KachelRaster(
+        listOf(
+            { mod -> WertKachel("Jetzt verfügbar", KatalogBeispiele.Frisch, today, mod, Tone.Neutral, betont = true, supporting = "Auf deinen Konten") },
+            { mod -> WertKachel("Puffer", KatalogBeispiele.Puffer, today, mod, Tone.Reserve, supporting = "So lange reicht es") },
+            { mod -> WertKachel("Restschuld", KatalogBeispiele.RestschuldAlt, today, mod, Tone.Debt) },
+            { mod -> WertKachel("Bis Gehalt", KatalogBeispiele.NichtBerechenbar, today, mod, Tone.Free, missingHint = "Gehaltstag eintragen") },
+        ),
+    )
+    PillenKnopf("Stände aktualisieren", onClick = {}, icon = Icons.Default.Refresh, modifier = Modifier.fillMaxWidth())
+
+    Abschnitt("13 · Ring und Anteil-Pillen")
+    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Ring(
+            teile = listOf(
+                RingTeil(215_000, Tone.Neutral.colors().accent),
+                RingTeil(40_645, Tone.Debt.colors().accent),
+                RingTeil(30_000, Tone.Reserve.colors().accent),
+                RingTeil(14_355, Tone.Free.colors().accent),
+            ),
+            beschreibung = "Beispiel: 5 % frei",
+            modifier = Modifier.weight(0.5f),
+        ) {
+            BetragGross("5 %", style = MaterialTheme.typography.headlineMedium)
+            Text("frei", style = MaterialTheme.typography.labelLarge)
+        }
+        Column(modifier = Modifier.weight(0.5f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            AnteilPille("Ausgaben", "72 %", 215_000, Tone.Neutral, 0.72f)
+            AnteilPille("Rücklagen", "10 %", 30_000, Tone.Reserve, 0.10f)
+            AnteilPille("Frei", "−90 %", -135_645, Tone.Attention, 0f)
+        }
+    }
+
+    Abschnitt("14 · Listengruppe")
+    Listengruppe {
+        zeile { ListenZeile("Alltagskonto", supporting = "Bankkonto · Stand von heute", amountCents = 120_025, leading = { IconScheibe(BankIcon, Tone.Neutral) }, innen = GruppenZeileInnen) }
+        zeile { ListenZeile("Reise-Wallet", supporting = "Wallet", amountCents = 12_050, leading = { IconScheibe(WalletIcon, Tone.Neutral) }, innen = GruppenZeileInnen) }
+        zeile { ListenZeile("Bargeld", supporting = "Bargeld", amountCents = 3_000, leading = { IconScheibe(CashIcon, Tone.Neutral) }, innen = GruppenZeileInnen) }
+        zeile(fuss = true) { ListenZeile("Gesamt", amountCents = 135_075, innen = GruppenZeileInnen) }
+    }
+
+    Abschnitt("15 · Zeitleiste „Was kommt“")
+    Column {
+        Station("Heute, 8. Aug.", punkt = { Punkt(Tone.Neutral) }, first = true) { Text("1.350,75 € auf den Konten") }
+        Station("15. Aug. · in 7 Tagen", punkt = { Punkt(Tone.Debt) }) { Text("Versicherungen 100,00 €") }
+        Station("25. Aug. · Gehalt", punkt = { Punkt(Tone.Free, FlagIcon) }, last = true) { Text("Neuer Zeitraum") }
+    }
+
+    Abschnitt("16 · Diagramme (Canvas, mit Textfassung)")
+    Verlaufskurve(
+        werte = listOf(894_500, 857_407, 820_235, 600_000, 300_000, 0),
+        tone = Tone.Debt,
+        beschreibung = "Beispiel: Restschuld fällt auf null",
+        anfang = "8. Aug.",
+        ende = "Dez. 2029",
+    )
+    Stufendiagramm(
+        werte = listOf(26_355, 32_355, 55_000),
+        beschriftungen = listOf("Okt. 2026", "Nov. 2026", "Jan. 2030"),
+        tone = Tone.Free,
+        beschreibung = "Beispiel: drei Stufen",
+    )
+    BalkenZeile("Wohnen", 125_000, 1f, MaterialTheme.colorScheme.primary, zusatz = "41,67 % des Einkommens")
+    BalkenZeile("Freizeit", 5_000, 0.04f, MaterialTheme.colorScheme.primary)
 
     Abschnitt("Expressive: Form und Bewegung zeigen Zustände")
     Text(

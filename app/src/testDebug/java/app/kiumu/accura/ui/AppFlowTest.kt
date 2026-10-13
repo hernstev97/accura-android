@@ -7,11 +7,13 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import app.kiumu.accura.AppGraph
@@ -20,7 +22,6 @@ import app.kiumu.accura.DebugTools
 import app.kiumu.accura.auth.FakeAuthGateway
 import app.kiumu.accura.data.Vertrag
 import app.kiumu.accura.data.fake.FakeFinanceRepository
-import app.kiumu.accura.ui.screens.OverviewVariant
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
@@ -42,15 +43,10 @@ class AppFlowTest {
     val rule = createAndroidComposeRule<ComponentActivity>()
 
     private val scenario = MutableStateFlow(DebugScenario.STANDARD)
-    private val variant = MutableStateFlow(OverviewVariant.Standard)
     private val tools = object : DebugTools {
         override val scenario: StateFlow<DebugScenario> = this@AppFlowTest.scenario
         override fun select(scenario: DebugScenario) {
             this@AppFlowTest.scenario.value = scenario
-        }
-        override val overviewVariant: StateFlow<OverviewVariant> = this@AppFlowTest.variant
-        override fun selectOverviewVariant(variant: OverviewVariant) {
-            this@AppFlowTest.variant.value = variant
         }
     }
     private val graph = AppGraph(
@@ -101,7 +97,8 @@ class AppFlowTest {
     fun `Anmelden mit E-Mail und Code führt zur Übersicht mit Daten`() {
         start()
         signIn()
-        text("Wie viel ist auf deinen Konten?").assertExists()
+        text("Hallo").assertExists()
+        text("Dein August 2026 auf einen Blick.").assertExists()
         rule.onNode(hasClickAction() and hasText("Budget")).assertExists()
     }
 
@@ -142,19 +139,49 @@ class AppFlowTest {
         text("Wie viel kann ich bis zum Gehalt noch ausgeben?").assertExists()
         text("904,30 €").assertExists()
         openTab("Budget")
-        text("Wie viel bleibt im Monat frei?").assertExists()
+        text("Dein Budget").assertExists()
         openTab("Schulden")
-        text("Wie hoch ist deine Restschuld?").assertExists()
+        text("Dein Weg auf null").assertExists()
         openTab("Übersicht")
-        text("Wie viel ist auf deinen Konten?").assertExists()
+        text("Hallo").assertExists()
     }
 
     @Test
-    fun `So gerechnet klappt den Rechenweg auf`() {
+    fun `Ein Tipp auf eine Kachel öffnet das Blatt mit Rechenweg`() {
         start()
         signIn()
+        rule.onNode(hasClickAction() and hasText("Jetzt verfügbar")).performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("So gerechnet")).fetchSemanticsNodes().isNotEmpty() }
+        // Steht nur im Rechenweg des Blatts, nicht auf der Übersicht.
+        text("Art: eingetragen. Status: belastbar.").assertExists()
+    }
+
+    @Test
+    fun `So gerechnet klappt den Rechenweg in der Hauptkarte auf`() {
+        start()
+        signIn()
+        openTab("Demnächst")
         rule.onAllNodes(hasClickAction() and hasText("So gerechnet"))[0].performClick()
-        text("Auf den Konten").assertExists()
+        text("Nächstes Gehalt").assertExists()
+    }
+
+    @Test
+    fun `Stände aktualisieren zeigt im Prototyp einen Hinweis statt nichts`() {
+        start()
+        signIn()
+        rule.onNode(hasClickAction() and hasText("Stände aktualisieren")).performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Eintragen kommt mit der Ersterfassung.")).fetchSemanticsNodes().isNotEmpty() }
+    }
+
+    @Test
+    fun `Restschuldverlauf hat eine Beschreibung und eine Tabelle`() {
+        start()
+        signIn()
+        openTab("Schulden")
+        rule.onNode(hasContentDescription("Restschuld bei planmäßiger Zahlung", substring = true)).assertExists()
+        rule.onNode(hasClickAction() and hasText("Werte als Tabelle")).performScrollTo().performClick()
+        // „Januar 2027“ steht nur in der Tabelle.
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Januar 2027")).fetchSemanticsNodes().isNotEmpty() }
     }
 
     @Test
@@ -178,22 +205,6 @@ class AppFlowTest {
         text("Leer").performClick()
         rule.onNodeWithContentDescription("Zurück").performClick()
         rule.waitUntil(5_000) { rule.onAllNodes(hasText("Noch nichts erfasst")).fetchSemanticsNodes().isNotEmpty() }
-    }
-
-    @Test
-    fun `Debug-Menü schaltet die Variante der Übersicht um`() {
-        start()
-        signIn()
-        rule.onNodeWithContentDescription("Konto").performClick()
-        text("Entwicklung").performClick()
-        text("Zeitleiste").performClick()
-        rule.onNodeWithContentDescription("Zurück").performClick()
-        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Was kommt auf dich zu?")).fetchSemanticsNodes().isNotEmpty() }
-        rule.onNodeWithContentDescription("Konto").performClick()
-        text("Entwicklung").performClick()
-        text("Spielraum zuerst").performClick()
-        rule.onNodeWithContentDescription("Zurück").performClick()
-        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Wie viel kannst du bis zum Gehalt ausgeben?")).fetchSemanticsNodes().isNotEmpty() }
     }
 
     @Test

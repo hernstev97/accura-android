@@ -16,10 +16,8 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import app.kiumu.accura.DebugScenario
+import app.kiumu.accura.screenshots.Ansicht
 import app.kiumu.accura.screenshots.Aufnahme
-import app.kiumu.accura.screenshots.uebersichtZustand
-import app.kiumu.accura.ui.screens.OverviewScreen
-import app.kiumu.accura.ui.screens.OverviewVariant
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -30,7 +28,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * Barrierefreiheit der Übersicht in jeder Variante und jedem Szenario mit Daten: Jedes Bedienelement
+ * Barrierefreiheit aller vier Ansichten in jedem Szenario mit Daten: Jedes Bedienelement
  * ist mindestens 48 × 48 dp groß und hat einen Namen; bei 200 % Schrift wird kein Text abgeschnitten
  * (Beträge schrumpfen oder brechen in eine eigene Zeile, statt abgeschnitten zu werden).
  * Der hohe Bildschirm sorgt dafür, dass alles einmal gemessen wird, auch unterhalb des Rands.
@@ -38,12 +36,12 @@ import org.robolectric.annotation.GraphicsMode
 @RunWith(ParameterizedRobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(qualifiers = "w360dp-h3200dp-xhdpi")
-class BarrierefreiheitTest(private val variante: OverviewVariant, private val szenario: DebugScenario) {
+class BarrierefreiheitTest(private val ansicht: Ansicht, private val szenario: DebugScenario) {
     @get:Rule
     val rule = createComposeRule()
 
     private fun zeigen(fontScale: Float) = rule.setContent {
-        Aufnahme(fontScale = fontScale) { OverviewScreen(uebersichtZustand(szenario), onRetry = {}, variant = variante) }
+        Aufnahme(fontScale = fontScale) { ansicht.render(szenario) }
     }
 
     private fun SemanticsNode.name(): String =
@@ -105,7 +103,7 @@ class BarrierefreiheitTest(private val variante: OverviewVariant, private val sz
         @ParameterizedRobolectricTestRunner.Parameters(name = "{0} {1}")
         fun parameter(): List<Array<Any>> {
             val szenarien = listOf(DebugScenario.STANDARD, DebugScenario.VERALTET, DebugScenario.NEGATIV, DebugScenario.OHNE_GEHALTSTAG)
-            return OverviewVariant.entries.flatMap { v -> szenarien.map { s -> arrayOf<Any>(v, s) } }
+            return Ansicht.entries.flatMap { a -> szenarien.map { s -> arrayOf<Any>(a, s) } }
         }
     }
 }

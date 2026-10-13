@@ -68,6 +68,36 @@ class FormattersTest {
         assertEquals("12. Okt.", formatDay(LocalDate.of(2026, 10, 12), today))
         assertEquals("20. Dez. 2029", formatDay(LocalDate.of(2029, 12, 20), today))
         assertEquals("Dezember 2029", formatMonth(YearMonth.of(2029, 12)))
+        assertEquals("Okt. 2026", formatMonthShort(YearMonth.of(2026, 10)))
+        assertEquals("Jan. 2030", formatMonthShort(YearMonth.of(2030, 1)))
+    }
+
+    @Test
+    fun `Achsengrenze ist der nächste runde Euro-Betrag, nur für Diagrammachsen`() {
+        assertEquals(0L, achsenGrenze(0))
+        assertEquals(0L, achsenGrenze(-500))
+        // Ein Cent reicht für einen ganzen Euro, damit die Linie nie über die Achse ragt.
+        assertEquals(100L, achsenGrenze(1))
+        assertEquals(60_000L, achsenGrenze(55_000))
+        assertEquals(30_000L, achsenGrenze(26_355))
+        assertEquals(100_000L, achsenGrenze(100_000))
+        assertEquals(150_000L, achsenGrenze(100_001))
+        assertEquals(1_000_000L, achsenGrenze(894_500))
+        assertEquals(150_000L, achsenGrenze(123_645))
+    }
+
+    @Test
+    fun `Ganze Prozent vom Backend, negativ mit Minuszeichen`() {
+        assertEquals("72${nbsp}%", formatPercent(72))
+        assertEquals("0${nbsp}%", formatPercent(0))
+        assertEquals("${minus}90${nbsp}%", formatPercent(-90))
+    }
+
+    @Test
+    fun `Achsenbeschriftung in ganzen Euro`() {
+        assertEquals("10.000${nbsp}€", formatAchse(1_000_000))
+        assertEquals("0${nbsp}€", formatAchse(0))
+        assertEquals("${minus}1.500${nbsp}€", formatAchse(-150_000))
     }
 
     @Test

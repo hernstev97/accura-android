@@ -23,8 +23,9 @@ private fun accuraColorScheme(dark: Boolean, dynamicColor: Boolean): ColorScheme
 
 /**
  * Theme der App: Material 3 Expressive mit Dynamic Color als Grundstimmung, den festen Farbrollen aus
- * [AccuraColors], Google Sans Flex ([AccuraTypography]) und der Systemeinstellung zu Animationen
- * ([LocalReduceMotion]). Ohne Dynamic Color gilt das Rückfall-Schema aus Petrol (`RueckfallFarben.kt`).
+ * [AccuraColors], Google Sans Flex ([AccuraTypography]), den Radien aus [AccuraShapes] und der
+ * Systemeinstellung zu Animationen ([LocalReduceMotion]). Ohne Dynamic Color gilt das Rückfall-Schema
+ * aus Petrol (`RueckfallFarben.kt`).
  * Expressive-APIs sind experimentell; sie stehen nur hier und in `ui/katalog` unter `@OptIn` (AGENTS.md).
  * Tests schalten `dynamicColor` aus und setzen `reduceMotion` fest.
  */
@@ -43,6 +44,7 @@ fun AccuraTheme(
         MaterialExpressiveTheme(
             colorScheme = accuraColorScheme(darkTheme, dynamicColor),
             motionScheme = MotionScheme.expressive(),
+            shapes = AccuraShapes,
             typography = AccuraTypography,
             content = content,
         )

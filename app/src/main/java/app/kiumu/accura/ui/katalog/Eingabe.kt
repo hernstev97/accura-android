@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
@@ -109,6 +110,9 @@ fun AuswahlEinzeln(
                     selected = selected,
                     onClick = { onWahl(index) },
                     label = { Text(option) },
+                    // Sichtbar 48 dp hoch: Das Ziel soll so groß aussehen, wie es ist (Leitfaden, 48 dp).
+                    modifier = Modifier.heightIn(min = 48.dp),
+                    shape = CircleShape,
                     leadingIcon = if (selected) {
                         { Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.heightIn(max = FilterChipDefaults.IconSize)) }
                     } else {

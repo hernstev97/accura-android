@@ -50,8 +50,8 @@ fun formatBps(bps: Int): String {
     return "$sign$number$NBSP%"
 }
 
-/** Ganze Prozent, wie das Backend sie liefert: 72 → `72 %`. Die App rundet nicht selbst. */
-fun formatPercent(percent: Int): String = "$percent$NBSP%"
+/** Ganze Prozent, wie das Backend sie liefert: 72 → `72 %`, −90 mit Minuszeichen. Die App rundet nicht selbst. */
+fun formatPercent(percent: Int): String = if (percent < 0) "$MINUS${-percent}$NBSP%" else "$percent$NBSP%"
 
 /** Ganze Prozent aus Basispunkten, für einzeln gerundete Anteile: 7166 → `72 %`, 7150 → `72 %`. */
 fun formatWholePercent(bps: Int): String = "${(bps + 50) / 100}$NBSP%"
@@ -66,6 +66,29 @@ fun formatMonthsX100(value: Long): String {
     return "$sign${tenths / 10},${tenths % 10}"
 }
 
+/** Stufen einer Achsengrenze in Zehnteln der Zehnerpotenz: 1, 1,5, 2, 3, 4, 5, 6, 8, 10. */
+private val achsenStufen = longArrayOf(10, 15, 20, 30, 40, 50, 60, 80, 100)
+
+/**
+ * Grenze einer Diagrammachse in Cent: der nächste runde Euro-Betrag ab [cents] (zum Beispiel 550 € →
+ * 600 €, 8.945 € → 10.000 €). Nur für Achsen; Beträge selbst werden nie gerundet (Leitfaden, Regel 6).
+ * 0 und negative Werte ergeben 0.
+ */
+fun achsenGrenze(cents: Long): Long {
+    if (cents <= 0) return 0
+    val euro = (cents + 99) / 100
+    var potenz = 1L
+    while (potenz * 10 < euro) potenz *= 10
+    val stufe = achsenStufen.first { it * potenz / 10 >= euro || it == 100L }
+    return stufe * potenz / 10 * 100
+}
+
+/** Ganze Euro für Achsenbeschriftungen: 1000000 → `10.000 €`. Cent fallen weg; gedacht für Werte aus [achsenGrenze]. */
+fun formatAchse(cents: Long): String {
+    val sign = if (cents < 0) "$MINUS" else ""
+    return "$sign${groupThousands(abs(cents) / 100)}$NBSP€"
+}
+
 private val dayShort = DateTimeFormatter.ofPattern("d. MMM", Locale.GERMAN)
 private val dayLong = DateTimeFormatter.ofPattern("d. MMM yyyy", Locale.GERMAN)
 private val monthYear = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.GERMAN)
@@ -75,6 +98,11 @@ fun formatDay(day: LocalDate, reference: LocalDate? = null): String =
     if (reference == null || day.year == reference.year) dayShort.format(day) else dayLong.format(day)
 
 fun formatMonth(month: YearMonth): String = monthYear.format(month)
+
+private val monthShort = DateTimeFormatter.ofPattern("MMM yyyy", Locale.GERMAN)
+
+/** `Okt. 2026`, für Diagrammbeschriftungen. */
+fun formatMonthShort(month: YearMonth): String = monthShort.format(month)
 
 /** Zahl einer Kennzahl nach Einheit, ohne Einheitswort für Tage und Monate. `null`, wenn kein Wert da ist. */
 fun formatMetricNumber(metric: Metric): String? = when (metric.unit) {

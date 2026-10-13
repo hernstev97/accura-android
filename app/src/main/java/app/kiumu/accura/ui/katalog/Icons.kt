@@ -47,3 +47,21 @@ val SwapIcon: ImageVector = icon(
     "Swap",
     "M6.99,11L3,15l3.99,4v-3H14v-2H6.99v-3zM21,9l-3.99,-4v3H10v2h7.01v3L21,9z",
 )
+
+/** Bank: Bankkonto. */
+val BankIcon: ImageVector = icon(
+    "Bank",
+    "M4,10v7h3v-7L4,10zM10,10v7h3v-7h-3zM2,22h19v-3L2,19v3zM16,10v7h3v-7h-3zM11.5,1L2,6v2h19L21,6l-9.5,-5z",
+)
+
+/** Geldbörse: Wallet oder Zahlungskonto. */
+val WalletIcon: ImageVector = icon(
+    "Wallet",
+    "M21,18v1c0,1.1 -0.9,2 -2,2L5,21c-1.11,0 -2,-0.9 -2,-2L3,5c0,-1.1 0.89,-2 2,-2h14c1.1,0 2,0.9 2,2v1h-9c-1.11,0 -2,0.9 -2,2v8c0,1.1 0.89,2 2,2h9zM12,16h10L22,8L12,8v8zM16,13.5c-0.83,0 -1.5,-0.67 -1.5,-1.5s0.67,-1.5 1.5,-1.5 1.5,0.67 1.5,1.5 -0.67,1.5 -1.5,1.5z",
+)
+
+/** Geldscheine: Bargeld. */
+val CashIcon: ImageVector = icon(
+    "Cash",
+    "M19,14V6c0,-1.1 -0.9,-2 -2,-2H3C1.9,4 1,4.9 1,6v8c0,1.1 0.9,2 2,2h14C18.1,16 19,15.1 19,14zM10,13c-1.66,0 -3,-1.34 -3,-3s1.34,-3 3,-3s3,1.34 3,3S11.66,13 10,13zM23,7v11c0,1.1 -0.9,2 -2,2H4c0,-1 0,-0.9 0,-2h17V7C22.1,7 22,7 23,7z",
+)
