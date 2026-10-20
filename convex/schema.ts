@@ -76,9 +76,15 @@ export default defineSchema({
     kind: v.union(v.literal("expense"), v.literal("reserve")),
     category: v.string(),
     dueDay: v.optional(int),
+    // Art eines Abos oder Vertrags, freier Text (z. B. „Streaming“). Gleiche Art fällt im Einspar-Hinweis auf.
+    contractType: v.optional(v.string()),
     contractEndDay: v.optional(calendarDay),
+    // Kündigungsfrist in Tagen oder in Monaten, höchstens eins von beiden.
     noticePeriodDays: v.optional(int),
+    noticePeriodMonths: v.optional(int),
+    // „Bewusst so“: wann und für welchen Stand des Postens (`hintFingerprint` in lib/hints.ts).
     waivedHintAt: v.optional(timestampMs),
+    waivedHintFingerprint: v.optional(v.string()),
     note: v.optional(v.string()),
     order: int,
     active: v.boolean(),

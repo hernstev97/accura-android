@@ -21,6 +21,7 @@ Fehler sind `ConvexError` mit `{ code }` (`unauthenticated`, `forbidden`, `inval
   - eine öffentliche Action existiert,
   - eine öffentliche Funktion nicht in der Tabelle der Zugriffstests steht. Dort läuft sie ohne Anmeldung (muss `unauthenticated` sein), mit fremdem Konto (`forbidden`), ohne gesetzte Variable (`forbidden`) und mit dem Besitzer (läuft durch).
 - Alle Tabellen tragen `userId`. Abfragen lesen nur Zeilen des angemeldeten Nutzers; `debtSchedule` gibt für Kredite fremder Nutzer `null` zurück.
+- `hints:setWaived` ändert nur Posten des angemeldeten Nutzers. Fremde, gelöschte und unbekannte Posten ergeben denselben Fehler (`invalid_argument`, Feld `budgetItemId`), damit die Antwort nicht verrät, ob es den Posten gibt.
 
 ## Einrichtung pro Deployment
 

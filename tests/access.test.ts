@@ -27,10 +27,12 @@ describe("jede öffentliche Funktion läuft über den gemeinsamen Wrapper", () =
   it("findet die erwarteten Funktionen (der Test ist nicht leer)", async () => {
     const names = (await allFunctions()).filter(({ fn }) => fn.isPublic).map(({ name }) => name).sort();
     expect(names).toEqual([
+      "hints:setWaived",
       "users:ensureUser",
       "views:budget",
       "views:debtSchedule",
       "views:debts",
+      "views:hints",
       "views:overview",
       "views:upcoming",
     ]);
@@ -77,6 +79,16 @@ const calls = {
       });
     });
     return t.query(api.views.debtSchedule, { today: "2026-08-08", debtId });
+  },
+  "views:hints": (t: Client) => t.query(api.views.hints, { today: "2026-08-08" }),
+  "hints:setWaived": async (t: Client) => {
+    const budgetItemId = await t.run(async (ctx) => {
+      const userId = await ctx.db.insert("users", { clerkTokenIdentifier: OWNER_TOKEN, homeTimeZone: "Europe/Berlin", createdAt: 0n });
+      return await ctx.db.insert("budgetItems", {
+        userId, label: "X", monthlyAmountCents: 1n, necessity: "optional", kind: "expense", category: "Abo", order: 1n, active: true,
+      });
+    });
+    return t.mutation(api.hints.setWaived, { budgetItemId, waived: true });
   },
   "users:ensureUser": (t: Client) => t.mutation(api.users.ensureUser, {}),
 } as const;

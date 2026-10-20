@@ -9,6 +9,7 @@
  */
 
 import type * as access from "../access.js";
+import type * as hints from "../hints.js";
 import type * as lib_amortization from "../lib/amortization.js";
 import type * as lib_budget from "../lib/budget.js";
 import type * as lib_calendar from "../lib/calendar.js";
@@ -16,10 +17,12 @@ import type * as lib_debts from "../lib/debts.js";
 import type * as lib_derive from "../lib/derive.js";
 import type * as lib_fixtures from "../lib/fixtures.js";
 import type * as lib_freshness from "../lib/freshness.js";
+import type * as lib_hints from "../lib/hints.js";
 import type * as lib_input from "../lib/input.js";
 import type * as lib_load from "../lib/load.js";
 import type * as lib_metric from "../lib/metric.js";
 import type * as lib_money from "../lib/money.js";
+import type * as lib_notice from "../lib/notice.js";
 import type * as lib_seed from "../lib/seed.js";
 import type * as lib_upcoming from "../lib/upcoming.js";
 import type * as lib_views from "../lib/views.js";
@@ -36,6 +39,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   access: typeof access;
+  hints: typeof hints;
   "lib/amortization": typeof lib_amortization;
   "lib/budget": typeof lib_budget;
   "lib/calendar": typeof lib_calendar;
@@ -43,10 +47,12 @@ declare const fullApi: ApiFromModules<{
   "lib/derive": typeof lib_derive;
   "lib/fixtures": typeof lib_fixtures;
   "lib/freshness": typeof lib_freshness;
+  "lib/hints": typeof lib_hints;
   "lib/input": typeof lib_input;
   "lib/load": typeof lib_load;
   "lib/metric": typeof lib_metric;
   "lib/money": typeof lib_money;
+  "lib/notice": typeof lib_notice;
   "lib/seed": typeof lib_seed;
   "lib/upcoming": typeof lib_upcoming;
   "lib/views": typeof lib_views;

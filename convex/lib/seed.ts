@@ -65,8 +65,11 @@ export async function seedFinanceInput(db: Db, userId: Id<"users">, input: Finan
       kind: item.kind,
       category: item.category,
       ...(item.dueDay === null ? {} : { dueDay: toInt64(item.dueDay) }),
+      ...(item.contractType === null ? {} : { contractType: item.contractType }),
       ...(item.contractEndDay === null ? {} : { contractEndDay: item.contractEndDay }),
       ...(item.noticePeriodDays === null ? {} : { noticePeriodDays: toInt64(item.noticePeriodDays) }),
+      ...(item.noticePeriodMonths === null ? {} : { noticePeriodMonths: toInt64(item.noticePeriodMonths) }),
+      ...(item.waivedHintFingerprint === null ? {} : { waivedHintAt: at, waivedHintFingerprint: item.waivedHintFingerprint }),
       order: toInt64(item.order),
       active: item.active,
     });

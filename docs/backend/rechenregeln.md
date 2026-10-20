@@ -101,9 +101,54 @@ Alle erwarten `today` und liefern ein Modell, in dem jede Ganzzahl `int64` ist. 
 | `views:debts` | je Kredit: Vertragsdaten, Restschuld (Kennzahl), nächste und letzte Rate, Restzahlungen, Zinsen, Ablösesumme, Abweichung vom Bankstand, Beispiel Sondertilgung, Warnungen; dazu die Summen, Entlastungen und der Verlauf |
 | `views:debtSchedule` | Tilgungsplan eines Kredits (Raten ab dem Bankstand, `paid` oder `upcoming`) |
 | `views:upcoming` | `salaryStatus`, Gehaltstag, Tage bis dahin, Zahlungen, `pendingPayments`, `availableUntilSalary`, `dailyAllowance` |
+| `views:hints` | Einspar-Hinweise, auch ausgeblendete (siehe [Einspar-Hinweise](#einspar-hinweise-libhintsts)) |
 
 Aus der Altanwendung übernommen (und in `tests/lib/views.test.ts` nachgebildet) sind die Regeln und Grenzfälle zu Gehaltstag, Fälligkeitstag am Monatsende und im Schaltjahr, Zahlung am Gehaltstag, Zahlung von gestern, negative Kontostände, leere Budgets, Einkommen ≤ 0 und sehr große Beträge. Die Testdaten sind neu ausgedacht; sie stehen in `convex/lib/fixtures.ts`.
 
+## Einspar-Hinweise (`lib/hints.ts`)
+
+`views:hints` liefert alle Hinweise, auch ausgeblendete. Wie viele davon zu sehen sind und wo, entscheidet das Design. Gebaut sind zwei Hinweise, sie kommen in dieser Reihenfolge. Ein Hinweis ohne Posten fehlt in der Antwort. Den Lebensmittel-Richtwert gibt es noch nicht, weil die Quelle für den Preis offen ist.
+
+| Hinweis (`type`) | Posten | Reihenfolge |
+| --- | --- | --- |
+| `subscriptions` (Abos und Verträge) | aktive Ausgaben der Kategorie „Abo“ oder „Vertrag“. Leerzeichen am Rand sowie Groß- und Kleinschreibung zählen nicht, „Abos“ ist eine andere Kategorie. | niedrigste Notwendigkeit zuerst, bei gleicher Stufe der höhere Betrag, dann die Reihenfolge im Budget |
+| `lowNecessity` (Niedrige Notwendigkeit) | aktive Ausgaben der beiden unteren Stufen `optional` und `unnecessary` | wie oben |
+
+Rücklagen und inaktive Posten zählen nie. Ein Abo mit niedriger Notwendigkeit steht in beiden Hinweisen, die Beträge der Hinweise darf man deshalb nicht addieren.
+
+| Feld | Bedeutung |
+| --- | --- |
+| `monthlyCents`, `yearlyCents` | Summe der mitzählenden Posten pro Monat und pro Jahr (Monat × 12, exakt). Bei `lowNecessity` ist das der Betrag, der frei würde, wenn die Posten wegfielen. |
+| `status` | `open`, wenn mindestens ein Posten mitzählt; `waived`, wenn alle Posten „bewusst so“ sind. Dann sind beide Beträge 0. |
+| `reason` | Grund in ruhigen Sätzen. Er nennt keine Beträge, weil die App Beträge ausblenden kann, und empfiehlt weder Anbieter noch Tarife. |
+| `steps` | Rechenweg wie bei Kennzahlen: jeder mitzählende Posten als `plus`, ausgeblendete als `note`, Summe im Monat, `note` „Monate im Jahr“ mit `count` 12, Summe im Jahr. Bei `subscriptions` folgen je eine `note` für jede Gruppe gleicher Art (`count`) und für jeden letzten Kündigungstag (`day`). |
+| `items` | alle Posten des Hinweises, auch ausgeblendete: `label`, `category`, `necessity`, `contractType`, `monthlyCents`, `yearlyCents`, `status` (`open`, `waived`, `reopened`) und `cancellation` |
+| `sameTypeGroups` | nur bei `subscriptions`: ab zwei mitzählenden Posten derselben Art eine Gruppe mit `contractType`, `itemIds` und Summe pro Monat und Jahr |
+
+**Gleiche Art.** Die Art steht im Feld `contractType`, freier Text wie „Streaming“. Verglichen wird ohne Leerzeichen am Rand und ohne Groß- und Kleinschreibung, angezeigt wird die Schreibweise des ersten Postens. Posten ohne Art bilden keine Gruppe. Am Namen erkennt accura keine Anbieter.
+
+**Bewusst so.** `hints:setWaived` mit `waived: true` speichert den Zeitpunkt (`waivedHintAt`) und einen Fingerabdruck des Postens (`waivedHintFingerprint`). Der Fingerabdruck enthält Betrag, Notwendigkeit, Ausgabe oder Rücklage, Kategorie, Art, Vertragsende und Kündigungsfrist. Solange der Posten dazu passt, ist er `waived` und zählt in keinem Hinweis mit. Ändert sich eines dieser Felder, ist er `reopened` und zählt wieder, bis Steven ihn erneut ausblendet. Name, Notiz, Reihenfolge und Fälligkeitstag gehören nicht dazu: Ein neuer Name holt den Hinweis nicht zurück. `waived: false` entfernt beide Felder.
+
+### Letzter Kündigungstag (`lib/notice.ts`)
+
+Bis zum letzten Kündigungstag muss die Kündigung beim Anbieter angekommen sein, damit der Vertrag zum erfassten Vertragsende endet. Er steht in `cancellation` jedes Postens, sobald Vertragsende oder Kündigungsfrist erfasst sind. Gerechnet wird ohne Uhr mit dem übergebenen `today`, nach §§ 187 und 188 BGB rückwärts vom Vertragsende:
+
+- Frist in Tagen (`noticePeriodDays`): Vertragsende minus N Tage. Vier Wochen sind 28 Tage.
+- Frist in Monaten (`noticePeriodMonths`): vom Tag nach dem Vertragsende N Monate zurück, davon der Vortag. Gibt es den Tag im Zielmonat nicht (30. Februar), beginnt die Frist am Ersten des Folgemonats.
+- Wochenenden und Feiertage verschieben nichts. § 193 BGB gilt für Kündigungsfristen nicht.
+
+| Vertragsende | Frist | Letzter Kündigungstag |
+| --- | --- | --- |
+| 31.12.2026 | 30 Tage | 01.12.2026 |
+| 31.12.2026 | 3 Monate | 30.09.2026 |
+| 31.03.2026 / 31.03.2028 | 1 Monat | 28.02.2026 / 29.02.2028 |
+| 30.05.2026 | 3 Monate, einen 31. Februar gibt es nicht | 28.02.2026 |
+| 01.03.2028 | 1 Tag | 29.02.2028 |
+
+`state` ist `open` (heute oder später, `daysUntilLastNoticeDay` ab 0), `passed` (vorbei, die Zahl ist negativ), `incomplete` (Ende oder Frist fehlt) oder `invalid`. Ungültig sind ein Vertragsende, das kein Kalendertag ist, eine negative Frist, eine Frist über zehn Jahre (3.660 Tage, 120 Monate) und eine Frist in Tagen und Monaten zugleich. Bei `passed` sagt `reason`, ob nur der Kündigungstag oder schon das Vertragsende vorbei ist. Wie sich ein Vertrag verlängert, weiß accura nicht, also rechnet es keinen nächsten Termin aus. Steven trägt dann das neue Vertragsende ein.
+
+Ein Test gleicht die Rückwärtsrechnung für jeden Tag der Jahre 2027 und 2028 und Fristen von 0 bis 13 Monaten mit der Vorwärtsregel aus § 188 BGB ab.
+
 ## Noch nicht gebaut
 
-Einspar-Hinweise und Lebensmittel-Richtwert, Plan gegen Ist-Ausgaben, Sparziele, „Was wäre wenn“ jenseits der Sondertilgung, Verlauf und Monatsvergleich sowie alle schreibenden Funktionen außer `users:ensureUser`.
+Lebensmittel-Richtwert, Plan gegen Ist-Ausgaben, Sparziele, „Was wäre wenn“ jenseits der Sondertilgung, Verlauf und Monatsvergleich sowie alle schreibenden Funktionen außer `users:ensureUser` und `hints:setWaived`.
