@@ -1,0 +1,42 @@
+name: Convex
+
+on:
+  pull_request:
+    paths:
+      - "convex/**"
+      - "tests/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "vitest.config.ts"
+      - ".github/workflows/convex.yml"
+  push:
+    branches: [main]
+    paths:
+      - "convex/**"
+      - "tests/**"
+      - "package.json"
+      - "package-lock.json"
+      - "tsconfig.json"
+      - "vitest.config.ts"
+      - ".github/workflows/convex.yml"
+
+permissions:
+  contents: read
+
+# Kein Deploy: Die Produktion wird nur auf ausdrücklichen Auftrag von Hand befüllt.
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Tests
+        run: npm test

@@ -21,7 +21,7 @@ Regeln für Agenten in diesem Repo. Plan und Hintergründe: [docs/neubau/plan.md
 ## Aufbau
 
 - `app/` Android-App (Kotlin, Jetpack Compose). Zeigt an, rechnet nicht.
-- `convex/` Backend und Rechenkern in TypeScript. Alle Finanzlogik liegt hier.
+- `convex/` Backend und Rechenkern in TypeScript. Alle Finanzlogik liegt hier. Tests in `tests/`, Doku in `docs/backend/`.
 - `scripts/` Installation, später Backup und Restore.
 - `docs/` Doku. `docs/neubau/` enthält Plan und Bestandsaufnahme aus dem Altprojekt.
 
@@ -54,6 +54,7 @@ Regeln für Agenten in diesem Repo. Plan und Hintergründe: [docs/neubau/plan.md
 ## Prüfen
 
 - Vor „fertig“: Build (`./gradlew :app:assembleDebug`), Tests, Lint. Nenne offen, was du nicht ausführen konntest.
+- Backend (`convex/`): `npm run check` (Typecheck und Vitest). Neue öffentliche Funktionen nur über `ownerQuery`/`ownerMutation` und mit Eintrag in `tests/access.test.ts`.
 - Passe Tests nicht an, nur damit Fehler grün werden.
 - Builds mit niedriger Priorität: `nice -n 19 ionice -c3 <befehl>`.
 - Installation auf das Handy: `scripts/install.sh` (siehe README).

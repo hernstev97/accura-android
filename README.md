@@ -2,7 +2,7 @@
 
 Private Finanz-App nur für Steven. Kotlin mit Jetpack Compose, Convex als Backend (EU-Region), Clerk für die Anmeldung. Kein Play Store: Die App wird lokal gebaut und per ADB auf das Pixel installiert.
 
-Stand: Phase 0 abgeschlossen, leere App läuft auf dem Pixel. Der Plan steht in [docs/neubau/plan.md](docs/neubau/plan.md), die Bestandsaufnahme der Vorgänger-App in [docs/neubau/bestandsaufnahme.md](docs/neubau/bestandsaufnahme.md). Konten und IDs: [docs/einrichtung.md](docs/einrichtung.md).
+Stand: Phase 0 abgeschlossen, leere App läuft auf dem Pixel. Backend (Phase 2): Schema, Zugriffsschutz und Rechenkern in `convex/`, siehe [docs/backend/](docs/backend/README.md). Der Plan steht in [docs/neubau/plan.md](docs/neubau/plan.md), die Bestandsaufnahme der Vorgänger-App in [docs/neubau/bestandsaufnahme.md](docs/neubau/bestandsaufnahme.md). Konten und IDs: [docs/einrichtung.md](docs/einrichtung.md).
 
 ## Bauen und installieren
 
@@ -22,8 +22,11 @@ ADB per WLAN koppeln: am Pixel Entwickleroptionen, Kabelloses Debugging, „Ger�
 | Ordner | Inhalt |
 | --- | --- |
 | `app/` | Android-App |
-| `convex/` | Backend und Rechenkern (ab Phase 2) |
+| `convex/` | Backend und Rechenkern (Doku: [docs/backend/](docs/backend/README.md)) |
+| `tests/` | Tests für `convex/` (Vitest) |
 | `scripts/` | Installation, später Backup und Restore |
 | `docs/` | Plan, Bestandsaufnahme, Einrichtung, Signierung |
+
+Backend prüfen: `npm ci && npm run check` (Typecheck und Tests).
 
 Regeln für Agenten: [AGENTS.md](AGENTS.md). Echte Finanzdaten gehören nie ins Repo.
