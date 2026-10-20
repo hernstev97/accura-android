@@ -151,4 +151,4 @@ Ein Test gleicht die Rückwärtsrechnung für jeden Tag der Jahre 2027 und 2028 
 
 ## Noch nicht gebaut
 
-Lebensmittel-Richtwert, Plan gegen Ist-Ausgaben, Sparziele, „Was wäre wenn“ jenseits der Sondertilgung, Verlauf und Monatsvergleich sowie alle schreibenden Funktionen außer `users:ensureUser` und `hints:setWaived`.
+Lebensmittel-Richtwert, Plan gegen Ist-Ausgaben, Sparziele, „Was wäre wenn“ jenseits der Sondertilgung, Verlauf und Monatsvergleich. Die schreibenden Funktionen beschreibt [bearbeiten.md](bearbeiten.md).

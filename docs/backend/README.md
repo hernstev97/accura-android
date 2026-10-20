@@ -1,12 +1,13 @@
 # Backend (Convex)
 
-Stand: Phase 2, Teil Backend, dazu die Einspar-Hinweise aus Phase 3 ohne Lebensmittel-Richtwert. Beschrieben ist, was gebaut ist. Plan und Hintergründe: [../neubau/plan.md](../neubau/plan.md).
+Stand: Phase 2, Teil Backend, die Einspar-Hinweise aus Phase 3 ohne Lebensmittel-Richtwert und aus Phase 4 das Bearbeiten mit Konfliktschutz, Stände und Export (ohne Vorlagen). Beschrieben ist, was gebaut ist. Plan und Hintergründe: [../neubau/plan.md](../neubau/plan.md).
 
 | Thema | Seite |
 | --- | --- |
 | Tabellen, Typen, Abweichungen vom Plan | [schema.md](schema.md) |
 | Prüfung von Token und Konto, interne Funktionen | [zugriffsschutz.md](zugriffsschutz.md) |
 | Rechenregeln, Kennzahlen, Einspar-Hinweise, Antwortformat der Ansichten | [rechenregeln.md](rechenregeln.md) |
+| Anlegen, Ändern, Archivieren, Stände, Konfliktschutz, Export | [bearbeiten.md](bearbeiten.md) |
 
 ## Aufbau
 
@@ -15,10 +16,17 @@ convex/
   schema.ts, auth.config.ts   Tabellen, Clerk-Aussteller
   access.ts                   gemeinsamer Wrapper für alle öffentlichen Funktionen
   views.ts                    Abfragen je Ansicht (overview, budget, debts, debtSchedule, upcoming, hints)
-  users.ts                    ensureUser
+  users.ts                    ensureUser, updateSettings
   hints.ts                    setWaived („bewusst so“ für Einspar-Hinweise)
+  accounts.ts, pockets.ts,    create, update, setActive je Datensatzart
+  budgetItems.ts, debts.ts,
+  household.ts
+  stands.ts                   record (Stände, einzeln oder „Stände aktualisieren“)
+  records.ts                  list (alle Datensätze zum Bearbeiten)
+  dataExport.ts               all (Export aller eigenen Daten)
+  editing.ts                  Helfer: Prüfungen, Besitz, Konfliktschutz, Fehlercodes
   maintenance.ts              nur intern: anonyme Testdaten in ein Dev-Deployment
-  lib/                        reiner Rechenkern, kennt Convex nur in load.ts und seed.ts
+  lib/                        reiner Rechenkern, kennt Convex nur in load.ts, seed.ts und fields.ts
   _generated/                 von `npx convex dev` erzeugt, eingecheckt
 tests/                        Vitest (Rechenkern, Zugriff, Abfragen mit convex-test)
 ```
