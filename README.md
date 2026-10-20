@@ -17,13 +17,18 @@ Mit mehreren angeschlossenen Geräten: `ANDROID_SERIAL=<Seriennummer> scripts/in
 
 ADB per WLAN koppeln: am Pixel Entwickleroptionen, Kabelloses Debugging, „Gerät mit Kopplungscode koppeln“, dann `adb pair <IP:Port>` und `adb connect <IP:Port>`.
 
+## Klick-Dummys am Handy
+
+`scripts/serve-dummies.sh` liefert die HTML-Prototypen aus `design/dummies` im lokalen WLAN aus und zeigt die Adresse für das Handy. Es wird nichts veröffentlicht. Details in [design/README.md](design/README.md).
+
 ## Aufbau
 
 | Ordner | Inhalt |
 | --- | --- |
 | `app/` | Android-App |
 | `convex/` | Backend und Rechenkern (ab Phase 2) |
-| `scripts/` | Installation, später Backup und Restore |
-| `docs/` | Plan, Bestandsaufnahme, Einrichtung, Signierung |
+| `scripts/` | Installation, Klick-Dummys ausliefern, später Backup und Restore |
+| `design/` | Klick-Dummys der Abläufe ([design/README.md](design/README.md)) |
+| `docs/` | Plan, Bestandsaufnahme, Einrichtung, Signierung, [Design-Leitfaden](docs/design/leitfaden.md) |
 
 Regeln für Agenten: [AGENTS.md](AGENTS.md). Echte Finanzdaten gehören nie ins Repo.

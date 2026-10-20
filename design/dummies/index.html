@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#1D6075">
+  <meta name="robots" content="noindex">
+  <title>accura Klick-Dummy</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt springen</a>
+  <div class="dummybar" role="region" aria-label="Klick-Dummy">
+    <span>Klick-Dummy · ausgedachte Testdaten</span>
+    <a class="btn text" href="#/start">Dummy-Menü</a>
+  </div>
+  <div class="app">
+    <header id="topbar"></header>
+    <main id="main" tabindex="-1"></main>
+    <nav id="nav" class="bottomnav" aria-label="Hauptansichten" hidden></nav>
+  </div>
+  <div id="toast" class="toast" aria-hidden="true"></div>
+  <div id="live" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript><p style="padding:1rem">Der Klick-Dummy braucht JavaScript. Es wird nichts geladen und nichts gesendet.</p></noscript>
+  <script src="js/core.js"></script>
+  <script src="js/calc.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/screens-ansichten.js"></script>
+  <script src="js/screens-erfassen.js"></script>
+  <script src="js/screens-staende.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
