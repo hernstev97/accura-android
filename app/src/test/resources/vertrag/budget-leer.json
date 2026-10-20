@@ -1,0 +1,57 @@
+{
+  "today": "2026-08-08",
+  "status": "empty",
+  "incomeCents": null,
+  "plannedCents": 0,
+  "expensesCents": 0,
+  "reservesCents": 0,
+  "ratesCents": 0,
+  "freeMonthly": {
+    "key": "freeMonthly",
+    "unit": "cents",
+    "kind": "planned",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Das Monatseinkommen fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "deficitCents": null,
+  "utilizationBps": null,
+  "necessityGroups": [
+    {
+      "necessity": "essential",
+      "totalCents": 0,
+      "shareBps": null,
+      "items": []
+    },
+    {
+      "necessity": "necessary",
+      "totalCents": 0,
+      "shareBps": null,
+      "items": []
+    },
+    {
+      "necessity": "worthwhile",
+      "totalCents": 0,
+      "shareBps": null,
+      "items": []
+    },
+    {
+      "necessity": "optional",
+      "totalCents": 0,
+      "shareBps": null,
+      "items": []
+    },
+    {
+      "necessity": "unnecessary",
+      "totalCents": 0,
+      "shareBps": null,
+      "items": []
+    }
+  ],
+  "categories": [],
+  "rates": []
+}

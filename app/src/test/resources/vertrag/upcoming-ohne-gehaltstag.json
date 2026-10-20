@@ -1,0 +1,115 @@
+{
+  "today": "2026-08-08",
+  "salaryStatus": "missing",
+  "nextSalaryDay": null,
+  "daysUntilSalary": null,
+  "payments": [],
+  "pendingPayments": {
+    "key": "pendingPayments",
+    "unit": "cents",
+    "kind": "planned",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "accountsTotal": {
+    "key": "accountsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": 135075,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 0,
+    "oldestDataDay": "2026-08-08",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Alltagskonto",
+        "cents": 120025,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Reise-Wallet",
+        "cents": 12050,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Bargeld",
+        "cents": 3000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "result",
+        "label": "Auf den Konten",
+        "cents": 135075,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "availableUntilSalary": {
+    "key": "availableUntilSalary",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "dailyAllowance": {
+    "key": "dailyAllowance",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  }
+}

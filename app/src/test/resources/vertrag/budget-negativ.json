@@ -1,0 +1,315 @@
+{
+  "today": "2026-08-08",
+  "status": "overdrawn",
+  "incomeCents": 150000,
+  "plannedCents": 285645,
+  "expensesCents": 215000,
+  "reservesCents": 30000,
+  "ratesCents": 40645,
+  "freeMonthly": {
+    "key": "freeMonthly",
+    "unit": "cents",
+    "kind": "planned",
+    "value": -135645,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "start",
+        "label": "Monatseinkommen",
+        "cents": 150000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Wohnen",
+        "cents": 100000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Lebensmittel",
+        "cents": 50000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Nebenkosten",
+        "cents": 20000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Mobilität",
+        "cents": 15000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Versicherungen",
+        "cents": 10000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Fitness",
+        "cents": 6000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Internet",
+        "cents": 5000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Geschenke",
+        "cents": 5000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Abos",
+        "cents": 4000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rate Ratenkredit",
+        "cents": 22645,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rate Finanzierung A",
+        "cents": 12000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rate Finanzierung B",
+        "cents": 6000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rücklage Rücklagen",
+        "cents": 30000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Frei im Monat",
+        "cents": -135645,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "deficitCents": 135645,
+  "utilizationBps": 19043,
+  "necessityGroups": [
+    {
+      "necessity": "essential",
+      "totalCents": 160000,
+      "shareBps": 10667,
+      "items": [
+        {
+          "id": "housing",
+          "label": "Wohnen",
+          "kind": "expense",
+          "category": "Wohnen",
+          "monthlyAmountCents": 100000,
+          "dueDay": 1
+        },
+        {
+          "id": "groceries",
+          "label": "Lebensmittel",
+          "kind": "expense",
+          "category": "Lebensmittel",
+          "monthlyAmountCents": 50000,
+          "dueDay": 5
+        },
+        {
+          "id": "insurance",
+          "label": "Versicherungen",
+          "kind": "expense",
+          "category": "Versicherung",
+          "monthlyAmountCents": 10000,
+          "dueDay": 15
+        }
+      ]
+    },
+    {
+      "necessity": "necessary",
+      "totalCents": 40000,
+      "shareBps": 2667,
+      "items": [
+        {
+          "id": "utilities",
+          "label": "Nebenkosten",
+          "kind": "expense",
+          "category": "Wohnen",
+          "monthlyAmountCents": 20000,
+          "dueDay": null
+        },
+        {
+          "id": "mobility",
+          "label": "Mobilität",
+          "kind": "expense",
+          "category": "Mobilität",
+          "monthlyAmountCents": 15000,
+          "dueDay": null
+        },
+        {
+          "id": "internet",
+          "label": "Internet",
+          "kind": "expense",
+          "category": "Wohnen",
+          "monthlyAmountCents": 5000,
+          "dueDay": null
+        }
+      ]
+    },
+    {
+      "necessity": "worthwhile",
+      "totalCents": 30000,
+      "shareBps": 2000,
+      "items": [
+        {
+          "id": "reserve",
+          "label": "Rücklagen",
+          "kind": "reserve",
+          "category": "Rücklage",
+          "monthlyAmountCents": 30000,
+          "dueDay": null
+        }
+      ]
+    },
+    {
+      "necessity": "optional",
+      "totalCents": 10000,
+      "shareBps": 667,
+      "items": [
+        {
+          "id": "fitness",
+          "label": "Fitness",
+          "kind": "expense",
+          "category": "Abo",
+          "monthlyAmountCents": 6000,
+          "dueDay": null
+        },
+        {
+          "id": "subscriptions",
+          "label": "Abos",
+          "kind": "expense",
+          "category": "Abo",
+          "monthlyAmountCents": 4000,
+          "dueDay": null
+        }
+      ]
+    },
+    {
+      "necessity": "unnecessary",
+      "totalCents": 5000,
+      "shareBps": 333,
+      "items": [
+        {
+          "id": "gifts",
+          "label": "Geschenke",
+          "kind": "expense",
+          "category": "Freizeit",
+          "monthlyAmountCents": 5000,
+          "dueDay": null
+        }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "category": "Wohnen",
+      "totalCents": 125000,
+      "shareBps": 8333
+    },
+    {
+      "category": "Lebensmittel",
+      "totalCents": 50000,
+      "shareBps": 3333
+    },
+    {
+      "category": "Rücklage",
+      "totalCents": 30000,
+      "shareBps": 2000
+    },
+    {
+      "category": "Mobilität",
+      "totalCents": 15000,
+      "shareBps": 1000
+    },
+    {
+      "category": "Abo",
+      "totalCents": 10000,
+      "shareBps": 667
+    },
+    {
+      "category": "Versicherung",
+      "totalCents": 10000,
+      "shareBps": 667
+    },
+    {
+      "category": "Freizeit",
+      "totalCents": 5000,
+      "shareBps": 333
+    }
+  ],
+  "rates": [
+    {
+      "debtId": "primary-loan",
+      "lender": "Ratenkredit",
+      "monthlyPaymentCents": 22645
+    },
+    {
+      "debtId": "installment-a",
+      "lender": "Finanzierung A",
+      "monthlyPaymentCents": 12000
+    },
+    {
+      "debtId": "installment-b",
+      "lender": "Finanzierung B",
+      "monthlyPaymentCents": 6000
+    }
+  ]
+}

@@ -1,0 +1,807 @@
+{
+  "today": "2026-08-08",
+  "salaryStatus": "set",
+  "isEmpty": false,
+  "accounts": [
+    {
+      "id": "daily-account",
+      "name": "Alltagskonto",
+      "kind": "bank",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 120025,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    },
+    {
+      "id": "travel-wallet",
+      "name": "Reise-Wallet",
+      "kind": "wallet",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 12050,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    },
+    {
+      "id": "cash-box",
+      "name": "Bargeld",
+      "kind": "cash",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 3000,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    }
+  ],
+  "pockets": [
+    {
+      "id": "home-reserve",
+      "accountId": "daily-account",
+      "name": "Wohnen",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 30000,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    },
+    {
+      "id": "food-reserve",
+      "accountId": "daily-account",
+      "name": "Lebensmittel",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 15025,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    },
+    {
+      "id": "trip-reserve",
+      "accountId": "travel-wallet",
+      "name": "Reise",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 7500,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    },
+    {
+      "id": "tech-reserve",
+      "accountId": "daily-account",
+      "name": "Technik",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 0,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    },
+    {
+      "id": "gift-reserve",
+      "accountId": "daily-account",
+      "name": "Geschenke",
+      "stand": {
+        "day": "2026-08-08",
+        "cents": 2500,
+        "recordedDay": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    }
+  ],
+  "accountsTotal": {
+    "key": "accountsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": 135075,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 0,
+    "oldestDataDay": "2026-08-08",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Alltagskonto",
+        "cents": 120025,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Reise-Wallet",
+        "cents": 12050,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Bargeld",
+        "cents": 3000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "result",
+        "label": "Auf den Konten",
+        "cents": 135075,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "pocketsTotal": {
+    "key": "pocketsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": 55025,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 0,
+    "oldestDataDay": "2026-08-08",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Wohnen",
+        "cents": 30000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Lebensmittel",
+        "cents": 15025,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Reise",
+        "cents": 7500,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Technik",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "plus",
+        "label": "Geschenke",
+        "cents": 2500,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-08"
+      },
+      {
+        "op": "result",
+        "label": "In den Pockets",
+        "cents": 55025,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "availableUntilSalary": {
+    "key": "availableUntilSalary",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 90430,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 0,
+    "oldestDataDay": "2026-08-08",
+    "steps": [
+      {
+        "op": "start",
+        "label": "Auf den Konten",
+        "cents": 135075,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Finanzierung A",
+        "cents": 12000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-15"
+      },
+      {
+        "op": "minus",
+        "label": "Versicherungen",
+        "cents": 10000,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-15"
+      },
+      {
+        "op": "minus",
+        "label": "Ratenkredit",
+        "cents": 22645,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-20"
+      },
+      {
+        "op": "note",
+        "label": "Nächstes Gehalt",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2026-08-25"
+      },
+      {
+        "op": "result",
+        "label": "Bis Gehalt verfügbar",
+        "cents": 90430,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "dailyAllowance": {
+    "key": "dailyAllowance",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 5319,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 0,
+    "oldestDataDay": "2026-08-08",
+    "steps": [
+      {
+        "op": "start",
+        "label": "Bis Gehalt verfügbar",
+        "cents": 90430,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Tage bis zum Gehalt",
+        "cents": null,
+        "bps": null,
+        "count": 17,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Pro Tag, abgerundet",
+        "cents": 5319,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "freeMonthly": {
+    "key": "freeMonthly",
+    "unit": "cents",
+    "kind": "planned",
+    "value": 14355,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "start",
+        "label": "Monatseinkommen",
+        "cents": 300000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Wohnen",
+        "cents": 100000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Lebensmittel",
+        "cents": 50000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Nebenkosten",
+        "cents": 20000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Mobilität",
+        "cents": 15000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Versicherungen",
+        "cents": 10000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Fitness",
+        "cents": 6000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Internet",
+        "cents": 5000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Geschenke",
+        "cents": 5000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Abos",
+        "cents": 4000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rate Ratenkredit",
+        "cents": 22645,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rate Finanzierung A",
+        "cents": 12000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rate Finanzierung B",
+        "cents": 6000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Rücklage Rücklagen",
+        "cents": 30000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Frei im Monat",
+        "cents": 14355,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "bufferMonths": {
+    "key": "bufferMonths",
+    "unit": "monthsX100",
+    "kind": "calculated",
+    "value": 56,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 0,
+    "oldestDataDay": "2026-08-08",
+    "steps": [
+      {
+        "op": "start",
+        "label": "Auf den Konten",
+        "cents": 135075,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Wohnen",
+        "cents": 100000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Lebensmittel",
+        "cents": 50000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Nebenkosten",
+        "cents": 20000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Mobilität",
+        "cents": 15000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Versicherungen",
+        "cents": 10000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Internet",
+        "cents": 5000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Rate Ratenkredit",
+        "cents": 22645,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Rate Finanzierung A",
+        "cents": 12000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Rate Finanzierung B",
+        "cents": 6000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Notwendige Kosten pro Monat",
+        "cents": 240645,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Monate (mal 100), abgerundet",
+        "cents": null,
+        "bps": null,
+        "count": 56,
+        "day": null
+      }
+    ]
+  },
+  "netWorth": {
+    "key": "netWorth",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": -766925,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 14,
+    "oldestDataDay": "2026-07-25",
+    "steps": [
+      {
+        "op": "start",
+        "label": "Auf den Konten",
+        "cents": 135075,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Ablösesumme höchstens",
+        "cents": 902000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Nettovermögen",
+        "cents": -766925,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "debtRemaining": {
+    "key": "debtRemaining",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 894500,
+    "day": null,
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 14,
+    "oldestDataDay": "2026-07-25",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Ratenkredit",
+        "cents": 852500,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung A",
+        "cents": 24000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung B",
+        "cents": 18000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Restschuld nach Plan",
+        "cents": 894500,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Für Kredite ohne Bankstand folgt der Wert dem Vertrag.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "debtFreeDay": {
+    "key": "debtFreeDay",
+    "unit": "day",
+    "kind": "calculated",
+    "value": null,
+    "day": "2029-12-20",
+    "status": "ok",
+    "reason": null,
+    "dataAgeDays": 14,
+    "oldestDataDay": "2026-07-25",
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ratenkredit",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2029-12-20"
+      },
+      {
+        "op": "note",
+        "label": "Finanzierung A",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2026-09-15"
+      },
+      {
+        "op": "note",
+        "label": "Finanzierung B",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2026-10-31"
+      },
+      {
+        "op": "result",
+        "label": "Letzte Rate aller Kredite",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2029-12-20"
+      }
+    ]
+  },
+  "incomeSplit": {
+    "incomeCents": 300000,
+    "parts": [
+      {
+        "key": "expenses",
+        "cents": 215000,
+        "shareBps": 7166,
+        "sharePercent": 72
+      },
+      {
+        "key": "rates",
+        "cents": 40645,
+        "shareBps": 1355,
+        "sharePercent": 13
+      },
+      {
+        "key": "reserves",
+        "cents": 30000,
+        "shareBps": 1000,
+        "sharePercent": 10
+      },
+      {
+        "key": "free",
+        "cents": 14355,
+        "shareBps": 479,
+        "sharePercent": 5
+      }
+    ]
+  },
+  "nextRelief": {
+    "freeFromMonth": "2026-10",
+    "monthlyReliefCents": 12000,
+    "freeAfterCents": 26355,
+    "events": [
+      {
+        "debtId": "installment-a",
+        "lender": "Finanzierung A",
+        "lastPaymentDay": "2026-09-15",
+        "monthlyReliefCents": 12000
+      }
+    ]
+  },
+  "dataAge": {
+    "oldestDay": "2026-07-25",
+    "oldestAgeDays": 14,
+    "staleCount": 0,
+    "items": [
+      {
+        "kind": "debt",
+        "id": "primary-loan",
+        "name": "Ratenkredit",
+        "day": "2026-07-25",
+        "ageDays": 14,
+        "stale": false
+      },
+      {
+        "kind": "account",
+        "id": "daily-account",
+        "name": "Alltagskonto",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      },
+      {
+        "kind": "account",
+        "id": "cash-box",
+        "name": "Bargeld",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      },
+      {
+        "kind": "pocket",
+        "id": "gift-reserve",
+        "name": "Geschenke",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      },
+      {
+        "kind": "pocket",
+        "id": "food-reserve",
+        "name": "Lebensmittel",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      },
+      {
+        "kind": "pocket",
+        "id": "trip-reserve",
+        "name": "Reise",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      },
+      {
+        "kind": "account",
+        "id": "travel-wallet",
+        "name": "Reise-Wallet",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      },
+      {
+        "kind": "pocket",
+        "id": "tech-reserve",
+        "name": "Technik",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      },
+      {
+        "kind": "pocket",
+        "id": "home-reserve",
+        "name": "Wohnen",
+        "day": "2026-08-08",
+        "ageDays": 0,
+        "stale": false
+      }
+    ]
+  }
+}

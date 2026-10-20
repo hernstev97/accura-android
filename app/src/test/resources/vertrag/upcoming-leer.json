@@ -1,0 +1,82 @@
+{
+  "today": "2026-08-08",
+  "salaryStatus": "missing",
+  "nextSalaryDay": null,
+  "daysUntilSalary": null,
+  "payments": [],
+  "pendingPayments": {
+    "key": "pendingPayments",
+    "unit": "cents",
+    "kind": "planned",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "accountsTotal": {
+    "key": "accountsTotal",
+    "unit": "cents",
+    "kind": "actual",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Noch kein Konto erfasst.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": []
+  },
+  "availableUntilSalary": {
+    "key": "availableUntilSalary",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "dailyAllowance": {
+    "key": "dailyAllowance",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": null,
+    "day": null,
+    "status": "unavailable",
+    "reason": "Der Gehaltstag fehlt.",
+    "dataAgeDays": null,
+    "oldestDataDay": null,
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ohne Gehaltstag gibt es keinen Zeitraum bis zum Gehalt. Trage den Gehaltstag ein, dann rechnet accura.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  }
+}

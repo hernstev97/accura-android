@@ -1,0 +1,729 @@
+{
+  "today": "2026-08-08",
+  "debts": [
+    {
+      "id": "primary-loan",
+      "lender": "Ratenkredit",
+      "kind": "loan",
+      "note": null,
+      "state": "ok",
+      "issues": [],
+      "balance": {
+        "key": "debtBalance",
+        "unit": "cents",
+        "kind": "calculated",
+        "value": 843078,
+        "day": null,
+        "status": "stale",
+        "reason": "Der Bankstand ist älter als 90 Tage.",
+        "dataAgeDays": 110,
+        "oldestDataDay": "2026-04-20",
+        "steps": [
+          {
+            "op": "start",
+            "label": "Bankstand",
+            "cents": 900000,
+            "bps": null,
+            "count": null,
+            "day": "2026-04-20"
+          },
+          {
+            "op": "note",
+            "label": "Raten seit dem Ausgangspunkt nach Plan",
+            "cents": null,
+            "bps": null,
+            "count": 3,
+            "day": null
+          },
+          {
+            "op": "result",
+            "label": "Restschuld nach Plan",
+            "cents": 843078,
+            "bps": null,
+            "count": null,
+            "day": null
+          }
+        ]
+      },
+      "terms": {
+        "principalCents": 1200000,
+        "nominalRateBps": 500,
+        "effectiveRateBps": 512,
+        "monthlyPaymentCents": 22645,
+        "firstPaymentDay": "2025-01-20",
+        "paymentCount": 60,
+        "finalPaymentCents": null,
+        "specialRepaymentYearlyCents": null
+      },
+      "nextPayment": {
+        "day": "2026-08-20",
+        "cents": 22645
+      },
+      "lastPaymentDay": "2029-12-20",
+      "remainingPaymentCount": 41,
+      "remainingTotalCents": 918056,
+      "interestToEndCents": 74978,
+      "payoff": {
+        "balanceCents": 843078,
+        "feeCapCents": 8431,
+        "maxCents": 851509,
+        "feeBps": 100,
+        "source": "estimated",
+        "cappedByRemainingInterest": false
+      },
+      "deviation": {
+        "day": "2026-04-20",
+        "bankCents": 900000,
+        "planCents": 908682,
+        "differenceCents": -8682,
+        "ageDays": 110,
+        "stale": true
+      },
+      "specialRepaymentExample": null,
+      "warnings": []
+    },
+    {
+      "id": "installment-a",
+      "lender": "Finanzierung A",
+      "kind": "installment",
+      "note": null,
+      "state": "ok",
+      "issues": [],
+      "balance": {
+        "key": "debtBalance",
+        "unit": "cents",
+        "kind": "calculated",
+        "value": 24000,
+        "day": null,
+        "status": "ok",
+        "reason": "Noch kein Bankstand eingetragen, der Wert folgt dem Vertrag.",
+        "dataAgeDays": null,
+        "oldestDataDay": null,
+        "steps": [
+          {
+            "op": "start",
+            "label": "Startbetrag laut Vertrag",
+            "cents": 36000,
+            "bps": null,
+            "count": null,
+            "day": null
+          },
+          {
+            "op": "note",
+            "label": "Raten seit dem Ausgangspunkt nach Plan",
+            "cents": null,
+            "bps": null,
+            "count": 1,
+            "day": null
+          },
+          {
+            "op": "result",
+            "label": "Restschuld nach Plan",
+            "cents": 24000,
+            "bps": null,
+            "count": null,
+            "day": null
+          }
+        ]
+      },
+      "terms": {
+        "principalCents": 36000,
+        "nominalRateBps": 0,
+        "effectiveRateBps": 0,
+        "monthlyPaymentCents": 12000,
+        "firstPaymentDay": "2026-07-15",
+        "paymentCount": 3,
+        "finalPaymentCents": null,
+        "specialRepaymentYearlyCents": null
+      },
+      "nextPayment": {
+        "day": "2026-08-15",
+        "cents": 12000
+      },
+      "lastPaymentDay": "2026-09-15",
+      "remainingPaymentCount": 2,
+      "remainingTotalCents": 24000,
+      "interestToEndCents": 0,
+      "payoff": {
+        "balanceCents": 24000,
+        "feeCapCents": 0,
+        "maxCents": 24000,
+        "feeBps": 50,
+        "source": "estimated",
+        "cappedByRemainingInterest": true
+      },
+      "deviation": null,
+      "specialRepaymentExample": null,
+      "warnings": []
+    },
+    {
+      "id": "installment-b",
+      "lender": "Finanzierung B",
+      "kind": "installment",
+      "note": null,
+      "state": "ok",
+      "issues": [],
+      "balance": {
+        "key": "debtBalance",
+        "unit": "cents",
+        "kind": "calculated",
+        "value": 18000,
+        "day": null,
+        "status": "ok",
+        "reason": "Noch kein Bankstand eingetragen, der Wert folgt dem Vertrag.",
+        "dataAgeDays": null,
+        "oldestDataDay": null,
+        "steps": [
+          {
+            "op": "start",
+            "label": "Startbetrag laut Vertrag",
+            "cents": 36000,
+            "bps": null,
+            "count": null,
+            "day": null
+          },
+          {
+            "op": "note",
+            "label": "Raten seit dem Ausgangspunkt nach Plan",
+            "cents": null,
+            "bps": null,
+            "count": 3,
+            "day": null
+          },
+          {
+            "op": "result",
+            "label": "Restschuld nach Plan",
+            "cents": 18000,
+            "bps": null,
+            "count": null,
+            "day": null
+          }
+        ]
+      },
+      "terms": {
+        "principalCents": 36000,
+        "nominalRateBps": 0,
+        "effectiveRateBps": 0,
+        "monthlyPaymentCents": 6000,
+        "firstPaymentDay": "2026-05-31",
+        "paymentCount": 6,
+        "finalPaymentCents": null,
+        "specialRepaymentYearlyCents": null
+      },
+      "nextPayment": {
+        "day": "2026-08-31",
+        "cents": 6000
+      },
+      "lastPaymentDay": "2026-10-31",
+      "remainingPaymentCount": 3,
+      "remainingTotalCents": 18000,
+      "interestToEndCents": 0,
+      "payoff": {
+        "balanceCents": 18000,
+        "feeCapCents": 0,
+        "maxCents": 18000,
+        "feeBps": 50,
+        "source": "estimated",
+        "cappedByRemainingInterest": true
+      },
+      "deviation": null,
+      "specialRepaymentExample": null,
+      "warnings": []
+    }
+  ],
+  "remaining": {
+    "key": "debtRemaining",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 885078,
+    "day": null,
+    "status": "stale",
+    "reason": "Ein Bankstand ist älter als 90 Tage.",
+    "dataAgeDays": 110,
+    "oldestDataDay": "2026-04-20",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Ratenkredit",
+        "cents": 843078,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung A",
+        "cents": 24000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung B",
+        "cents": 18000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Restschuld nach Plan",
+        "cents": 885078,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Für Kredite ohne Bankstand folgt der Wert dem Vertrag.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "payoffMax": {
+    "key": "payoffMax",
+    "unit": "cents",
+    "kind": "estimated",
+    "value": 893509,
+    "day": null,
+    "status": "stale",
+    "reason": "Ein Bankstand ist älter als 90 Tage.",
+    "dataAgeDays": 110,
+    "oldestDataDay": "2026-04-20",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Ratenkredit: Restschuld",
+        "cents": 843078,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Ratenkredit: Entschädigung höchstens",
+        "cents": 8431,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung A: Restschuld",
+        "cents": 24000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung B: Restschuld",
+        "cents": 18000,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Ablösesumme höchstens",
+        "cents": 893509,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "note",
+        "label": "Für Kredite ohne Bankstand folgt der Wert dem Vertrag.",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "interestToEnd": {
+    "key": "interestToEnd",
+    "unit": "cents",
+    "kind": "calculated",
+    "value": 74978,
+    "day": null,
+    "status": "stale",
+    "reason": "Ein Bankstand ist älter als 90 Tage.",
+    "dataAgeDays": 110,
+    "oldestDataDay": "2026-04-20",
+    "steps": [
+      {
+        "op": "plus",
+        "label": "Ratenkredit",
+        "cents": 74978,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung A",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "plus",
+        "label": "Finanzierung B",
+        "cents": 0,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Zinsen bis Laufzeitende",
+        "cents": 74978,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "extraCostVsPayoff": {
+    "key": "extraCostVsPayoff",
+    "unit": "cents",
+    "kind": "estimated",
+    "value": 66547,
+    "day": null,
+    "status": "stale",
+    "reason": "Ein Bankstand ist älter als 90 Tage.",
+    "dataAgeDays": 110,
+    "oldestDataDay": "2026-04-20",
+    "steps": [
+      {
+        "op": "start",
+        "label": "Noch planmäßig zu zahlen",
+        "cents": 960056,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "minus",
+        "label": "Ablösesumme höchstens",
+        "cents": 893509,
+        "bps": null,
+        "count": null,
+        "day": null
+      },
+      {
+        "op": "result",
+        "label": "Mehrkosten gegenüber sofortiger Ablösung",
+        "cents": 66547,
+        "bps": null,
+        "count": null,
+        "day": null
+      }
+    ]
+  },
+  "debtFreeDay": {
+    "key": "debtFreeDay",
+    "unit": "day",
+    "kind": "calculated",
+    "value": null,
+    "day": "2029-12-20",
+    "status": "stale",
+    "reason": "Ein Bankstand ist älter als 90 Tage.",
+    "dataAgeDays": 110,
+    "oldestDataDay": "2026-04-20",
+    "steps": [
+      {
+        "op": "note",
+        "label": "Ratenkredit",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2029-12-20"
+      },
+      {
+        "op": "note",
+        "label": "Finanzierung A",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2026-09-15"
+      },
+      {
+        "op": "note",
+        "label": "Finanzierung B",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2026-10-31"
+      },
+      {
+        "op": "result",
+        "label": "Letzte Rate aller Kredite",
+        "cents": null,
+        "bps": null,
+        "count": null,
+        "day": "2029-12-20"
+      }
+    ]
+  },
+  "monthlyRatesCents": 40645,
+  "relief": [
+    {
+      "freeFromMonth": "2026-10",
+      "monthlyReliefCents": 12000,
+      "events": [
+        {
+          "debtId": "installment-a",
+          "lender": "Finanzierung A",
+          "lastPaymentDay": "2026-09-15",
+          "monthlyReliefCents": 12000
+        }
+      ],
+      "freeAfterCents": 26355
+    },
+    {
+      "freeFromMonth": "2026-11",
+      "monthlyReliefCents": 6000,
+      "events": [
+        {
+          "debtId": "installment-b",
+          "lender": "Finanzierung B",
+          "lastPaymentDay": "2026-10-31",
+          "monthlyReliefCents": 6000
+        }
+      ],
+      "freeAfterCents": 32355
+    },
+    {
+      "freeFromMonth": "2030-01",
+      "monthlyReliefCents": 22645,
+      "events": [
+        {
+          "debtId": "primary-loan",
+          "lender": "Ratenkredit",
+          "lastPaymentDay": "2029-12-20",
+          "monthlyReliefCents": 22645
+        }
+      ],
+      "freeAfterCents": 55000
+    }
+  ],
+  "trajectory": [
+    {
+      "day": "2026-08-08",
+      "month": "2026-08",
+      "balanceCents": 885078
+    },
+    {
+      "day": null,
+      "month": "2026-08",
+      "balanceCents": 847946
+    },
+    {
+      "day": null,
+      "month": "2026-09",
+      "balanceCents": 810734
+    },
+    {
+      "day": null,
+      "month": "2026-10",
+      "balanceCents": 785442
+    },
+    {
+      "day": null,
+      "month": "2026-11",
+      "balanceCents": 766070
+    },
+    {
+      "day": null,
+      "month": "2026-12",
+      "balanceCents": 746617
+    },
+    {
+      "day": null,
+      "month": "2027-01",
+      "balanceCents": 727083
+    },
+    {
+      "day": null,
+      "month": "2027-02",
+      "balanceCents": 707468
+    },
+    {
+      "day": null,
+      "month": "2027-03",
+      "balanceCents": 687771
+    },
+    {
+      "day": null,
+      "month": "2027-04",
+      "balanceCents": 667992
+    },
+    {
+      "day": null,
+      "month": "2027-05",
+      "balanceCents": 648130
+    },
+    {
+      "day": null,
+      "month": "2027-06",
+      "balanceCents": 628186
+    },
+    {
+      "day": null,
+      "month": "2027-07",
+      "balanceCents": 608158
+    },
+    {
+      "day": null,
+      "month": "2027-08",
+      "balanceCents": 588047
+    },
+    {
+      "day": null,
+      "month": "2027-09",
+      "balanceCents": 567852
+    },
+    {
+      "day": null,
+      "month": "2027-10",
+      "balanceCents": 547573
+    },
+    {
+      "day": null,
+      "month": "2027-11",
+      "balanceCents": 527210
+    },
+    {
+      "day": null,
+      "month": "2027-12",
+      "balanceCents": 506762
+    },
+    {
+      "day": null,
+      "month": "2028-01",
+      "balanceCents": 486229
+    },
+    {
+      "day": null,
+      "month": "2028-02",
+      "balanceCents": 465610
+    },
+    {
+      "day": null,
+      "month": "2028-03",
+      "balanceCents": 444905
+    },
+    {
+      "day": null,
+      "month": "2028-04",
+      "balanceCents": 424114
+    },
+    {
+      "day": null,
+      "month": "2028-05",
+      "balanceCents": 403236
+    },
+    {
+      "day": null,
+      "month": "2028-06",
+      "balanceCents": 382271
+    },
+    {
+      "day": null,
+      "month": "2028-07",
+      "balanceCents": 361219
+    },
+    {
+      "day": null,
+      "month": "2028-08",
+      "balanceCents": 340079
+    },
+    {
+      "day": null,
+      "month": "2028-09",
+      "balanceCents": 318851
+    },
+    {
+      "day": null,
+      "month": "2028-10",
+      "balanceCents": 297535
+    },
+    {
+      "day": null,
+      "month": "2028-11",
+      "balanceCents": 276130
+    },
+    {
+      "day": null,
+      "month": "2028-12",
+      "balanceCents": 254636
+    },
+    {
+      "day": null,
+      "month": "2029-01",
+      "balanceCents": 233052
+    },
+    {
+      "day": null,
+      "month": "2029-02",
+      "balanceCents": 211378
+    },
+    {
+      "day": null,
+      "month": "2029-03",
+      "balanceCents": 189614
+    },
+    {
+      "day": null,
+      "month": "2029-04",
+      "balanceCents": 167759
+    },
+    {
+      "day": null,
+      "month": "2029-05",
+      "balanceCents": 145813
+    },
+    {
+      "day": null,
+      "month": "2029-06",
+      "balanceCents": 123776
+    },
+    {
+      "day": null,
+      "month": "2029-07",
+      "balanceCents": 101647
+    },
+    {
+      "day": null,
+      "month": "2029-08",
+      "balanceCents": 79426
+    },
+    {
+      "day": null,
+      "month": "2029-09",
+      "balanceCents": 57112
+    },
+    {
+      "day": null,
+      "month": "2029-10",
+      "balanceCents": 34705
+    },
+    {
+      "day": null,
+      "month": "2029-11",
+      "balanceCents": 12205
+    },
+    {
+      "day": null,
+      "month": "2029-12",
+      "balanceCents": 0
+    }
+  ]
+}
