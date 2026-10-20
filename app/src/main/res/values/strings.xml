@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">accura</string>
 
     <!-- Navigation -->
@@ -51,8 +51,21 @@
     <string name="chip_data_today">Stand von heute</string>
     <string name="chip_data_from">Stand vom %1$s</string>
     <string name="chip_data_stale">Alt: %1$s, %2$s</string>
+    <string name="chip_unavailable">Noch nicht berechenbar</string>
+    <string name="badge_kind_actual">Eingetragen</string>
+    <string name="badge_kind_planned">Geplant</string>
+    <string name="badge_kind_estimated">Geschätzt</string>
+    <string name="badge_kind_calculated">Berechnet</string>
     <string name="how_calculated">So gerechnet</string>
     <string name="how_calculated_action">Rechenweg ein- oder ausblenden</string>
+    <string name="how_calculated_open">Einzelheiten und Rechenweg öffnen</string>
+    <string name="chip_no_history">Kein Verlauf</string>
+    <string name="chip_oldest_today">Alle Stände von heute</string>
+    <string name="chip_oldest_from">Ältester Stand vom %1$s</string>
+    <string name="today">heute</string>
+    <string name="placeholder_capture">Eintragen kommt mit der Ersterfassung.</string>
+    <string name="table_toggle">Werte als Tabelle</string>
+    <string name="table_action">Tabelle ein- oder ausblenden</string>
     <string name="how_kind_status">Art: %1$s. Status: %2$s.</string>
     <string name="how_oldest">Ältester verwendeter Stand: %1$s</string>
     <string name="kind_actual">eingetragen</string>
@@ -63,28 +76,52 @@
     <string name="status_stale">beruht auf alten Daten</string>
     <string name="status_unavailable">nicht berechenbar</string>
 
+    <!-- Eingaben und Hinweise -->
+    <string name="amount_read_as">Gelesen als %1$s</string>
+    <string name="amount_invalid">Bitte nur Ziffern und ein Komma, zum Beispiel 1.482,60.</string>
+    <string name="amount_minus">Im Minus</string>
+    <string name="step_progress" tools:ignore="PluralsCandidate">Thema %1$d von %2$d</string>
+    <string name="step_later">Später</string>
+    <string name="saved">Gespeichert</string>
+    <string name="hint_per_month">%1$s im Monat</string>
+    <string name="hint_per_year">%1$s im Jahr</string>
+    <string name="hint_waive">Bewusst so</string>
+
     <!-- Kennzahlen -->
-    <string name="metric_available_until_salary">Bis Gehalt verfügbar</string>
-    <string name="metric_daily_allowance">Tagesrahmen bis Gehalt</string>
     <string name="metric_free_monthly">Frei im Monat</string>
     <string name="metric_buffer">Puffer</string>
-    <string name="metric_net_worth">Nettovermögen</string>
-    <string name="metric_debt_remaining">Restschuld</string>
-    <string name="metric_debt_free">Schuldenfrei</string>
     <string name="metric_pending">Fällig bis zum Gehalt</string>
-    <string name="metric_payoff_max">Ablösesumme, höchstens</string>
     <string name="metric_interest_to_end">Zinsen bis Laufzeitende</string>
-    <string name="metric_extra_cost">Mehrkosten gegenüber Ablösung</string>
 
     <!-- Übersicht -->
-    <string name="overview_main_question">Wie viel ist auf deinen Konten?</string>
-    <string name="overview_main_support">Summe der jüngsten Kontostände. Pockets sind darin schon enthalten und zählen nicht doppelt.</string>
+    <string name="overview_greeting">Hallo</string>
+    <string name="overview_month">Dein %1$s auf einen Blick.</string>
+    <string name="overview_income_note">Aufteilung von %1$s Einkommen im Monat, wie geplant.</string>
+    <string name="overview_ring_description">Aufteilung deines Einkommens von %1$s: %2$s</string>
+    <string name="ring_center_free">frei</string>
+    <string name="action_update_stands">Stände aktualisieren</string>
+    <string name="overview_empty_action">Erste Stände eintragen</string>
+    <string name="tile_available_now">Jetzt verfügbar</string>
+    <string name="tile_available_now_text">Auf deinen Konten</string>
+    <string name="tile_until_salary">Bis Gehalt</string>
+    <string name="tile_until_salary_text">%1$s pro Tag</string>
+    <string name="tile_reserves">Rücklagen</string>
+    <string name="tile_reserves_text">In Pockets zurückgelegt</string>
+    <string name="tile_buffer_text">So lange decken die Konten die nötigen Kosten</string>
+    <string name="accounts_total">Gesamt</string>
+    <string name="account_kind_bank">Bankkonto</string>
+    <string name="account_kind_wallet">Wallet</string>
+    <string name="account_kind_cash">Bargeld</string>
+    <string name="relief_card_text">%1$s endet. Ab %2$s ist mehr frei.</string>
+    <string name="relief_card_after">Danach frei im Monat</string>
     <string name="overview_empty_title">Noch nichts erfasst</string>
     <string name="overview_empty_text">Sobald du ein Konto einträgst, siehst du hier, was du hast.</string>
     <string name="overview_stale_title">Einige Stände sind alt</string>
-    <string name="section_room">Spielraum</string>
-    <string name="section_income_split">Wohin dein Einkommen geht</string>
-    <string name="section_debts">Schulden</string>
+    <string name="section_glance">Auf einen Blick</string>
+    <string name="timeline_today">Heute, %1$s</string>
+    <string name="timeline_relief_event">%1$s, letzte Rate am %2$s</string>
+    <string name="timeline_relief_more">+%1$s im Monat</string>
+    <string name="timeline_debt_free">Schuldenfrei</string>
     <string name="section_accounts">Konten</string>
     <string name="section_pockets">Pockets</string>
     <string name="pockets_note">Pockets sind eine zweite Sicht auf dasselbe Geld. Sie werden nicht zu den Konten addiert.</string>
@@ -94,37 +131,52 @@
     <string name="split_reserves">Rücklagen</string>
     <string name="split_free">Frei</string>
     <string name="relief_title">Nächster Spielraum</string>
-    <string name="relief_text">Ab %1$s wird eine Rate frei: %2$s mehr im Monat.</string>
-    <string name="relief_free_after">Frei im Monat danach: %1$s</string>
+    <string name="relief_free_after">Danach frei im Monat: %1$s</string>
     <string name="relief_from">Ab %1$s</string>
 
     <!-- Demnächst -->
+    <string name="upcoming_title">Bis zum Gehalt</string>
+    <string name="upcoming_daily">Das sind %1$s pro Tag.</string>
+    <string name="tile_accounts">Auf den Konten</string>
+    <string name="section_whats_next">Was kommt</string>
+    <string name="station_due">%1$s · %2$s</string>
+    <string name="station_salary">%1$s · Gehalt</string>
+    <string name="station_salary_text">Mit dem Gehalt beginnt ein neuer Zeitraum.</string>
     <string name="upcoming_main_question">Wie viel kann ich bis zum Gehalt noch ausgeben?</string>
-    <string name="upcoming_salary">Nächstes Gehalt am %1$s, %2$s.</string>
+    <string name="upcoming_salary">Gehalt am %1$s, %2$s</string>
     <string name="upcoming_empty_title">Nichts zu zeigen</string>
     <string name="upcoming_empty_text">Es gibt noch keine Daten für diese Ansicht.</string>
     <string name="upcoming_no_salary_title">Es fehlt: Gehaltstag</string>
     <string name="upcoming_no_salary_text">Ohne Gehaltstag weiß accura nicht, bis wann gerechnet wird. Eine Zahl erfindet accura nicht.</string>
     <string name="upcoming_no_payments">Bis zum Gehalt ist nichts mehr fällig.</string>
-    <string name="section_payments_until_salary">Fällig bis zum Gehalt</string>
-    <string name="upcoming_due">Fällig am %1$s, %2$s</string>
     <string name="upcoming_shortly_before_salary">Kurz vor Gehalt</string>
     <string name="source_debt">Rate</string>
     <string name="source_budget">Budgetposten</string>
 
     <!-- Budget -->
-    <string name="budget_main_question">Wie viel bleibt im Monat frei?</string>
+    <string name="budget_title">Dein Budget</string>
+    <string name="budget_subtitle">%1$s · %2$s verplant</string>
+    <string name="budget_per_month">im Monat</string>
+    <string name="budget_ring_center">verplant</string>
+    <string name="budget_ring_description">%1$s des Einkommens sind verplant.</string>
+    <string name="budget_ring_description_no_income">Aufteilung der geplanten Ausgaben, ohne Einkommen.</string>
+    <string name="budget_free_text">Ohne feste Zuordnung</string>
+    <string name="budget_reserves_text">Für später eingeplant</string>
+    <string name="section_spending">Ausgaben im Monat</string>
+    <string name="section_spending_text">Geplant, der größte Posten zuerst</string>
+    <string name="spending_view_label">Sortiert nach</string>
+    <string name="spending_by_category">Kategorie</string>
+    <string name="spending_by_necessity">Notwendigkeit</string>
+    <string name="budget_share_of_income">%1$s des Einkommens</string>
+    <string name="budget_items_action">Posten ein- oder ausblenden</string>
+    <string name="section_rates">Raten im Monat</string>
+    <string name="rates_total">Zusammen</string>
     <string name="budget_empty_title">Noch kein Budget</string>
     <string name="budget_empty_text">Trag Einkommen und feste Kosten ein, dann zeigt accura, was im Monat frei bleibt.</string>
     <string name="budget_overdrawn_text">Du hast %1$s mehr verplant, als hereinkommt.</string>
     <string name="budget_income_missing_title">Es fehlt: Monatseinkommen</string>
     <string name="budget_income_missing_text">Ohne Einkommen lässt sich nicht sagen, was frei bleibt.</string>
-    <string name="section_planned">Verplant im Monat</string>
     <string name="budget_income">Einkommen</string>
-    <string name="budget_planned_total">Zusammen verplant</string>
-    <string name="budget_utilization">%1$s des Einkommens</string>
-    <string name="section_by_necessity">Nach Notwendigkeit</string>
-    <string name="section_by_category">Nach Kategorie</string>
     <string name="budget_due_day">Fällig am %1$d.</string>
     <string name="necessity_essential">Existenziell</string>
     <string name="necessity_necessary">Notwendig</string>
@@ -133,12 +185,30 @@
     <string name="necessity_unnecessary">Unnötig</string>
 
     <!-- Schulden -->
-    <string name="debts_main_question">Wie hoch ist deine Restschuld?</string>
-    <string name="debts_debt_free">Schuldenfrei: %1$s</string>
+    <string name="debts_title">Dein Weg auf null</string>
+    <string name="debts_subtitle">Planmäßig schuldenfrei im %1$s</string>
+    <string name="debts_hero_label">Restschuld heute</string>
+    <string name="debts_payoff_line">Ablösesumme höchstens %1$s</string>
+    <string name="debts_goal">Ziel</string>
+    <string name="tile_interest_text">Kommen zur Restschuld dazu</string>
+    <string name="tile_extra_cost">Mehrkosten</string>
+    <string name="tile_extra_cost_text">Gegenüber sofortiger Ablösung</string>
+    <string name="section_lenders">Gläubiger</string>
+    <string name="section_lenders_text">Restschuld je Kredit</string>
+    <string name="debt_kind_loan">Kredit</string>
+    <string name="debt_kind_installment">Ratenkauf</string>
+    <string name="debt_supporting">%1$s · noch %2$s</string>
+    <string name="debt_open_action">Einzelheiten öffnen</string>
+    <string name="section_trajectory">Restschuld</string>
+    <string name="section_trajectory_text">Bei planmäßiger Zahlung</string>
+    <string name="trajectory_today">Heute</string>
+    <string name="trajectory_description">Restschuld bei planmäßiger Zahlung: von %1$s heute auf %2$s im %3$s.</string>
+    <string name="section_relief_text">Frei im Monat nach jeder auslaufenden Rate</string>
+    <string name="relief_assumption_title">Planungsannahme</string>
+    <string name="relief_assumption_text">Einkommen und alle anderen Ausgaben bleiben, wie sie sind.</string>
     <string name="debts_empty_title">Keine Kredite erfasst</string>
     <string name="debts_empty_text">Wenn du Kredite oder Ratenkäufe einträgst, rechnet accura den Weg auf null.</string>
-    <string name="section_debt_list">Deine Kredite</string>
-    <string name="section_relief">Wann Geld frei wird</string>
+    <string name="section_relief">Mehr frei durch auslaufende Raten</string>
     <string name="debts_next_payment">Nächste Rate am %1$s: %2$s</string>
     <string name="debts_last_payment">Letzte Rate am %1$s</string>
     <string name="debts_remaining">Noch %1$s, zusammen %2$s</string>
@@ -161,17 +231,13 @@
     <string name="debug_offline">Offline-Kopie</string>
     <string name="debug_laden">Lädt</string>
     <string name="debug_fehler">Fehler</string>
+    <string name="debug_cycle_scenario">Testdaten wechseln</string>
 
     <plurals name="days_ago">
         <item quantity="one">vor %d Tag</item>
         <item quantity="other">vor %d Tagen</item>
     </plurals>
     <plurals name="days_in">
-        <item quantity="one">in %d Tag</item>
-        <item quantity="other">in %d Tagen</item>
-    </plurals>
-    <plurals name="days_in_or_today">
-        <item quantity="zero">heute</item>
         <item quantity="one">in %d Tag</item>
         <item quantity="other">in %d Tagen</item>
     </plurals>
@@ -182,6 +248,10 @@
     <plurals name="payments_count">
         <item quantity="one">%d Rate</item>
         <item quantity="other">%d Raten</item>
+    </plurals>
+    <plurals name="relief_chart_description">
+        <item quantity="one">Frei im Monat steigt in einer Stufe, ab %2$s auf %3$s.</item>
+        <item quantity="other">Frei im Monat steigt in %1$d Stufen, ab %2$s auf %3$s.</item>
     </plurals>
     <plurals name="overview_stale_text">
         <item quantity="one">%d Stand ist älter als 7 Tage. Trag einen neuen ein, dann stimmen die Zahlen wieder.</item>

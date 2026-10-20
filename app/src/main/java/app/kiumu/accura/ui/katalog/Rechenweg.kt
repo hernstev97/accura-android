@@ -1,6 +1,12 @@
 package app.kiumu.accura.ui.katalog
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,6 +43,25 @@ import app.kiumu.accura.data.model.StepOp
 import app.kiumu.accura.ui.format.formatBps
 import app.kiumu.accura.ui.format.formatCents
 import app.kiumu.accura.ui.format.formatDay
+import app.kiumu.accura.ui.theme.AccuraTheme
+
+/** Aufklappen mit der Bewegung des Expressive-Schemas; ohne Animationen sofort da. */
+@Composable
+fun aufklappen(): EnterTransition =
+    if (AccuraTheme.reduceMotion) {
+        EnterTransition.None
+    } else {
+        expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()) + fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec())
+    }
+
+/** Zuklappen, Gegenstück zu [aufklappen]. */
+@Composable
+fun zuklappen(): ExitTransition =
+    if (AccuraTheme.reduceMotion) {
+        ExitTransition.None
+    } else {
+        shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
+    }
 
 @Composable
 fun metricKindText(kind: MetricKind): String = stringResource(
@@ -75,7 +100,7 @@ fun SoGerechnet(metric: Metric, modifier: Modifier = Modifier) {
             Text(stringResource(R.string.how_calculated), style = MaterialTheme.typography.labelLarge)
             Icon(if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown, contentDescription = null)
         }
-        AnimatedVisibility(visible = expanded) { Rechenweg(metric) }
+        AnimatedVisibility(visible = expanded, enter = aufklappen(), exit = zuklappen()) { Rechenweg(metric) }
     }
 }
 

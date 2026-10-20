@@ -23,6 +23,7 @@ import app.kiumu.accura.R
 import app.kiumu.accura.StevenZone
 import app.kiumu.accura.data.ErrorKind
 import app.kiumu.accura.data.ViewState
+import app.kiumu.accura.ui.theme.Raster
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -95,7 +96,10 @@ fun <T> ViewStateHost(
     }
 }
 
-/** Gemeinsamer Rahmen der Ansichten: scrollbar, Abstände, optional der Hinweis „veraltet“ oben. */
+/**
+ * Gemeinsamer Rahmen der Ansichten: scrollbar, Seitenrand und Lücken aus dem [Raster], optional der
+ * Hinweis „veraltet“ oben.
+ */
 @Composable
 fun Ansicht(
     banner: @Composable () -> Unit,
@@ -103,8 +107,11 @@ fun Ansicht(
     content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(start = Raster.Rand, end = Raster.Rand, top = Raster.Rand, bottom = 32.dp),
+        verticalArrangement = Arrangement.spacedBy(Raster.Luecke),
     ) {
         banner()
         content()

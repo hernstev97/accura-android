@@ -13,6 +13,14 @@ val StevenZone: ZoneId = ZoneId.of("Europe/Berlin")
 /** Szenarien der Fake-Datenquelle für den Debug-Build. */
 enum class DebugScenario { STANDARD, LEER, NEGATIV, VERALTET, OHNE_GEHALTSTAG, OFFLINE_KOPIE, LADEN, FEHLER }
 
+/** Reihenfolge für „Testdaten wechseln“: nur Szenarien mit Daten, damit Formen und Zahlen sichtbar umschalten. */
+fun DebugScenario.nextWithData(): DebugScenario = when (this) {
+    DebugScenario.STANDARD -> DebugScenario.VERALTET
+    DebugScenario.VERALTET -> DebugScenario.NEGATIV
+    DebugScenario.NEGATIV -> DebugScenario.OHNE_GEHALTSTAG
+    else -> DebugScenario.STANDARD
+}
+
 /** Schalter, die es nur im Debug-Build gibt. */
 interface DebugTools {
     val scenario: StateFlow<DebugScenario>

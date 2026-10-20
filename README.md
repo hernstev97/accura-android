@@ -2,7 +2,7 @@
 
 Private Finanz-App nur für Steven. Kotlin mit Jetpack Compose, Convex als Backend (EU-Region), Clerk für die Anmeldung. Kein Play Store: Die App wird lokal gebaut und per ADB auf das Pixel installiert.
 
-Stand: Phase 2, Teil App: Gerüst mit Theme, Anmeldeseite, vier Ansichten und Fake-Daten. Noch ohne echte Anmeldung (Clerk) und ohne Convex-Verbindung. Aufbau: [docs/app/](docs/app/README.md). Der Plan steht in [docs/neubau/plan.md](docs/neubau/plan.md), die Bestandsaufnahme der Vorgänger-App in [docs/neubau/bestandsaufnahme.md](docs/neubau/bestandsaufnahme.md). Konten und IDs: [docs/einrichtung.md](docs/einrichtung.md).
+Stand: Phase 2, Teil App: Gerüst mit Theme, Anmeldeseite, vier Ansichten und Fake-Daten. Dazu der visuelle Prototyp (Phase 1.3, Runde 2): Aufbau der alten Web-App, ausgeführt nach Google Health, siehe [docs/app/prototyp.md](docs/app/prototyp.md). Noch ohne echte Anmeldung (Clerk) und ohne Convex-Verbindung. Aufbau: [docs/app/](docs/app/README.md). Der Plan steht in [docs/neubau/plan.md](docs/neubau/plan.md), die Bestandsaufnahme der Vorgänger-App in [docs/neubau/bestandsaufnahme.md](docs/neubau/bestandsaufnahme.md). Konten und IDs: [docs/einrichtung.md](docs/einrichtung.md).
 
 ## Bauen und installieren
 
@@ -29,7 +29,7 @@ nice -n 19 ionice -c3 ./gradlew :app:recordRoborazziDebug   # Referenzbilder neu
 nice -n 19 ionice -c3 ./gradlew :app:lint
 ```
 
-Der Debug-Build (`app.kiumu.accura.debug`) zeigt ausgedachte Zahlen. Anmelden: jede gültige E-Mail-Adresse, Code `123456`. Über das Konto-Symbol oben rechts, „Entwicklung“, lässt sich das Szenario der Testdaten wechseln. Der Release-Build zeigt „nicht verbunden“ und keine Zahlen, bis Clerk und Convex angeschlossen sind.
+Der Debug-Build (`app.kiumu.accura.debug`) zeigt ausgedachte Zahlen. Anmelden: jede gültige E-Mail-Adresse, Code `123456`. Über das Konto-Symbol oben rechts, „Entwicklung“, lässt sich das Szenario der Testdaten wechseln, darunter steht der Bausteinkatalog; das Symbol mit den zwei Pfeilen daneben schaltet die Testdaten direkt durch. Der Release-Build zeigt „nicht verbunden“ und keine Zahlen, bis Clerk und Convex angeschlossen sind.
 
 ### Emulator
 

@@ -7,11 +7,13 @@ import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.v2.runAndroidComposeUiTest
 import app.kiumu.accura.AppGraph
@@ -95,7 +97,8 @@ class AppFlowTest {
     fun `Anmelden mit E-Mail und Code führt zur Übersicht mit Daten`() {
         start()
         signIn()
-        text("Wie viel ist auf deinen Konten?").assertExists()
+        text("Hallo").assertExists()
+        text("Dein August 2026 auf einen Blick.").assertExists()
         rule.onNode(hasClickAction() and hasText("Budget")).assertExists()
     }
 
@@ -136,19 +139,49 @@ class AppFlowTest {
         text("Wie viel kann ich bis zum Gehalt noch ausgeben?").assertExists()
         text("904,30 €").assertExists()
         openTab("Budget")
-        text("Wie viel bleibt im Monat frei?").assertExists()
+        text("Dein Budget").assertExists()
         openTab("Schulden")
-        text("Wie hoch ist deine Restschuld?").assertExists()
+        text("Dein Weg auf null").assertExists()
         openTab("Übersicht")
-        text("Wie viel ist auf deinen Konten?").assertExists()
+        text("Hallo").assertExists()
     }
 
     @Test
-    fun `So gerechnet klappt den Rechenweg auf`() {
+    fun `Ein Tipp auf eine Kachel öffnet das Blatt mit Rechenweg`() {
         start()
         signIn()
+        rule.onNode(hasClickAction() and hasText("Jetzt verfügbar")).performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("So gerechnet")).fetchSemanticsNodes().isNotEmpty() }
+        // Steht nur im Rechenweg des Blatts, nicht auf der Übersicht.
+        text("Art: eingetragen. Status: belastbar.").assertExists()
+    }
+
+    @Test
+    fun `So gerechnet klappt den Rechenweg in der Hauptkarte auf`() {
+        start()
+        signIn()
+        openTab("Demnächst")
         rule.onAllNodes(hasClickAction() and hasText("So gerechnet"))[0].performClick()
-        text("Auf den Konten").assertExists()
+        text("Nächstes Gehalt").assertExists()
+    }
+
+    @Test
+    fun `Stände aktualisieren zeigt im Prototyp einen Hinweis statt nichts`() {
+        start()
+        signIn()
+        rule.onNode(hasClickAction() and hasText("Stände aktualisieren")).performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Eintragen kommt mit der Ersterfassung.")).fetchSemanticsNodes().isNotEmpty() }
+    }
+
+    @Test
+    fun `Restschuldverlauf hat eine Beschreibung und eine Tabelle`() {
+        start()
+        signIn()
+        openTab("Schulden")
+        rule.onNode(hasContentDescription("Restschuld bei planmäßiger Zahlung", substring = true)).assertExists()
+        rule.onNode(hasClickAction() and hasText("Werte als Tabelle")).performScrollTo().performClick()
+        // „Januar 2027“ steht nur in der Tabelle.
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Januar 2027")).fetchSemanticsNodes().isNotEmpty() }
     }
 
     @Test
@@ -172,6 +205,14 @@ class AppFlowTest {
         text("Leer").performClick()
         rule.onNodeWithContentDescription("Zurück").performClick()
         rule.waitUntil(5_000) { rule.onAllNodes(hasText("Noch nichts erfasst")).fetchSemanticsNodes().isNotEmpty() }
+    }
+
+    @Test
+    fun `Testdaten wechseln schaltet auf der Übersicht zu alten Ständen`() {
+        start()
+        signIn()
+        rule.onNodeWithContentDescription("Testdaten wechseln").performClick()
+        rule.waitUntil(5_000) { rule.onAllNodes(hasText("Einige Stände sind alt")).fetchSemanticsNodes().isNotEmpty() }
     }
 }
 

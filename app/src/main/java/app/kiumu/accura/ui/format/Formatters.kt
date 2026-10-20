@@ -50,8 +50,8 @@ fun formatBps(bps: Int): String {
     return "$sign$number$NBSP%"
 }
 
-/** Ganze Prozent, wie das Backend sie liefert: 72 → `72 %`. Die App rundet nicht selbst. */
-fun formatPercent(percent: Int): String = "$percent$NBSP%"
+/** Ganze Prozent, wie das Backend sie liefert: 72 → `72 %`, −90 mit Minuszeichen. Die App rundet nicht selbst. */
+fun formatPercent(percent: Int): String = if (percent < 0) "$MINUS${-percent}$NBSP%" else "$percent$NBSP%"
 
 /** Ganze Prozent aus Basispunkten, für einzeln gerundete Anteile: 7166 → `72 %`, 7150 → `72 %`. */
 fun formatWholePercent(bps: Int): String = "${(bps + 50) / 100}$NBSP%"
@@ -66,6 +66,29 @@ fun formatMonthsX100(value: Long): String {
     return "$sign${tenths / 10},${tenths % 10}"
 }
 
+/** Stufen einer Achsengrenze in Zehnteln der Zehnerpotenz: 1, 1,5, 2, 3, 4, 5, 6, 8, 10. */
+private val achsenStufen = longArrayOf(10, 15, 20, 30, 40, 50, 60, 80, 100)
+
+/**
+ * Grenze einer Diagrammachse in Cent: der nächste runde Euro-Betrag ab [cents] (zum Beispiel 550 € →
+ * 600 €, 8.945 € → 10.000 €). Nur für Achsen; Beträge selbst werden nie gerundet (Leitfaden, Regel 6).
+ * 0 und negative Werte ergeben 0.
+ */
+fun achsenGrenze(cents: Long): Long {
+    if (cents <= 0) return 0
+    val euro = (cents + 99) / 100
+    var potenz = 1L
+    while (potenz * 10 < euro) potenz *= 10
+    val stufe = achsenStufen.first { it * potenz / 10 >= euro || it == 100L }
+    return stufe * potenz / 10 * 100
+}
+
+/** Ganze Euro für Achsenbeschriftungen: 1000000 → `10.000 €`. Cent fallen weg; gedacht für Werte aus [achsenGrenze]. */
+fun formatAchse(cents: Long): String {
+    val sign = if (cents < 0) "$MINUS" else ""
+    return "$sign${groupThousands(abs(cents) / 100)}$NBSP€"
+}
+
 private val dayShort = DateTimeFormatter.ofPattern("d. MMM", Locale.GERMAN)
 private val dayLong = DateTimeFormatter.ofPattern("d. MMM yyyy", Locale.GERMAN)
 private val monthYear = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.GERMAN)
@@ -76,6 +99,11 @@ fun formatDay(day: LocalDate, reference: LocalDate? = null): String =
 
 fun formatMonth(month: YearMonth): String = monthYear.format(month)
 
+private val monthShort = DateTimeFormatter.ofPattern("MMM yyyy", Locale.GERMAN)
+
+/** `Okt. 2026`, für Diagrammbeschriftungen. */
+fun formatMonthShort(month: YearMonth): String = monthShort.format(month)
+
 /** Zahl einer Kennzahl nach Einheit, ohne Einheitswort für Tage und Monate. `null`, wenn kein Wert da ist. */
 fun formatMetricNumber(metric: Metric): String? = when (metric.unit) {
     MetricUnit.CENTS -> metric.value?.let(::formatCents)
@@ -83,4 +111,61 @@ fun formatMetricNumber(metric: Metric): String? = when (metric.unit) {
     MetricUnit.MONTHS_X100 -> metric.value?.let(::formatMonthsX100)
     MetricUnit.DAYS, MetricUnit.COUNT -> metric.value?.let { groupThousands(it) }
     MetricUnit.DAY -> metric.day?.let { monthYear.format(it) }
+}
+
+/** Was das Betragsfeld aus einer Eingabe liest. */
+sealed interface BetragEingabe {
+    data object Leer : BetragEingabe
+    data class Gueltig(val cents: Long) : BetragEingabe
+    data object Ungueltig : BetragEingabe
+}
+
+private val thousandsGrouped = Regex("""^\d{1,3}(\.\d{3})+$""")
+private val dotDecimal = Regex("""^(\d+)\.(\d{1,2})$""")
+private val digits = Regex("""^\d{1,13}$""")
+private val fraction = Regex("""^\d{0,2}$""")
+
+/**
+ * Liest einen Betrag in Euro, wie man ihn tippt: Ziffern und ein Komma, Tausenderpunkte erlaubt
+ * (`1.482,60`, `1482,6`, `0,05`, `1482`). Ein Punkt mit ein oder zwei Ziffern dahinter gilt als Komma
+ * (`12.5`). Mehr als zwei Nachkommastellen, Buchstaben oder zwei Kommas sind ungültig, es wird nichts
+ * gerundet oder geraten. Ein Minus am Anfang oder [minus] („Im Minus“) macht den Betrag negativ.
+ * Dieselben Regeln wie im Klick-Dummy (`parseEUR`).
+ */
+fun parseBetrag(text: String, minus: Boolean = false): BetragEingabe {
+    var t = text.trim().replace(" ", "").replace(NBSP.toString(), "").replace("€", "")
+    var negative = minus
+    if (t.startsWith("-") || t.startsWith("−")) {
+        negative = true
+        t = t.substring(1)
+    }
+    if (t.isEmpty()) return BetragEingabe.Leer
+    var whole: String
+    var frac = ""
+    when {
+        ',' in t -> {
+            val parts = t.split(',')
+            if (parts.size != 2) return BetragEingabe.Ungueltig
+            whole = parts[0]
+            frac = parts[1]
+            if ('.' in whole) {
+                if (!thousandsGrouped.matches(whole)) return BetragEingabe.Ungueltig
+                whole = whole.replace(".", "")
+            }
+        }
+        '.' in t -> {
+            if (thousandsGrouped.matches(t)) {
+                whole = t.replace(".", "")
+            } else {
+                val match = dotDecimal.matchEntire(t) ?: return BetragEingabe.Ungueltig
+                whole = match.groupValues[1]
+                frac = match.groupValues[2]
+            }
+        }
+        else -> whole = t
+    }
+    if (whole.isEmpty()) whole = "0"
+    if (!digits.matches(whole) || !fraction.matches(frac)) return BetragEingabe.Ungueltig
+    val cents = whole.toLong() * 100 + frac.padEnd(2, '0').toLong()
+    return BetragEingabe.Gueltig(if (negative) -cents else cents)
 }

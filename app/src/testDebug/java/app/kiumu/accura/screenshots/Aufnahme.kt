@@ -10,12 +10,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import app.kiumu.accura.ui.theme.AccuraTheme
 
-/** Rahmen aller Screenshot-Tests: festes Farbschema (kein Dynamic Color), Hell oder Dunkel, Schriftgröße. */
+/**
+ * Rahmen aller Screenshot-Tests: festes Farbschema (Rückfall-Schema statt Dynamic Color), Hell oder
+ * Dunkel, Schriftgröße, Bewegung an oder aus. Aufgenommen wird nach dem Ende aller Animationen.
+ */
 @Composable
-fun Aufnahme(dark: Boolean = false, fontScale: Float = 1f, content: @Composable () -> Unit) {
+fun Aufnahme(dark: Boolean = false, fontScale: Float = 1f, reduceMotion: Boolean = false, content: @Composable () -> Unit) {
     val density = LocalDensity.current
     CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
-        AccuraTheme(darkTheme = dark, dynamicColor = false) {
+        AccuraTheme(darkTheme = dark, dynamicColor = false, reduceMotion = reduceMotion) {
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background, content = content)
         }
     }
